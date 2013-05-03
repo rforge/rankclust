@@ -1,0 +1,203 @@
+#' This functions runs the EM algorithm [1] or SEM-Gibbs algorithm for partial ranks [2] on the data in input and returns the estimates parameters according to ISR and other complementary information.
+#' @title model-based clustering for multivariate partial ranking
+#' @author Quentin Grimonprez
+#' @param data a matrix which each row is a rank (partial or not; for partial rank, missing elements of a rank are put to 0 ) (the last column contains frequencies of each rank).
+#' @param m a vector with the size of the rank of each dimension (default value is the number of column of the data minus 1 (corresponding to the frequency)
+#' @param K an integer or a vector of integer with the number of group for clustering
+#' @param criterion "bic" or "icl", criterion to minize for selecting the number of clusters
+#' @param algorithm type of algorithm : "EM" (only for complete rank) or "SEM" for SEM-Gibbs algorithm(default value)
+#' @param Qsem the total number of iterations for the SEM algorithm (defaut value=40)
+#' @param Bsem burn-in period for SEM algorithm (default value=10)
+#' @param RjSE a vector containing the number of iteration for each dimension of the Gibbs algorithm in the SE step for generate partial ranks and orders of presentation(only for SEM algorithm, default value=m(m-1)/2)
+#' @param RjM a vector containing the number of iterations for each dimension for the Gibbs Sampler in the M step(only for SEM algorithm, default value=m(m-1)/2)
+#' @param Ql number of iterations of the Gibbs sampler for estimation of log-likelihood (only for SEM algorithm, default value=100)
+#' @param Bl burn-in period for estimation of log-likelihood (only for SEM algorithm, default value=50)
+#' @param maxItEM the maximum number of iterations of the EM algorithm (defaut value=30)
+#' @param epsEM the threshold for loglikelihood convergency (only for EM algorithm, defaut value=1e-6)
+#' @param maxTry number of try for the convergency of the SEM-Gibbs algorithm (default value=3)
+#' @param run number of runs of the algorithm for each value of K 
+#' @param detail boolean, if TRUE, time and others informations will be print during the process (default value FALSE)
+#' @return an object of class rankclust
+#'
+#' For example :
+#' res=rankclust(data,K=1:2,m=m)
+#'
+#' You can access the result by res[number of groups]@@slotName where slotName is an element of the class Output.
+#' @references 
+#' [1] C.Biernacki and J.Jacques (2012), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, 58, 162-176
+#'
+#' [2] J. Jacques, C. Biernacki (2012), Model-based clustering for multivariate partial ranking data 
+#'
+#' @examples
+#' data(quiz)
+#' result=rankclust(quiz$data,K=2,m=quiz$m)
+#' 
+#' @seealso See \code{\link{Output-class}} and \code{\link{Rankclust-class}} for available output.
+#' 
+#' @useDynLib Rankcluster
+#' @export
+
+rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=100,Bsem=20,RjSE=m*(m-1)/2,RjM=m*(m-1)/2,Ql=500,Bl=100,maxItEM=30,epsEM=1e-6,maxTry=3,run=1,detail=FALSE)
+{
+
+	.checkArgRankclust(data,m,K,criterion,Qsem,Bsem,RjSE,RjM,Ql,Bl,detail,algorithm,maxTry,run,epsEM,maxItEM)
+
+	
+	result=c()
+	if(algorithm=="SEM")
+	{
+		G=c()
+		for(k in K)
+		{
+			## first run
+			res=mixtureSEM(data,k,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
+			if(res@convergence)
+			{	
+				G=c(G,k)
+				result=c(result,list(res))
+			}
+			else
+			{
+				cat("\n for K=",k,"clusters, the algorithm has not converge (a proportion was equal to 0 during the process), please retry\n")
+			}	
+		}
+
+	} 
+	else##algo EM
+	{
+	  for(k in K)
+	  {
+	    res=mixtureEM(data,k,m,maxItEM,epsEM,detail)
+	    result=c(result,list(res))
+	  }
+	  G=K
+	  
+	}
+
+
+	if(length(G)==0)
+	{
+		resultat=new("Rankclust",convergence=FALSE)
+		cat("No convergence for all values of K (a proportion was equal to 0 during the process). Please retry")
+	}
+	else
+	{
+		colnom=c()
+		for(i in 1:length(m))
+			colnom=c(colnom,paste0("dim ",i),rep("",m[i]-1))
+		colnames(data)=colnom
+		
+		resultat=new("Rankclust",K=G,criterion=criterion,results=result,data=data,convergence=TRUE)
+	}
+	
+	
+	return(resultat)
+}
+
+
+.checkArgRankclust=function(data,m,K,criterion,Qsem,Bsem,RjSE,RjM,Ql,Bl,detail,algorithm,maxTry,run,epsEM,maxItEM)
+{
+  ##################check the arguments
+  #data
+  if(missing(data))
+    stop("data is missing")
+  if(!is.numeric(data) || !is.matrix(data))
+    stop("data must be a matrix of positive integer")
+  if(length(data[data>=0])!=length(data))
+    stop("data must be a matrix of positive integer")
+  
+  #algorithm
+  if(algorithm!="EM" && algorithm!="SEM")
+    stop("algorithm must be \"SEM\" or \"EM\" ")  	
+  
+  #m
+  if(!is.vector(m,mode="numeric"))
+    stop("m must be a (vector of) integer strictly greater than 1")
+  if(length(m)!=length(m[m>1]))
+    stop("m must be a (vector of) integer strictly greater than 1")
+  if(!min(m==round(m)))
+    stop("m must be a (vector of) integer strictly greater than 1")
+  if( (algorithm=="SEM") && (sum(m)!=ncol(data)) )
+    stop("The number of column of data and m don't match.")
+  if( (algorithm=="EM") && (sum(m)!=ncol(data)-1) )
+    stop("The number of column of data and m don't match.")
+  
+  #K
+  if(!is.vector(K,mode="numeric"))
+    stop("K must be a (vector of) integer strictly greater than 0")
+  if(length(K)!=length(K[K>0]))
+    stop("K must be a (vector of) integer strictly greater than 0")
+  if(!min(K==round(K)))
+    stop("K must be a (vector of) integer strictly greater than 0")
+  
+  
+
+  
+  #criterion
+  if(criterion!="bic" && criterion!="icl")
+    stop("criterion must be \"bic\" or \"icl\" ")	
+  
+  #maxItEM
+  if(!is.numeric(maxItEM) || (length(maxItEM)>1))
+    stop("maxItEM must be a strictly positive integer")
+  if( (maxItEM!=round(maxItEM)) || (maxItEM<=0))
+    stop("maxItEM must be a strictly positive integer")	
+  
+  #Qsem
+  if(!is.numeric(Qsem) || (length(Qsem)>1))
+    stop("Qsem must be a strictly positive integer")
+  if( (Qsem!=round(Qsem)) || (Qsem<=0))
+    stop("Qsem must be a strictly positive integer")
+  
+  #epsEM
+  if(!is.double(epsEM) || (length(epsEM)>1))
+    stop("epsEM must be a strictly positive number")
+  if(epsEM<=0)
+    stop("epsEM must be a strictly positive number")
+  
+  #Bsem
+  if(!is.numeric(Bsem) || (length(Bsem)>1))
+    stop("Bsem must be a strictly positive integer lower than Qsem")
+  if( (Bsem!=round(Bsem)) || (Bsem<=0) || (Bsem>= Qsem))
+    stop("Bsem must be a strictly positive integer lower than Qsem")
+  
+  #RjM
+  if(!is.numeric(RjM) || (length(RjM)!=length(m)))
+    stop("RjM must be a vector of strictly positive integer")
+  if( (RjM!=round(RjM)) || (RjM<=0))
+    stop("RjM must be a vector of strictly positive integer")
+  
+  #RjSE
+  if(!is.numeric(RjSE) || (length(RjSE)!=length(m)))
+    stop("RjSE must be a vector of strictly positive integer")
+  if( (RjSE!=round(RjSE)) || (RjSE<=0))
+    stop("RjSE must be a vector of strictly positive integer")
+  
+  #Ql
+  if(!is.numeric(Ql) || (length(Ql)>1))
+    stop("Ql must be a strictly positive integer")
+  if( (Ql!=round(Ql)) || (Ql<=0))
+    stop("Ql must be a strictly positive integer")
+  
+  #Bl
+  if(!is.numeric(Bl) || (length(Bl)>1))
+    stop("Bl must be a strictly positive integer lower than Ql")
+  if( (Bl!=round(Bl)) || (Bl<=0) || (Bl>=Ql))
+    stop("Bl must be a strictly positive integer lower than Ql")
+  
+  #maxTry
+  if(!is.numeric(maxTry) || (length(maxTry)!=1))
+    stop("maxTry must be a positive integer")
+  if( (maxTry!=round(maxTry)) || (maxTry<=0))
+    stop("maxTry must be a positive integer")
+  
+  #run
+  if(!is.numeric(run) || (length(run)!=1))
+    stop("run must be a positive integer")
+  if( (run!=round(run)) || (run<=0))
+    stop("run must be a positive integer")
+  
+  #detail
+  if(!is.logical(detail))
+    stop("detail must be a logical.")
+}
