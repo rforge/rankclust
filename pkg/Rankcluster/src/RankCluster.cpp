@@ -677,7 +677,7 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
 
         //compute the log likelihood
         t1=clock();
-//cout<<"computeLikelihood"<<endl;
+
         L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities);
         t2=clock();
         tL+=t2-t1;
@@ -699,8 +699,12 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
             	for(int ind(0);ind<n_;ind++)
             		data_[dim][ind].y=Y[dim][ind];
 
-            	for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
-        			data_[dim][*it].rank=xPartialTemp[dim][*it];
+				int compteur(0);
+		    	for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
+				{
+					data_[dim][*it].rank=xPartialTemp[dim][compteur];
+					compteur++;
+				}
 
             }
 
@@ -726,38 +730,8 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
 
 	//compute log likelihood
     t1=clock();
-/*cout<<"computeLikelihood"<<endl;
-for(int ii(0);ii<d_;ii++)
-{
-for(int jj(0);jj<g_;jj++)
-{
-cout<<"dim "<<ii<<"  cl "<<jj<<"    ";
-for(int kk(0);kk<m_[d_];kk++)
-{
-cout<<currMu->rangComplet[ii][jj][kk]<<" ";
-}
-cout<<endl;
-}
-}
-
-for(int ii(0);ii<g_;ii++)
-{
-for(int jj(0);jj<d_;jj++)
-{
-cout<<currMu->p[jj][ii]<<"   ";
-}
-cout<<endl;
-}
-cout<<endl;
-
-for(int jj(0);jj<g_;jj++)
-	cout<<currMu->prop[jj]<<" ";
-cout<<endl;
-
-cout<<tik<<endl;*/
-
     L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities);
-//cout<<"end"<<endl;
+
     t2=clock();
     tL+=t2-t1;
     compteur++;
@@ -779,8 +753,12 @@ cout<<tik<<endl;*/
         	for(int ind(0);ind<n_;ind++)
         		data_[dim][ind].y=Y[dim][ind];
 
-        	for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
-    			data_[dim][*it].rank=xPartialTemp[dim][*it];
+			int compteur(0);
+		    for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
+			{
+				data_[dim][*it].rank=xPartialTemp[dim][compteur];
+				compteur++;
+			}
 
         }
     }
@@ -847,7 +825,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 
         p1=(long double) (propb*proba1.colwise().prod()).sum();
         proba2=proba1;
-//int testtest(0);
+
         for(int iter(0);iter<parameter_.nGibbsL;iter++)
         {
 
@@ -925,7 +903,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
             }
 
             if(iter>=parameter_.burnL)
-            {//testtest++;
+            {
                 ArrayXd calculInter(g_);
                 for(int cl(0);cl<g_;cl++)
                 {
@@ -939,13 +917,8 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 
                 double den(calculInter.sum());
                 tik.row(ind)+=(calculInter/den);
-//cout<<"ind "<<ind<<"   "<<calculInter.transpose()<<"      "<<(calculInter/den).transpose()<<endl;
-//cout<<"ind "<<ind<<"   "<<x[0]<<"    "<<probaCond(x[0],y[0],mu[0][0],p[0][0])<<"      "<<probaCond(x[0],y[0],mu[0][1],p[0][1])<<endl;
-//cout<<proportion<<endl;
+
                 li+=(long double) 1/den;
-                //cout<<y[0]<<endl;
-                //cout<<p<<endl;
-                //cout<<mu[0]<<endl;
             }
 
         }//fin du gibbs pour l'individu ind
@@ -954,7 +927,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 
         tik.row(ind)*=div;
         probabilities.row(ind)*=div;
-//cout<<"mean "<<tik.row(ind)<<"   "<<testtest<<"   "<<div<<endl;
+
         //sauvegarde des nouveau y et x
         for(int j(0);j<d_;j++)
         {
@@ -1063,13 +1036,9 @@ void RankCluster::computeDistance(vector<vector<double> > const& resProp,vector<
 	}
 
 	//changement de format
-	//1 ligne = 1 individu qui a au moins 1 de ces rangs qui est partiel
-	//on mets 0 pour les rangs non partiels
 	vector<int> compteurElemPartiel(d_,0);
-	//vector<vector<vector<int> > > distRangPartielFin(resDonneesPartiel.size());
 	output_.distPartialRank=vector<vector<vector<int> > > (resDonneesPartiel.size());
 	vector<int> rangTemp(d_);
-	bool partiel=false;
 
 	for(int iter(0);iter<distRangPartiel.size();iter++)
 	{
@@ -1078,22 +1047,17 @@ void RankCluster::computeDistance(vector<vector<double> > const& resProp,vector<
 
 		for(int ind(0);ind<n_;ind++)
 		{
-			partiel=false;
 			for(int dim(0);dim<d_;dim++)
 			{
-
 				if(data_[dim][ind].isPartial)
 				{
-					partiel=true;
 					rangTemp[dim]=distRangPartiel[iter][dim][compteurElemPartiel[dim]];
 					compteurElemPartiel[dim]++;
 				}
 				else
 					rangTemp[dim]=0;
 			}
-
-			if(partiel)
-				output_.distPartialRank[iter].push_back(rangTemp);
+			output_.distPartialRank[iter].push_back(rangTemp);
 		}
 	}
 }
@@ -1214,9 +1178,9 @@ void RankCluster::run()
 				for(int j(0);j<g_;j++)
 				{
 					if(output_.tik(i,j)!=0)
-						output_.entropy(i)-=2*output_.tik(i,j)*log(output_.tik(i,j));
+						output_.entropy(i)-=output_.tik(i,j)*log(output_.tik(i,j));
 				}
-				output_.icl+=output_.entropy(i);
+				output_.icl+=2*output_.entropy(i);
 			}
 
 
@@ -1447,9 +1411,9 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 		for(int j(0);j<g_;j++)
 		{
 			if(tik(i,j)!=0)
-				entropy(i)-=2*tik(i,j)*log(tik(i,j));
+				entropy(i)-=tik(i,j)*log(tik(i,j));
 		}
-		icl+=entropy(i);
+		icl+=2*entropy(i);
 	}
 
 }

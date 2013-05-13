@@ -244,15 +244,14 @@ tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd
     cout<<"BIC: "<<bic<<endl;
     cout<<"ICL: "<<icl<<endl;*/
 
-	ArrayXd z(n),prob(n);
-	double normconst((double) 1/factorial(m));
+	ArrayXd z=ArrayXd::Zero(n),prob=ArrayXd::Ones(n);
+	double normconst((double) 2/factorial(m));
     if(g>1)
 	{//calcul partition
 		double max;
 		for(int i(0);i<n;i++)
 		{
 			max=t(i,0);
-			z(i)=0;
 			for(int k(1);k<g;k++)
 			{
 				if(t(i,k)>max)
@@ -261,9 +260,11 @@ tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd
 					z(i)=k;
 				}
 			}
-			prob(i)=(exposantPi[indMu[z(i)]].row(i)*log(p(z(i)))+exposantUnMoinsPi[indMu[z(i)]].row(i)*log(1-p(z(i)))).sum()*normconst;
 		}
 	}
+
+    for(int i(0);i<n;i++)
+		prob(i)=(exposantPi[indMu[z(i)]].row(i)*log(p(z(i)))+exposantUnMoinsPi[indMu[z(i)]].row(i)*log(1-p(z(i)))).exp().sum()*normconst;
 
 
     tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd,ArrayXd> resultat(p,prop,resMu,t,loglik,bic,icl,prob,z);
@@ -538,10 +539,7 @@ EMmelMulti(vector<vector<vector<int> > > const& donnees,vector<int> const& frequ
 	cout<<"tik:"<<endl<<t<<endl;*/
 
 
-	ArrayXd z(n),prob(n);
-	double normconst(1);
-	for(int i(0);i<d;i++)
-		normconst*=factorial(m[i]);
+	ArrayXd z=ArrayXd::Zero(n);
     if(g>1)
 	{//calcul partition
 		double max;
@@ -558,12 +556,21 @@ EMmelMulti(vector<vector<vector<int> > > const& donnees,vector<int> const& frequ
 					z(i)=k;
 				}
 			}
-			prob(i)=1;
-			for(int j(0);j<d;j++)
-				prob(i)*=(exposantPi[j][indMu[z(i)]].row(i)*log(p(z(i),j))+exposantUnMoinsPi[j][indMu[z(i)]].row(i)*log(1-p(z(i),j))).sum();
-
-			prob(i)/=normconst;
 		}
+	}
+
+	ArrayXd prob(n);
+	double normconst(1);
+	for(int i(0);i<d;i++)
+		normconst*=factorial(m[i])/2;
+
+	for(int i(0);i<n;i++)
+	{
+		prob(i)=1;
+		for(int j(0);j<d;j++)
+			prob(i)*=(exposantPi[j][indMu[z(i)]].row(i)*log(p(z(i),j))+exposantUnMoinsPi[j][indMu[z(i)]].row(i)*log(1-p(z(i),j))).exp().sum();
+
+		prob(i)/=normconst;
 	}
 
 
