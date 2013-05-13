@@ -5,10 +5,10 @@
   distSpearman(x, y)
 }
 \arguments{
-  \item{x,y}{two ranks of size m}
+  \item{x,y}{two ranks of size m.}
 }
 \value{
-  an integer, the Spearman distance between x and y
+  an integer, the Spearman distance between x and y.
 }
 \description{
   The Spearman distance is the square of Euclidean distance

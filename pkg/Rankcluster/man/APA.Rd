@@ -3,7 +3,7 @@
 \alias{APA}
 \title{rank data : APA}
 \format{A list containing :
-\dexcribe{
+\describe{
 \item{data}{ matrix of size 5738x5 containing the 5738 full observed ranks in ordering representation.
 The ordering representation x = (x_1,...,x_m) means that the candidate x_i is ranked in the ith position (i=1,...,m).
 For example, if the ordering rank is (4,3,1,2,5), it means that judge ranks first the candidate 4, second the candidate 3, ...}

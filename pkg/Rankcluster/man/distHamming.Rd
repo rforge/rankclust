@@ -5,10 +5,10 @@
   distHamming(x, y)
 }
 \arguments{
-  \item{x,y}{two ranks of size m}
+  \item{x,y}{two ranks of size m.}
 }
 \value{
-  an integer, the Hamming's distance between x and y
+  an integer, the Hamming's distance between x and y.
 }
 \description{
   Hamming distance between two ranks x and y is the number

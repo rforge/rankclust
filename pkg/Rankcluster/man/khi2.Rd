@@ -6,29 +6,29 @@
 }
 \arguments{
   \item{data}{a matrix where each row contains a rank of
-  size m}
+  size m.}
 
   \item{proportion}{a vector (which sum is equal 1)
   containing the proportion of the K clusters of the
-  mixture}
+  mixture.}
 
   \item{pi}{a vector of size K, where K is the number of
   clusters, containing the probability of a good paired
-  comparaison of the model (dispersion parameter)}
+  comparaison of the model (dispersion parameter).}
 
   \item{mu}{a matrix of size K*m, where m is the size of a
   rank, containing the modal rankings of the model
-  (position parameter)}
+  (position parameter).}
 
   \item{nBoot}{number of bootstrap iterations used to
-  estimate the khi2 adequation test p-value}
+  estimate the khi2 adequation test p-value.}
 }
 \value{
-  a real, the p-value of the khi2 adequation test
+  a real, the p-value of the khi2 adequation test.
 }
 \description{
-  This function compute the p-value of the khi2 adequation
-  test (only for univariate data)
+  This function computes the p-value of the khi2 adequation
+  test (only for univariate data).
 }
 \examples{
 proportion=c(0.4,0.6)

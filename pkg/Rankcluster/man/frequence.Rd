@@ -5,17 +5,17 @@
   frequence(X, m = ncol(X))
 }
 \arguments{
-  \item{X}{a matrix containing ranks}
+  \item{X}{a matrix containing ranks.}
 
   \item{m}{a vector with the size of rank of each
-  dimension}
+  dimension.}
 }
 \value{
   A matrix containing all the different observed ranks with
   their observation frequencies in the last column.
 }
 \description{
-  This function take in input a matrix containing all the
+  This function takes in input a matrix containing all the
   observed ranks (a rank can be repeated) and returns a
   matrix containing all the different observed ranks with
   their observation frequencies (in the last column).

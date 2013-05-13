@@ -1,4 +1,4 @@
-#'convertRank convert a rank from its ranking representation to its ordering representation, and vice-versa.
+#'convertRank converts a rank from its ranking representation to its ordering representation, and vice-versa.
 #'The transformation to convert a rank fron ordering to ranking representation is the same that from ranking to ordering representation, there is no need to precise the representation of rank x.
 #'
 #'The ranking representation r=(r_1,...,r_m) contains the ranks assigned to the objects,
@@ -11,7 +11,7 @@
 #' @useDynLib Rankcluster
 #' @title change the representation of a rank
 #' @author Julien Jacques
-#' @param x a rank (vector) datum either in its ranking or ordering representation
+#' @param x a rank (vector) datum either in its ranking or ordering representation.
 #' @return a rank (vector) in its ordering representation if its ranking representation has been given in input of convertRank, and vice-versa.
 #' @examples
 #' x=c(2,3,1,4,5)
@@ -59,11 +59,11 @@ completeRank <-function(x)
 	return(x)
 }
 
-#' This function take in input a matrix containing all the observed ranks (a rank can be repeated) and returns a matrix containing all the different observed ranks with their observation frequencies (in the last column).
+#' This function takes in input a matrix containing all the observed ranks (a rank can be repeated) and returns a matrix containing all the different observed ranks with their observation frequencies (in the last column).
 #' @title Convert data storage
 #' @author Quentin Grimonprez
-#' @param X a matrix containing ranks
-#' @param m a vector with the size of rank of each dimension
+#' @param X a matrix containing ranks.
+#' @param m a vector with the size of rank of each dimension.
 #' @return A matrix containing all the different observed ranks with their observation frequencies in the last column.
 #' @examples
 #' X=matrix(1:4,ncol=4,nrow=5,byrow=TRUE)
@@ -106,12 +106,12 @@ frequence <-function(X,m=ncol(X))
 #' This function simulates univariate rankings data according to the ISR(pi,mu).
 #' @title simulate a sample of ISR(pi,mu)
 #' @author Julien Jacques
-#' @param n size of the sample
-#' @param pi dispersion parameter: probability of correct paired comparaison according to mu
-#' @param mu position parameter: modal ranking in ordering representation
-#' @return a matrix with simulated ranks
+#' @param n size of the sample.
+#' @param pi dispersion parameter: probability of correct paired comparaison according to mu.
+#' @param mu position parameter: modal ranking in ordering representation.
+#' @return a matrix with simulated ranks.
 #' @references 
-#' [1] C.Biernacki and J.Jacques (2012), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, in press, DOI 10.1016/j.csda.2012.08.008
+#' [1] C.Biernacki and J.Jacques (2013), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, 58, 162-176.
 #' @examples
 #' x=simulISR(30,0.8,1:4)
 #' @export

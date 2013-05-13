@@ -2,7 +2,7 @@
 \alias{Output-class}
 \title{Constructor of Output class}
 \description{
-  This class contains a result of a run
+  This class contains a result of a run.
 }
 \details{
   \describe{ \item{proportion}{a vector of size K (number

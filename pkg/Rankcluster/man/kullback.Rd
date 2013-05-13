@@ -12,7 +12,7 @@
   \item{pi1,pi2}{a matrix of size K*D, where K is the
   number of clusters and D the number of dimensions,
   containing the probability of a good paired comparaison
-  of the ISR model}
+  of the ISR model.}
 
   \item{mu1,mu2}{a matrix of size K*sum(m), containing the
   reference ranks. A row contains the reference rank for a
@@ -21,10 +21,10 @@
   the same row.}
 
   \item{m}{a vector containing the size of rank for each
-  dimension}
+  dimension.}
 }
 \value{
-  a real, the Kullback-Leibler divergence
+  a real, the Kullback-Leibler divergence.
 }
 \description{
   This function computes the Kullback-Leibler divergence

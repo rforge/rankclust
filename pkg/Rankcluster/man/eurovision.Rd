@@ -12,6 +12,7 @@ Columns 1 to 8 correspond to the 2007 contest, columns 9 to 18 to the 2008 conte
 \item{m}{ a vector with the sizes of ranks for each dimension.}
 }
 
+}
 \source{
   http://www.eurovision.tv
 }

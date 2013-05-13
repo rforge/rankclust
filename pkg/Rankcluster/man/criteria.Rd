@@ -12,11 +12,11 @@
 
   \item{proportion}{a vector (which sum is equal 1)
   containing the proportion of the K clusters of the
-  mixture}
+  mixture.}
 
   \item{pi}{a matrix of size K*D, where K is the number of
   clusters and D the number of dimension, containing the
-  probability of a good comparaison of the model}
+  probability of a good comparaison of the model.}
 
   \item{mu}{a matrix of size K*sum(m), containing the
   reference ranks. A row contains the reference rank for a
@@ -25,18 +25,19 @@
   the same row.}
 
   \item{m}{a vector containing the size of rank for each
-  dimension}
+  dimension.}
 
   \item{Ql}{number of iterations of the Gibbs sampler for
   estimation of log-likelihood (only for SEM algorithm,
-  default value=100)}
+  default value=100).}
 
   \item{Bl}{burn-in period for estimation of log-likelihood
-  (only for SEM algorithm, default value=50)}
+  (only for SEM algorithm, default value=50).}
 }
 \value{
-  a list containing \item{ll}{loglikelihood estimation}
-  \item{bic}{bic criterion} \item{icl}{icl criterion}
+  a list containing: \item{ll}{the estimated
+  log-likelihood.} \item{bic}{the estimated BIC criterion.}
+  \item{icl}{the estimated ICL criterion.}
 }
 \description{
   This function estimates the loglikelihood of a mixture of

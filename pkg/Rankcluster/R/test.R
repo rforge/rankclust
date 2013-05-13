@@ -2,10 +2,10 @@
 #' @title Kullback-Leibler divergence 
 #' @author Quentin Grimonprez
 #' @param proportion1,proportion2 a vector (which sum is equal 1) containing the proportion of the K clusters of the mixture
-#' @param pi1,pi2 a matrix of size K*D, where K is the number of clusters and D the number of dimensions, containing the probability of a good paired comparaison of the ISR model
+#' @param pi1,pi2 a matrix of size K*D, where K is the number of clusters and D the number of dimensions, containing the probability of a good paired comparaison of the ISR model.
 #' @param mu1,mu2 a matrix of size K*sum(m), containing the reference ranks. A row contains the reference rank for a cluster. In case of multivariate rank, for a cluster, the reference rank for each dimension are set successively on the same row.
-#' @param m a vector containing the size of rank for each dimension
-#' @return a real, the Kullback-Leibler divergence 
+#' @param m a vector containing the size of rank for each dimension.
+#' @return a real, the Kullback-Leibler divergence. 
 #' @references 
 #' http://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
 #' @examples
@@ -90,15 +90,15 @@ kullback <-function(proportion1,pi1,mu1,proportion2,pi2,mu2,m)
 
 
 
-#' This function compute the p-value of the khi2 adequation test (only for univariate data)
+#' This function computes the p-value of the khi2 adequation test (only for univariate data).
 #' @title khi2 test
 #' @author Quentin Grimonprez
-#' @param data a matrix where each row contains a rank of size m
-#' @param proportion a vector (which sum is equal 1) containing the proportion of the K clusters of the mixture
-#' @param pi a vector of size K, where K is the number of clusters, containing the probability of a good paired comparaison of the model (dispersion parameter)
-#' @param mu a matrix of size K*m, where m is the size of a rank, containing the modal rankings of the model (position parameter)
-#' @param nBoot number of bootstrap iterations used to estimate the khi2 adequation test p-value
-#' @return a real, the p-value of the khi2 adequation test 
+#' @param data a matrix where each row contains a rank of size m.
+#' @param proportion a vector (which sum is equal 1) containing the proportion of the K clusters of the mixture.
+#' @param pi a vector of size K, where K is the number of clusters, containing the probability of a good paired comparaison of the model (dispersion parameter).
+#' @param mu a matrix of size K*m, where m is the size of a rank, containing the modal rankings of the model (position parameter).
+#' @param nBoot number of bootstrap iterations used to estimate the khi2 adequation test p-value.
+#' @return a real, the p-value of the khi2 adequation test. 
 #' @examples
 #' proportion=c(0.4,0.6)
 #' pi=c(0.8,0.75)

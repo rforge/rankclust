@@ -13,7 +13,7 @@ rankings (ordering representation). A row contains 4 ranks of size 4 and a last 
 
 }
 \source{
-  Creator: Julien Jacques
+  Julien Jacques
 }
 \description{
 This dataset contains the rankings answering by 70 students (40 of third year and 30 of fourth year) from Polytech’Lille (statistics engineering school, France) to the four following quizzes:

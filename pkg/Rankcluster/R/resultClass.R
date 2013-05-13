@@ -1,7 +1,7 @@
 ###################################################################################
 ##' Constructor of Output class
 ##'
-##' This class contains a result of a run
+##' This class contains a result of a run.
 ##'
 ##' \describe{
 ##'   \item{proportion}{a vector of size K (number of clusters), containing the estimates proportions of the mixture.}

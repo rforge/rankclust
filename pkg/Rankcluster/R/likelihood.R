@@ -2,16 +2,16 @@
 #' @title criteria estimation
 #' @author Quentin Grimonprez
 #' @param data a matrix which each row is a rank (partial or not; for partial rank, missing elements of a rank are put to 0 ) (the last column contains frequencies of each rank).
-#' @param proportion a vector (which sum is equal 1) containing the proportion of the K clusters of the mixture
-#' @param pi a matrix of size K*D, where K is the number of clusters and D the number of dimension, containing the probability of a good comparaison of the model
+#' @param proportion a vector (which sum is equal 1) containing the proportion of the K clusters of the mixture.
+#' @param pi a matrix of size K*D, where K is the number of clusters and D the number of dimension, containing the probability of a good comparaison of the model.
 #' @param mu a matrix of size K*sum(m), containing the reference ranks. A row contains the reference rank for a cluster. In case of multivariate rank, for a cluster, the reference rank for each dimension are set successively on the same row.
-#' @param m a vector containing the size of rank for each dimension
-#' @param Ql number of iterations of the Gibbs sampler for estimation of log-likelihood (only for SEM algorithm, default value=100)
-#' @param Bl burn-in period for estimation of log-likelihood (only for SEM algorithm, default value=50)
-#' @return a list containing
-#' \item{ll}{loglikelihood estimation}
-#' \item{bic}{bic criterion}
-#' \item{icl}{icl criterion}
+#' @param m a vector containing the size of rank for each dimension.
+#' @param Ql number of iterations of the Gibbs sampler for estimation of log-likelihood (only for SEM algorithm, default value=100).
+#' @param Bl burn-in period for estimation of log-likelihood (only for SEM algorithm, default value=50).
+#' @return a list containing:
+#'   \item{ll}{the estimated log-likelihood.}
+#'   \item{bic}{the estimated BIC criterion.}
+#'   \item{icl}{the estimated ICL criterion.}
 #' @examples
 #' data(quiz)
 #' res=rankclust(quiz$data,m=quiz$m,K=2)

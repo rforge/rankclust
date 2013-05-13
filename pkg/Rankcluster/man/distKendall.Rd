@@ -5,17 +5,17 @@
   distKendall(x, y, type = "ordering")
 }
 \arguments{
-  \item{x,y}{two ranks of size m}
+  \item{x,y}{two ranks of size m.}
 
   \item{type}{type of the rank representation ("ordering"
-  ou "ranking")}
+  ou "ranking").}
 }
 \value{
-  an integer, the Kendall distance between x and y
+  an integer, the Kendall distance between x and y.
 }
 \description{
   The Kendall distance between two ranks is the number of
-  pairs that are in different order in the two ranks
+  pairs that are in different order in the two ranks.
 }
 \examples{
 x=1:5

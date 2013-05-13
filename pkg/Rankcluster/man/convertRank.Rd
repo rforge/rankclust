@@ -6,7 +6,7 @@
 }
 \arguments{
   \item{x}{a rank (vector) datum either in its ranking or
-  ordering representation}
+  ordering representation.}
 }
 \value{
   a rank (vector) in its ordering representation if its
@@ -14,7 +14,7 @@
   convertRank, and vice-versa.
 }
 \description{
-  convertRank convert a rank from its ranking
+  convertRank converts a rank from its ranking
   representation to its ordering representation, and
   vice-versa. The transformation to convert a rank fron
   ordering to ranking representation is the same that from

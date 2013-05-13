@@ -5,15 +5,15 @@
   distCayley(x, y)
 }
 \arguments{
-  \item{x,y}{two ranks of size m}
+  \item{x,y}{two ranks of size m.}
 }
 \value{
-  the Cayley distance between x and y
+  the Cayley distance between x and y.
 }
 \description{
   Cayley distance between two ranks x and y is the minimum
   number of transpositions required to transform the
-  ranking x into y
+  ranking x into y.
 }
 \examples{
 x=1:5

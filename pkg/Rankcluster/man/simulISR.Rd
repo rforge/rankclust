@@ -5,16 +5,16 @@
   simulISR(n, pi, mu)
 }
 \arguments{
-  \item{n}{size of the sample}
+  \item{n}{size of the sample.}
 
   \item{pi}{dispersion parameter: probability of correct
-  paired comparaison according to mu}
+  paired comparaison according to mu.}
 
   \item{mu}{position parameter: modal ranking in ordering
-  representation}
+  representation.}
 }
 \value{
-  a matrix with simulated ranks
+  a matrix with simulated ranks.
 }
 \description{
   This function simulates univariate rankings data
@@ -27,9 +27,8 @@ x=simulISR(30,0.8,1:4)
   Julien Jacques
 }
 \references{
-  [1] C.Biernacki and J.Jacques (2012), A generative model
+  [1] C.Biernacki and J.Jacques (2013), A generative model
   for rank data based on sorting algorithm, Computational
-  Statistics and Data Analysis, in press, DOI
-  10.1016/j.csda.2012.08.008
+  Statistics and Data Analysis, 58, 162-176.
 }
 

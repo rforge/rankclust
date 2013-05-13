@@ -16,29 +16,29 @@
 
   \item{m}{a vector composed of the sizes of the rankings
   of each dimension (default value is the number of column
-  of the matrix data)}
+  of the matrix data).}
 
   \item{K}{an integer or a vector of integer with the
-  number of clusters}
+  number of clusters.}
 
   \item{criterion}{criterion "bic" or "icl", criterion to
-  minimize for selecting the number of clusters}
+  minimize for selecting the number of clusters.}
 
   \item{algorithm}{type of algorithm : "EM" (only for
   complete rank) or "SEM" for SEM-Gibbs algorithm(default
-  value)}
+  value).}
 
   \item{Qsem}{the total number of iterations for the SEM
-  algorithm (defaut value=40)}
+  algorithm (defaut value=40).}
 
   \item{Bsem}{burn-in period for SEM algorithm (default
-  value=10)}
+  value=10).}
 
   \item{RjSE}{a vector containing, for each dimension, the
   number of iterations of the Gibbs sampler used in the SE
   step for partial rankings and presentation orders
   generation (only for SEM algorithm, default
-  value=mj(mj-1)/2)}
+  value=mj(mj-1)/2).}
 
   \item{RjM}{a vector containing, for each dimension, the
   number of iterations of the Gibbs sampler used in the M
@@ -46,30 +46,30 @@
 
   \item{Ql}{number of iterations of the Gibbs sampler for
   estimation of log-likelihood (only for SEM algorithm,
-  default value=100)}
+  default value=100).}
 
   \item{Bl}{burn-in period for estimation of log-likelihood
-  (only for SEM algorithm, default value=50)}
+  (only for SEM algorithm, default value=50).}
 
   \item{maxItEM}{the maximum number of iterations of the EM
-  algorithm (defaut value=30)}
+  algorithm (defaut value=30).}
 
   \item{epsEM}{the threshold for loglikelihood convergency
-  (only for EM algorithm, defaut value=1e-6)}
+  (only for EM algorithm, defaut value=1e-6).}
 
   \item{maxTry}{maximum number of restarts of the SEM-Gibbs
   algorithm in the case of non convergence (default
   value=3).}
 
   \item{run}{number of runs of the algorithm for each value
-  of K}
+  of K .}
 
   \item{detail}{boolean, if TRUE, time and others
   informations will be print during the process (default
-  value FALSE)}
+  value FALSE).}
 }
 \value{
-  an object of class rankclust
+  An object of class rankclust.
 
   For example : res=rankclust(data,K=1:2,m=m)
 
@@ -95,12 +95,13 @@ result=rankclust(quiz$data,K=2,m=quiz$m)
   Quentin Grimonprez
 }
 \references{
-  [1] C.Biernacki and J.Jacques (2012), A generative model
+  [1] C.Biernacki and J.Jacques (2013), A generative model
   for rank data based on sorting algorithm, Computational
-  Statistics and Data Analysis, 58, 162-176
+  Statistics and Data Analysis, 58, 162-176.
 
-  [2] J. Jacques, C. Biernacki (2012), Model-based
-  clustering for multivariate partial ranking data
+  [2] J.Jacques and C.Biernacki (2012), Model-based
+  clustering for multivariate partial ranking data, Inria
+  Research Report n°8113.
 }
 \seealso{
   See \code{\link{Output-class}} and
