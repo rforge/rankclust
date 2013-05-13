@@ -18,16 +18,16 @@ The heterogeneity of the rank population is modelled by a mixture of ISR, wherea
 
 \details{
 \tabular{ll}{
-Package: \tab Rankclust\cr
+Package: \tab Rankcluster\cr
 Type: \tab Package\cr
-Version: \tab 0.9\cr
-Date: \tab 2013-03-27\cr
+Version: \tab 0.86\cr
+Date: \tab 2013-05-13\cr
 License: \tab GPL (>=2) \cr
 }
 }
 
 \author{
-Maintainer: Grimonprez Quentin <quentin.grimonprez@inria.fr>
+Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 }
 
 \references{

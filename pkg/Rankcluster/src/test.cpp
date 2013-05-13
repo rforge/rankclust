@@ -334,17 +334,17 @@ void updateD(double &divKL,vector<int> &index, vector<vector<vector<double> > > 
 	divKL+=p1b*log(p1b/p2b);
 }
 
-void updateIndex(vector<int> &index,int i,vector<int> const& m,bool &stop)
+void updateIndex(vector<int> &index,int i,vector<int> const& factm,bool &stop)
 {
 	if(i<0)
 		stop=true;
 	else
 	{
-		if(index[i]<m[i]-1)
+		if(index[i]<factm[i]-1)
 			index[i]++;
 		else
 		{
-			updateIndex(index,i-1,m,stop);
+			updateIndex(index,i-1,factm,stop);
 			index[i]=0;
 		}
 	}
@@ -408,7 +408,9 @@ double divKL(vector<int> const& m,vector<vector<vector<int> > > const& mu1,vecto
 	double divKL(0);
 	int const d=m.size();
 	int const g=proportion1.size();
-
+	vector<int> factm(d);
+	for(int i(0);i<d;i++)
+		factm[i]=factorial(m[i]);
 	//dans p et q on stocke les probas pour tt les rangs possibles de ttes les dims
 	vector<vector<vector<double> > > p(d,vector<vector<double> >(g));
 	for(int i(0);i<d;i++)
@@ -425,7 +427,7 @@ double divKL(vector<int> const& m,vector<vector<vector<int> > > const& mu1,vecto
 
 	while(!stop)
 	{
-		updateIndex(index,i,m,stop);
+		updateIndex(index,i,factm,stop);
 		updateD(divKL,index,p,q,d,g,proportion1,proportion2);
 	}
 

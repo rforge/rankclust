@@ -8,7 +8,7 @@
 The ordering representation x = (x_1,...,x_m) means that the candidate x_i is ranked in the ith position (i=1,...,m).
 For example, if the ordering rank is (4,3,1,2,5), it means that judge ranks first the candidate 4, second the candidate 3, ...}
 
-\item{frequency} {matrix of size 120x6. Each row corresponds to one of the different observed rank.
+\item{frequency}{matrix of size 120x6. Each row corresponds to one of the different observed rank.
 The first fifth columns contains the observed ranks (ordering representation) and the sixth column
 contains the frequency of observation.}
 
