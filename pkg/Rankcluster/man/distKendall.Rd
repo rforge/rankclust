@@ -1,6 +1,6 @@
 \name{distKendall}
 \alias{distKendall}
-\title{Kendall's distance between two ranks}
+\title{Kendall distance between two ranks}
 \usage{
   distKendall(x, y, type = "ordering")
 }
@@ -14,7 +14,7 @@
   an integer, the Kendall distance between x and y
 }
 \description{
-  The Kendall's distance between two ranks is the number of
+  The Kendall distance between two ranks is the number of
   pairs that are in different order in the two ranks
 }
 \examples{

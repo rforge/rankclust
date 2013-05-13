@@ -1,20 +1,22 @@
-#' This functions runs the EM algorithm [1] or SEM-Gibbs algorithm for partial ranks [2] on the data in input and returns the estimates parameters according to ISR and other complementary information.
+#' This functions estimates a clustering of ranking data, potentially multivariate and partial, based on a mixture of multivariate ISR model [2].
+#' By specifying only one cluster, the function perform a modelling of the ranking data using the multivariate ISR model.
+#' The estimation is performed thanks to a SEM-Gibbs algorithm in the general case, and an EM algorithm is available for full univariate ranking data.
 #' @title model-based clustering for multivariate partial ranking
 #' @author Quentin Grimonprez
-#' @param data a matrix which each row is a rank (partial or not; for partial rank, missing elements of a rank are put to 0 ) (the last column contains frequencies of each rank).
-#' @param m a vector with the size of the rank of each dimension (default value is the number of column of the data minus 1 (corresponding to the frequency)
-#' @param K an integer or a vector of integer with the number of group for clustering
-#' @param criterion "bic" or "icl", criterion to minize for selecting the number of clusters
+#' @param data a matrix in which each row is a ranking (partial or not; for partial ranking, missing elements must be 0). For multivariate rankings, dimensions are placed end to end in each row.
+#' @param m a vector composed of the sizes of the rankings of each dimension (default value is the number of column of the matrix data)
+#' @param K an integer or a vector of integer with the number of clusters
+#' @param criterion criterion "bic" or "icl", criterion to minimize for selecting the number of clusters
 #' @param algorithm type of algorithm : "EM" (only for complete rank) or "SEM" for SEM-Gibbs algorithm(default value)
 #' @param Qsem the total number of iterations for the SEM algorithm (defaut value=40)
 #' @param Bsem burn-in period for SEM algorithm (default value=10)
-#' @param RjSE a vector containing the number of iteration for each dimension of the Gibbs algorithm in the SE step for generate partial ranks and orders of presentation(only for SEM algorithm, default value=m(m-1)/2)
-#' @param RjM a vector containing the number of iterations for each dimension for the Gibbs Sampler in the M step(only for SEM algorithm, default value=m(m-1)/2)
+#' @param RjSE a vector containing, for each dimension, the number of iterations of the Gibbs sampler used in the SE step for partial rankings and presentation orders generation (only for SEM algorithm, default value=mj(mj-1)/2)
+#' @param RjM a vector containing, for each dimension, the number of iterations of the Gibbs sampler used in the  M step (only for SEM algorithm, default value=mj(mj-1)/2)
 #' @param Ql number of iterations of the Gibbs sampler for estimation of log-likelihood (only for SEM algorithm, default value=100)
 #' @param Bl burn-in period for estimation of log-likelihood (only for SEM algorithm, default value=50)
 #' @param maxItEM the maximum number of iterations of the EM algorithm (defaut value=30)
 #' @param epsEM the threshold for loglikelihood convergency (only for EM algorithm, defaut value=1e-6)
-#' @param maxTry number of try for the convergency of the SEM-Gibbs algorithm (default value=3)
+#' @param maxTry maximum number of restarts of the SEM-Gibbs algorithm in the case of non convergence (default value=3).
 #' @param run number of runs of the algorithm for each value of K 
 #' @param detail boolean, if TRUE, time and others informations will be print during the process (default value FALSE)
 #' @return an object of class rankclust

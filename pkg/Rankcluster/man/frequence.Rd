@@ -1,6 +1,6 @@
 \name{frequence}
 \alias{frequence}
-\title{Convert data}
+\title{Convert data storage}
 \usage{
   frequence(X, m = ncol(X))
 }
@@ -11,13 +11,14 @@
   dimension}
 }
 \value{
-  a matrix with rank and frequencies
+  A matrix containing all the different observed ranks with
+  their observation frequencies in the last column.
 }
 \description{
   This function take in input a matrix containing all the
-  ranks (a rank can be repeated) and returns a matrix which
-  the m first column are the differents ranks observed and
-  the last column contains the frequency of each rank.
+  observed ranks (a rank can be repeated) and returns a
+  matrix containing all the different observed ranks with
+  their observation frequencies (in the last column).
 }
 \examples{
 X=matrix(1:4,ncol=4,nrow=5,byrow=TRUE)

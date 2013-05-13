@@ -1,23 +1,24 @@
 \name{simulISR}
 \alias{simulISR}
-\title{simulate a sample of ISR(p,mu)}
+\title{simulate a sample of ISR(pi,mu)}
 \usage{
-  simulISR(n, p, mu)
+  simulISR(n, pi, mu)
 }
 \arguments{
   \item{n}{size of the sample}
 
-  \item{p}{probability of correct comparaison according to
-  mu}
+  \item{pi}{dispersion parameter: probability of correct
+  paired comparaison according to mu}
 
-  \item{mu}{reference rank in ordering representation}
+  \item{mu}{position parameter: modal ranking in ordering
+  representation}
 }
 \value{
   a matrix with simulated ranks
 }
 \description{
-  This function simulate a sample of univariate ranks
-  according to the ISR(p,mu)
+  This function simulates univariate rankings data
+  according to the ISR(pi,mu).
 }
 \examples{
 x=simulISR(30,0.8,1:4)

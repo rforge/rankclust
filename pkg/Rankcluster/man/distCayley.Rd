@@ -1,6 +1,6 @@
 \name{distCayley}
 \alias{distCayley}
-\title{Cayley's distance between two ranks}
+\title{Cayley distance between two ranks}
 \usage{
   distCayley(x, y)
 }
@@ -11,9 +11,9 @@
   the Cayley distance between x and y
 }
 \description{
-  Cayley's distance between two ranks x and y is the
-  minimum number of transpositions required to transform
-  the ranking x into y
+  Cayley distance between two ranks x and y is the minimum
+  number of transpositions required to transform the
+  ranking x into y
 }
 \examples{
 x=1:5

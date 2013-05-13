@@ -3,12 +3,14 @@
 \alias{sports}
 \title{rank data : sports}
 \format{A list containing :
+\describe{
+\item{data}{a matrix containing 130 ranks of size 7.}
 
--data: matrix containinf 130 ranks of size 7
+\item{frequency}{a matrix with 123 differents ranks of size 7. In each row the first 7 columns correspond to one observed ranking and the last column contains the observation frequency.}
+\item{m}{ the size of the rankings (m=7).}
+}
 
--frequency: matrix with 123 differents ranks of size 7. A row contains 1 rank of size 7 and the frequency.
-
--m: vector with the size of the rank for each dimension.}
+}
 \source{
   J.I. Marden. "Analyzing and modeling rank data, volume 64 of Monographs on
 Statistics and Applied Probability". Chapman & Hall, London, 1995.

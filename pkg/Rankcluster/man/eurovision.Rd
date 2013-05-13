@@ -2,13 +2,16 @@
 \name{eurovision}
 \alias{eurovision}
 \title{Multidimensionnal partial rank data : eurovision}
-\format{A list containig:
+\format{A list containing:
+\describe{
+\item{data}{ A matrix of size 34*48. Each row corresponds to the ordering representation of a multidimensionnal ranking.
+Columns 1 to 8 correspond to the 2007 contest, columns 9 to 18 to the 2008 contest, etc...}
 
--data: A matrix of size 34*48. A row contains a multidimensionnal rank in ordering representation. The first eigthth rows corresponds to the 2007 contest, the next eigth to the 2008 contest, etc...
+\item{frequency}{A matrix of size 34*49 containing the differents multidimensionnal rankings. The 48 first colmuns are the same as in data, and the last column contains the frequency.}
 
--frequency: A matrix of size 34*49 containing the differents multidimensionnal ranks. A row contains 6 ranks of size 8 and the last column contains the frequency
+\item{m}{ a vector with the sizes of ranks for each dimension.}
+}
 
--m: a vector with the size of ranks for each dimension.}
 \source{
   http://www.eurovision.tv
 }
@@ -16,14 +19,13 @@
 The data contains the ranking by 33 countries of 8 countries during Eurovision song contest from 2007 to 2012 by decreasing number of points given.
 
 
-The 8 countries are the common finalists from 2007 to 2012 constest, there are:
+This dataset contains the ranking of the 8 common finalists of the Eurovision song contest from 2007 to 2012:
 
 1: France, 2:Germany, 3:Greece, 4:Romania, 5:Russia, 6:Spain, 7:Ukrain, 8:United Kingdom.
-They are ranking according to the number of points given by a voter. 
 
-The 33 voters are the common voters countries to these six contests. 
+The number of rankings is 33, corresponding to the 33 European countries having participated to this six editions of the contest.
 
-If a voter has ranked only 4 countries then the rank of size m contains the number of these 4 countries and four zeros.
+All the rankings are partial since none country has ranked this 8 countries in its 10 preferences. Missing ranking elements are zeros.
 	
 }
 \examples{

@@ -1,6 +1,6 @@
 \name{distHamming}
 \alias{distHamming}
-\title{distHamming}
+\title{Hamming distance between two ranks}
 \usage{
   distHamming(x, y)
 }
@@ -11,9 +11,9 @@
   an integer, the Hamming's distance between x and y
 }
 \description{
-  Hamming's distance between two ranks x and y is the
-  number of difference between the two ranks. For example,
-  the Hamming's distance between x=(1,4,2,5,3) and
+  Hamming distance between two ranks x and y is the number
+  of difference between the two ranks. For example, the
+  Hamming's distance between x=(1,4,2,5,3) and
   y=(1,3,4,5,2) is 3 because, only 1 and 5 have the same
   place in both ranks.
 }

@@ -1,6 +1,6 @@
 \name{distSpearman}
 \alias{distSpearman}
-\title{Spearman's distance between two ranks}
+\title{Spearman distance between two ranks}
 \usage{
   distSpearman(x, y)
 }
@@ -11,8 +11,8 @@
   an integer, the Spearman distance between x and y
 }
 \description{
-  Spearman's distance is a square of Euclidean distance
-  between two rank vector
+  The Spearman distance is the square of Euclidean distance
+  between two rank vector.
 }
 \examples{
 x=1:5

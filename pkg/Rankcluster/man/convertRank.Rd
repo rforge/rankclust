@@ -5,30 +5,32 @@
   convertRank(x)
 }
 \arguments{
-  \item{x}{a rank of size m}
+  \item{x}{a rank (vector) datum either in its ranking or
+  ordering representation}
 }
 \value{
-  a vector with the rank in the other representation
+  a rank (vector) in its ordering representation if its
+  ranking representation has been given in input of
+  convertRank, and vice-versa.
 }
 \description{
-  convertRank convert a rank from ranking to ordering
-  representation or ordering to ranking representation. The
-  transformation to convert a rank fron ordering to ranking
-  representation is the same that from ranking to ordering
-  representation, there is no need to precise the
-  representation of rank x.
+  convertRank convert a rank from its ranking
+  representation to its ordering representation, and
+  vice-versa. The transformation to convert a rank fron
+  ordering to ranking representation is the same that from
+  ranking to ordering representation, there is no need to
+  precise the representation of rank x.
 }
 \details{
-  A rank in ordering representation contains first the
-  number of the object ranks first, second the number of
-  the object ranks second,....
+  The ranking representation r=(r_1,...,r_m) contains the
+  ranks assigned to the objects, and means that the ith
+  object is in r_ith position.
 
-  A rank in ranking representation contains first the rank
-  assigned to the first object, second the rank assigned to
-  the second object,....
+  The ordering representation o=(o_1,...,o_m) means that
+  o_i is in the ith position.
 
   Let us consider the following example to illustrate both
-  notations: a judge, which has torank three holidays
+  notations: a judge, which has to rank three holidays
   destinations according to its preferences, O1 =
   Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
   second Countryside, and last Mountain. The ordering

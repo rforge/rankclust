@@ -3,34 +3,39 @@
 \alias{quiz}
 \title{Multidimensionnal rank data : quiz}
 \format{A list containing:
+\describe{
+\item{data}{a matrix of size 70*16. The student's answers are in row and the 16 columns correspond to the 4 rankingss (for the 4 quizzes) of size 4 (ordering representation).}
+\item{frequency}{a matrix of size 63*17. Each rows corresponds to one of the 63 differents observed
+rankings (ordering representation). A row contains 4 ranks of size 4 and a last column for the frequencies.}
+\item{m}{a vector with the sizes of the ranks for each dimension.}
 
--data: A matrix of size 70*16. Each row correspond to the answer of a student, a answer corresponds to 4 ranks (ordering representation) of size 4.
+}
 
--frequency: A matrix of size 63*17. Each rows corresponds to one of the 63 differents observed rank (ordering representation). A row contains 4 ranks of size 4 and the frequency.
-
--m: a vector with the size of the rank for each dimension.}
+}
 \source{
   Creator: Julien Jacques
 }
 \description{
-  70 students (40 of third year and 30 of fourth year of statistics engineering) from Polytech'Lille have to answer 4 quizzes:
+This dataset contains the rankings answering by 70 students (40 of third year and 30 of fourth year) from Polytech’Lille (statistics engineering school, France) to the four following quizzes:
 
+\describe{
 
-1) Literature Quiz
+\item{Literature Quiz}{
 This quiz consists of ranking four french writers according to chronological order:
- 1=Victor Hugo, 2=Moliere, 3=Albert Camus, 4=Jean-Jacques Rousseau.
+ 1=Victor Hugo, 2=Moliere, 3=Albert Camus, 4=Jean-Jacques Rousseau.}
 
-2) Football Quiz
-This quiz consists of ranking four national football teams according to increasing number of wins in thefootball World Cup: 1=France, 2=Germany, 3=Brazil, 4=Italy.
+\item{Football Quiz}{
+This quiz consists of ranking four national football teams according to increasing number of wins in thefootball World Cup: 1=France, 2=Germany, 3=Brazil, 4=Italy.}
 
-3) Mathematics Quiz
+\item{Mathematics Quiz}{
 This quiz consists of ranking four numbers according to increasing order: 
-1=pi/3, 2=log(1), 3=exp(2), 4=(1+sqrt(5))/2.
+1=pi/3, 2=log(1), 3=exp(2), 4=(1+sqrt(5))/2.}
 
-4) Cinema Quiz
+\item{Cinema Quiz}{
 This quiz consists of ranking four Tarentino's movies according to chronological order: 
-1=Inglourious Basterds, 2=Pulp Fiction, 3=Reservoir Dogs, 4=Jackie Brown.
-	
+1=Inglourious Basterds, 2=Pulp Fiction, 3=Reservoir Dogs, 4=Jackie Brown.}
+
+}	
 }
 \examples{
 data(quiz)

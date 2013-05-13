@@ -2,7 +2,7 @@
 \alias{criteria}
 \title{criteria estimation}
 \usage{
-  criteria(data, proportion, p, mu, m, Ql = 500, Bl = 100)
+  criteria(data, proportion, pi, mu, m, Ql = 500, Bl = 100)
 }
 \arguments{
   \item{data}{a matrix which each row is a rank (partial or
@@ -14,7 +14,7 @@
   containing the proportion of the K clusters of the
   mixture}
 
-  \item{p}{a matrix of size K*D, where K is the number of
+  \item{pi}{a matrix of size K*D, where K is the number of
   clusters and D the number of dimension, containing the
   probability of a good comparaison of the model}
 
@@ -39,7 +39,9 @@
   \item{bic}{bic criterion} \item{icl}{icl criterion}
 }
 \description{
-  This function estimates the loglikelihood, bic and icl.
+  This function estimates the loglikelihood of a mixture of
+  multidimensional ISR model, as well as the BIC and ICL
+  model selection criteria.
 }
 \examples{
 data(quiz)

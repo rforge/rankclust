@@ -1,20 +1,18 @@
-#'convertRank convert a rank from ranking to ordering representation or
-#'  ordering to ranking representation.
+#'convertRank convert a rank from its ranking representation to its ordering representation, and vice-versa.
 #'The transformation to convert a rank fron ordering to ranking representation is the same that from ranking to ordering representation, there is no need to precise the representation of rank x.
 #'
+#'The ranking representation r=(r_1,...,r_m) contains the ranks assigned to the objects,
+#'and means that the ith object is in r_ith position.
 #'
-#'A rank in ordering representation contains first the number of the object ranks first, second the number of the object ranks second,....
+#'The ordering representation o=(o_1,...,o_m) means that o_i is in the ith position. 
 #'
 #'
-#'A rank in ranking representation contains first the rank assigned to the first object, second the rank assigned to the second object,....
-#'
-#'
-#'Let us consider the following example to illustrate both notations: a judge, which has torank three holidays destinations according to its preferences, O1 = Countryside, O2 =Mountain and O3 = Sea, ranks first Sea, second Countryside, and last Mountain. The ordering result of the judge is x = (3, 1, 2) whereas the ranking result is (2, 3, 1).
+#'Let us consider the following example to illustrate both notations: a judge, which has to rank three holidays destinations according to its preferences, O1 = Countryside, O2 =Mountain and O3 = Sea, ranks first Sea, second Countryside, and last Mountain. The ordering result of the judge is x = (3, 1, 2) whereas the ranking result is (2, 3, 1).
 #' @useDynLib Rankcluster
 #' @title change the representation of a rank
 #' @author Julien Jacques
-#' @param x a rank of size m 
-#' @return a vector with the rank in the other representation
+#' @param x a rank (vector) datum either in its ranking or ordering representation
+#' @return a rank (vector) in its ordering representation if its ranking representation has been given in input of convertRank, and vice-versa.
 #' @examples
 #' x=c(2,3,1,4,5)
 #' convertRank(x)
@@ -61,12 +59,12 @@ completeRank <-function(x)
 	return(x)
 }
 
-#' This function take in input a matrix containing all the ranks (a rank can be repeated) and returns a matrix which the m first column are the differents ranks observed and the last column contains the frequency of each rank.
-#' @title Convert data
+#' This function take in input a matrix containing all the observed ranks (a rank can be repeated) and returns a matrix containing all the different observed ranks with their observation frequencies (in the last column).
+#' @title Convert data storage
 #' @author Quentin Grimonprez
 #' @param X a matrix containing ranks
 #' @param m a vector with the size of rank of each dimension
-#' @return a matrix with rank and frequencies
+#' @return A matrix containing all the different observed ranks with their observation frequencies in the last column.
 #' @examples
 #' X=matrix(1:4,ncol=4,nrow=5,byrow=TRUE)
 #' Y=frequence(X)
@@ -105,36 +103,36 @@ frequence <-function(X,m=ncol(X))
 
 }
 
-#' This function simulate a sample of univariate ranks according to the ISR(p,mu)
-#' @title simulate a sample of ISR(p,mu)
+#' This function simulates univariate rankings data according to the ISR(pi,mu).
+#' @title simulate a sample of ISR(pi,mu)
 #' @author Julien Jacques
 #' @param n size of the sample
-#' @param p probability of correct comparaison according to mu
-#' @param mu reference rank in ordering representation
+#' @param pi dispersion parameter: probability of correct paired comparaison according to mu
+#' @param mu position parameter: modal ranking in ordering representation
 #' @return a matrix with simulated ranks
 #' @references 
 #' [1] C.Biernacki and J.Jacques (2012), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, in press, DOI 10.1016/j.csda.2012.08.008
 #' @examples
 #' x=simulISR(30,0.8,1:4)
 #' @export
-simulISR <-function(n,p,mu)
+simulISR <-function(n,pi,mu)
 {
 	if(missing(n))
 		stop("n is missing")
 	if(missing(mu))
 		stop("mu is missing")
-	if(missing(p))
-		stop("p is missing")
+	if(missing(pi))
+		stop("pi is missing")
 
 	if(!is.numeric(n) || (length(n)>1))
 		stop("n must be a strictly positive integer")
 	if( (n!=round(n)) || (n<=0))
 		stop("n must be a strictly positive integer")
 
-	if(!is.numeric(p) || (length(n)>1))
-		stop("p must be a real between 0 and 1")
-	if( (p>1) || (p<0))
-		stop("p must be a real between 0 and 1")
+	if(!is.numeric(pi) || (length(pi)>1))
+		stop("pi must be a real between 0 and 1")
+	if( (pi>1) || (pi<0))
+		stop("pi must be a real between 0 and 1")
 
 	if(!is.vector(mu,mode="numeric"))
 		stop("mu must be a complete rank")
@@ -143,7 +141,7 @@ simulISR <-function(n,p,mu)
 
 
 
-	res=.Call("simulISRR",n,length(mu),mu,p,PACKAGE="Rankcluster")
+	res=.Call("simulISRR",n,length(mu),mu,pi,PACKAGE="Rankcluster")
 
 	return(res)
 }
