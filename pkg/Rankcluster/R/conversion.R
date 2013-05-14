@@ -15,10 +15,10 @@ liste3d2mat=function(liste)
 	for(j in 1:g)
 	{
 		compteur=1
-		rownom[j]=paste("cl",j)
+		rownom[j]=paste0("cl",j)
 		for(i in 1:d)	
 		{
-			colnom[compteur]=paste("dim",i)
+			colnom[compteur]=paste0("dim",i)
 			for(k in 1:m[i])
 			{
 				mu[j,compteur]=liste[[j]][[i]][k]
@@ -48,7 +48,7 @@ liste2d2matD=function(liste)
 	compteur=1
 	for(i in 1:d)	
 	{
-		colnom[compteur]=paste("dim",i)
+		colnom[compteur]=paste0("dim",i)
 		for(k in 1:m[i])
 		{
 			mu[1,compteur]=liste[[i]][k]
@@ -71,10 +71,10 @@ liste2d2matG=function(liste)
 
 	mu=matrix(0,g,m)
 	rownom=rep(0,g)
-	colnames(mu)=c("dim 1",rep("",m-1))
+	colnames(mu)=c("dim1",rep("",m-1))
 	for(i in 1:g)	
 	{
-		rownom[i]=paste("comp",i)
+		rownom[i]=paste0("cl",i)
 
 		for(k in 1:m)
 		{
@@ -146,10 +146,10 @@ tliste3d2mat=function(liste)
 	for(j in 1:g)
 	{
 		compteur=1
-		rownom[j]=paste("cl",j)
+		rownom[j]=paste0("cl",j)
 		for(i in 1:d)	
 		{
-			colnom[compteur]=paste("dim",i)
+			colnom[compteur]=paste0("dim",i)
 			for(k in 1:m[i])
 			{
 				mu[j,compteur]=liste[[i]][[j]][k]

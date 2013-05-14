@@ -99,7 +99,7 @@ double loglikMel(ArrayXd calculInter,ArrayXXd const& exposantPi,ArrayXXd const& 
 
 
 
-tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd,ArrayXd> EMmel
+tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd,ArrayXd,ArrayXd,ArrayXd,vector<vector<int> > > EMmel
 (vector<vector<int> > const& donnees,vector<int> const& frequence,int const& g,int const& maxIt,double const& eps,bool const& detail)
 {
 	if(detail)
@@ -169,7 +169,7 @@ tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd
     	cout<<"EM ALGORITHM"<<endl<<endl<<"Iteration:"<<endl;
     double lim(-numeric_limits<double>::max()),i,loglik(0);
     ArrayXd prop(g),p(g);
-    ArrayXXd Tau(n,nbSigma),t(n,g);//t: proba d'appartenance aux classes, Tau: proba qeu l'ordre de présentation yi soit y
+    ArrayXXd Tau(n,nbSigma),t(n,g);//t: proba d'appartenance aux classes, Tau: proba que l'ordre de présentation yi soit y
     vector<double> L(maxIt+1,lim);
 
     //Initialisation
@@ -184,6 +184,13 @@ tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd
         }
     }
 
+	ArrayXd initProp(prop), initP(p);
+	vector<vector<int> > initMu(g,vector<int> (m));
+	for(int i(0); i<g;i++)
+		initMu[i]=donnees[indMu[i]];
+
+
+	//start EM
     t1=clock();
 
     for(i=0;i<maxIt;i++)
@@ -267,7 +274,7 @@ tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd
 		prob(i)=(exposantPi[indMu[z(i)]].row(i)*log(p(z(i)))+exposantUnMoinsPi[indMu[z(i)]].row(i)*log(1-p(z(i)))).exp().sum()*normconst;
 
 
-    tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd,ArrayXd> resultat(p,prop,resMu,t,loglik,bic,icl,prob,z);
+    tuple<ArrayXd,ArrayXd,vector<vector<int> >,ArrayXXd,double,double,double,ArrayXd,ArrayXd,ArrayXd,ArrayXd,vector<vector<int> > > resultat(p,prop,resMu,t,loglik,bic,icl,prob,z,initProp,initP,initMu);
 
     return(resultat);
 }
@@ -375,7 +382,7 @@ double loglikMelMult(ArrayXd calculInter,vector<vector<ArrayXXd> > const& exposa
 }
 
 
-tuple<ArrayXXd,ArrayXd,vector<vector<vector<int> > >,ArrayXXd,double,double,double,ArrayXd,ArrayXd>
+tuple<ArrayXXd,ArrayXd,vector<vector<vector<int> > >,ArrayXXd,double,double,double,ArrayXd,ArrayXd,ArrayXd,ArrayXXd,vector<vector<vector<int> > > >
 EMmelMulti(vector<vector<vector<int> > > const& donnees,vector<int> const& frequence,int const& g,int const& maxIt,double const& eps,bool const& detail)
 {
     cout<<endl<<"---------------------VARIATIONAL EM ALGORITHM---------------------"<<endl;
@@ -477,6 +484,20 @@ EMmelMulti(vector<vector<vector<int> > > const& donnees,vector<int> const& frequ
         indMu[i]=floor((double) rand()/RAND_MAX*n);
     }
 
+	ArrayXd initProp(prop);
+	ArrayXXd initP(p);
+	vector<vector<vector<int> > > initMu(g,vector<vector<int> > (d) ); 
+
+	for(int j(0);j<d;j++)
+    {
+        for(int k(0);k<g;k++)
+        {
+            initMu[k][j]=donnees[j][indMu[k]];
+        }
+    }
+
+
+	//start EM
     for(i=0;i<maxIt;i++)
     {
         cout<<"*";
@@ -575,7 +596,8 @@ EMmelMulti(vector<vector<vector<int> > > const& donnees,vector<int> const& frequ
 
 
 
-    tuple<ArrayXXd,ArrayXd,vector<vector<vector<int> > >,ArrayXXd,double,double,double,ArrayXd,ArrayXd> resultat(p,prop,resMu,t,loglik,bic,icl,prob,z);
+    tuple<ArrayXXd,ArrayXd,vector<vector<vector<int> > >,ArrayXXd,double,double,double,ArrayXd,ArrayXd,ArrayXd,ArrayXXd,vector<vector<vector<int> > > >
+ resultat(p,prop,resMu,t,loglik,bic,icl,prob,z,initProp,initP,initMu);
 
     return(resultat);
 }

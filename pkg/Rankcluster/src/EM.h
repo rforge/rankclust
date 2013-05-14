@@ -100,7 +100,7 @@ EMmel(std::vector<std::vector<int> > const& donnees,std::vector<int> const& freq
  * \param maxIt nombre maximal d'itération pour un EM sur un mu
  * \return un tuple contenant prop,p,mu,les tik
  */
-std::tuple<Eigen::ArrayXd,Eigen::ArrayXd,std::vector<std::vector<int> >,Eigen::ArrayXXd,double,double,double,Eigen::ArrayXd,Eigen::ArrayXd>
+std::tuple<Eigen::ArrayXd,Eigen::ArrayXd,std::vector<std::vector<int> >,Eigen::ArrayXXd,double,double,double,Eigen::ArrayXd,Eigen::ArrayXd,Eigen::ArrayXd,Eigen::ArrayXd,std::vector<std::vector<int> > >
 EMmel(std::vector<std::vector<int> > const& donnees,std::vector<int> const& frequence,int const& g,int const& maxIt=40,
       double const& eps=0.0001,bool const& detail=false);
 
@@ -197,7 +197,8 @@ melangeMulti(std::vector<std::vector<std::vector<int> > > const& donnees,std::ve
  * \return un tuple contenant prop,p,mu,les tik
  *
  */
-std::tuple<Eigen::ArrayXXd,Eigen::ArrayXd,std::vector<std::vector<std::vector<int> > >,Eigen::ArrayXXd,double,double,double,Eigen::ArrayXd,Eigen::ArrayXd>
+std::tuple<Eigen::ArrayXXd,Eigen::ArrayXd,std::vector<std::vector<std::vector<int> > >,Eigen::ArrayXXd,double,double,double,Eigen::ArrayXd,Eigen::ArrayXd,
+Eigen::ArrayXd,Eigen::ArrayXXd,std::vector<std::vector<std::vector<int> > > >
 EMmelMulti(std::vector<std::vector<std::vector<int> > > const& donnees,std::vector<int> const& frequence,int const& g,
              int const& maxIt=40,double const& eps=0.0001,bool const& detail=false);
 

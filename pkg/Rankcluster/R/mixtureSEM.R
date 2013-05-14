@@ -39,10 +39,10 @@ mixtureSEM<-function(X,g,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
 	}
 
 	res=.Call("semR",X,m,g,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail,PACKAGE="Rankcluster")
-
 	#récupération des résultats
 	if(res$stock[1]==1)#si convergence
 	{
+
 		res$referenceRank=tliste3d2mat(res$referenceRank)
 		res$initMu=tliste3d2mat(res$initMu)
 		res$p=liste2d2matgd(res$p)
@@ -66,13 +66,14 @@ mixtureSEM<-function(X,g,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
 			#print(res$indexPartialData)
 
 			res$partialRank=tliste3d2mat(res$partialRank)##proba a rajouté 
+
 			rownames(res$partialRank)=rep("",nrow(res$partialRank))#enlever les cl1...
 			#colnames(res$partialRank)[1]="Index"
 			#colnames(res$partialRank)[ncol(res$rangPartial)]="Probability"
+
 			res$initPartialRank=tliste3d2mat(res$initPartialRank)
 			#colnames(res$initPartialRank)[1]="Index"
 			rownames(res$initPartialRank)=rep("",nrow(res$initPartialRank))
-
 
 			res$distPartialRank=lapply(res$distPartialRank,FUN=function(x){listedistPartiel(x)})
 			result=new(Class="Output",

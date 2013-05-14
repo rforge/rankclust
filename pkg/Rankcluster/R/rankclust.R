@@ -69,13 +69,12 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=1
 	{
 	  for(k in K)
 	  {
-	    res=mixtureEM(data,k,m,maxItEM,epsEM,detail)
+	    res=mixtureEM(data,k,m,maxItEM,epsEM,run,detail)
 	    result=c(result,list(res))
 	  }
 	  G=K
 	  
 	}
-
 
 	if(length(G)==0)
 	{
@@ -86,10 +85,12 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=1
 	{
 		colnom=c()
 		for(i in 1:length(m))
-			colnom=c(colnom,paste0("dim ",i),rep("",m[i]-1))
+			colnom=c(colnom,paste0("dim",i),rep("",m[i]-1))
+		if(algorithm=="EM")
+			colnom=c(colnom,"frequency")
 		colnames(data)=colnom
 		
-		resultat=new("Rankclust",K=G,criterion=criterion,results=result,data=data,convergence=TRUE)
+		resultat=new("Rankclust",K=G,criterion=criterion,results=result,data=data,convergence=TRUE,algorithm=algorithm)
 	}
 	
 	

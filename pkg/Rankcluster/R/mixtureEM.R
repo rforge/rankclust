@@ -1,7 +1,7 @@
 # EMmeluni
 # Fonction pour lancer EM unidimensionnel pour modeles de melange
 #
-EMmeluni<-function(X,g,maxIt=30,eps=1e-6,detail=FALSE)
+EMmeluni<-function(X,g,maxIt,eps,run,detail)
 {
 	m=ncol(X)-1
 	n=nrow(X)
@@ -12,7 +12,7 @@ EMmeluni<-function(X,g,maxIt=30,eps=1e-6,detail=FALSE)
 	if(sum(apply(rank,1,checkRank,m))!=n)
 		stop("Data are not correct")
 
-	res=.Call("EMmelR",rank,frequence,m,g,eps,maxIt,detail,PACKAGE="Rankcluster")
+	res=.Call("EMmelR",rank,frequence,m,g,eps,maxIt,run,detail,PACKAGE="Rankcluster")
 
 	return(res)
 
@@ -21,7 +21,7 @@ EMmeluni<-function(X,g,maxIt=30,eps=1e-6,detail=FALSE)
 
 # EMmelmulti
 # fonction pour lancer EM multi dim pour modele de melange
-EMmelmulti<-function(X,m,g,maxIt=30,eps=1e-6,detail=FALSE)
+EMmelmulti<-function(X,m,g,maxIt,eps,run,detail)
 {
 	n=nrow(X)
 	d=length(m)
@@ -38,7 +38,7 @@ EMmelmulti<-function(X,m,g,maxIt=30,eps=1e-6,detail=FALSE)
 			stop("Data are not correct")
 	}
 	
-	res=.Call("EMmelmultR",rank,frequence,m,g,eps,maxIt,detail,PACKAGE="Rankcluster")
+	res=.Call("EMmelmultR",rank,frequence,m,g,eps,maxIt,run,detail,PACKAGE="Rankcluster")
 
 	return(res)
 
@@ -60,7 +60,7 @@ EMmelmulti<-function(X,m,g,maxIt=30,eps=1e-6,detail=FALSE)
 # mixtureEM(quiz$frequency,K=2,m=quiz$m)
 # @export
 
-mixtureEM<-function(X,g,m=ncol(X)-1,maxIt=30,eps=1e-6,detail=FALSE)
+mixtureEM<-function(X,g,m,maxIt,eps,run,detail)
 {
 	
 	#algorithm
@@ -72,33 +72,38 @@ mixtureEM<-function(X,g,m=ncol(X)-1,maxIt=30,eps=1e-6,detail=FALSE)
  			print(paste0("The algorithm will continue with m=",ncol(X)-1))
 		}
 
-		res=EMmeluni(X,g,maxIt,eps,detail)
+		res=EMmeluni(X,g,maxIt,eps,run,detail)
+
+		#conversion
 		res$referenceRank=liste2d2matG(res$referenceRank)
+		res$initMu=liste2d2matG(res$initMu)
 		res$pi=as.matrix(res$pi)
+		res$initP=as.matrix(res$initP)
 		colnames(res$pi)="dim 1"
+		colnames(res$initP)="dim 1"
 		rownom=c()
 		for(i in 1:g)	
 			rownom=c(rownom,paste0("cl ",i))
 		rownames(res$pi)=rownom
+		rownames(res$initP)=rownom
 		
     
-    res$partition=res$partition+1
+    	res$partition=res$partition+1
 
-    #entropie=[indice|entropie|classe|proba]
-    index=c(1:nrow(X))
-    #for(i in 1:nrow(X))
+    	#entropie=[entropie|classe|proba]
+    	#for(i in 1:nrow(X))
 			#	index=c(index,rep(i,X[i,ncol(X)]))
 
-    entropie=cbind(index,res$entropie,res$partition)
-    maxProb=cbind(index,res$maxProb,res$partition)## a modif
-    colnames(entropie)=c("index","entropy","cluster")		
-    colnames(maxProb)=c("index","probability","cluster")
+    	entropie=cbind(res$entropie,res$partition)
+    	maxProb=cbind(res$maxProb,res$partition)## a modif
+   	 	colnames(entropie)=c("entropy","cluster")		
+    	colnames(maxProb)=c("probability","cluster")
 
 
 		result=new(Class="Output",bic=res$bic,icl=res$icl,
-			LL=res$loglikelihood,proportion=res$proportion,pi=res$pi,
+			ll=res$loglikelihood,proportion=res$proportion,pi=res$pi,
 			mu=res$referenceRank,tik=res$tik,partition=res$partition,entropy=entropie,
-			probability=maxProb,partial=FALSE)
+			probability=maxProb,partial=FALSE,convergence=TRUE,proportionInitial=res$initProp,muInitial=res$initMu,piInitial=res$initP)
 
 		if(detail)
 		{
@@ -118,10 +123,11 @@ mixtureEM<-function(X,g,m=ncol(X)-1,maxIt=30,eps=1e-6,detail=FALSE)
 	{
 		if(length(m)>1)
 		{
-			res=EMmelmulti(X,m,g,maxIt,eps,detail)
+			res=EMmelmulti(X,m,g,maxIt,eps,run,detail)
 
+			#conversion
 			res$referenceRank=liste3d2mat(res$referenceRank)
-
+			res$initMu=liste3d2mat(res$initMu)
 			colnom=c()
 			rownom=c()
 			for(i in 1:g)	
@@ -130,23 +136,22 @@ mixtureEM<-function(X,g,m=ncol(X)-1,maxIt=30,eps=1e-6,detail=FALSE)
 				colnom=c(colnom,paste0("dim ",i))
 			rownames(res$pi)=rownom
 			colnames(res$pi)=colnom
+			rownames(res$initP)=rownom
+			colnames(res$initP)=colnom
 
 			res$partition=res$partition+1
-			#entropie=[indice|entropie|classe|proba]
-			index=c(1:nrow(X))
-			#for(i in 1:nrow(X))
-			#	index=c(index,rep(i,X[i,ncol(X)]))
-			entropie=cbind(index,res$entropie,res$partition)
-			maxProb=cbind(index,res$maxProb,res$partition)
-			colnames(entropie)=c("index","entropy","cluster")		
-			colnames(maxProb)=c("index","probability","cluster")
+			#entropie=[entropie|classe|proba]
+			entropie=cbind(res$entropie,res$partition)
+			maxProb=cbind(res$maxProb,res$partition)
+			colnames(entropie)=c("entropy","cluster")		
+			colnames(maxProb)=c("probability","cluster")
 
 
 			result=new(Class="Output",bic=res$bic,icl=res$icl,
-				LL=res$loglikelihood,proportion=res$proportion,
+				ll=res$loglikelihood,proportion=res$proportion,
 				pi=res$pi,mu=res$referenceRank,tik=res$tik,
 				partition=res$partition,entropy=entropie,
-			probability=maxProb,partial=FALSE)
+			probability=maxProb,partial=FALSE,convergence=TRUE,proportionInitial=res$initProp,muInitial=res$initMu,piInitial=res$initP)
 
 			if(detail)
 			{

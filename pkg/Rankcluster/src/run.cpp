@@ -66,7 +66,7 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 		int d=mC.size();
 		int n=XR.nrow();
 		vector<vector<vector<int> > > data(d,vector<vector<int> > (n));
-		vector<vector<vector<int> > > dataInit(d,vector<vector<int> > (n));
+		
 
 		for(int i(0);i<n;i++)
 		{
@@ -75,6 +75,8 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 				data[dim][i]=semgibbs.rank(dim,i);
 			}
 		}
+
+		vector<vector<vector<int> > > dataInit(data);
 
 		if(semgibbs.partial())
 		{

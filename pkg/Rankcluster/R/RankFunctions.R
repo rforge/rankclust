@@ -146,3 +146,25 @@ simulISR <-function(n,pi,mu)
 	return(res)
 }
 
+#' This function takes in input a matrix which the m first column are the differents ranks observed and the last column contains the frequency of each rank  and returns a matrix containing all the ranks (ranks with frequency>1 are repeated) .
+#' @title Convert data
+#' @param data a matrix containing ranks and frequency.
+#' @return a matrix with rank.
+#' @examples
+#' data(quiz)
+#' Y=unfrequence(quiz$frequency)
+#' Y
+#' @export
+unfrequence=function(data)
+{
+  X=matrix(ncol=ncol(data)-1,nrow=sum(data[,ncol(data)]))
+  colnames(X)=colnames(data)[-ncol(data)]
+  compteur=1
+  for(i in 1:nrow(data))
+    for(j in 1:data[i,ncol(data)])
+    {
+      X[compteur,]=data[i,-ncol(data)]
+      compteur=compteur+1
+    }
+  return(X)    
+}

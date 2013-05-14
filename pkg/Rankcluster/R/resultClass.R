@@ -98,6 +98,7 @@ setClass(
 ##'   \item{criterion}{criterion defined in rankclust function to select the best result.}
 ##'   \item{convergence}{If 0, no convergence, no result available in results.}
 ##'   \item{results}{A list of the same length than K, containing Output objects.}
+##'   \item{algorithm}{"SEM" or "EM".}
 ##' }
 ##'
 ##'
@@ -112,14 +113,16 @@ setClass(
     results="list",
 	data="matrix",
     criterion="character",
-	convergence="logical"
+	convergence="logical",
+	algorithm="character"
   ),
 	prototype=prototype(
     results=list(),
 	data=matrix(ncol=0,nrow=0),
     K=numeric(0),
     criterion="bic",
-	convergence=logical(0)    
+	convergence=logical(0),
+	algorithm="SEM"    
   )
 
 )
@@ -231,51 +234,62 @@ setMethod(
 		cat("Ranks with the highest entropy for each cluster:\n")
 		for(i in 1:object@K[index])
 		{
-			classe=object[object@K[index]]@entropy[object[object@K[index]]@entropy[,3]==i,]
-#print(dim(classe))
-#print(nrow(classe))
-#print(nrow(object@data))##pb si rien et voir entropie
+			#classe=object[object@K[index]]@entropy[object[object@K[index]]@entropy[,2]==i,]
+			classe=which(object[object@K[index]]@entropy[,2]==i)
 			if(length(classe)!=0)
 			{
-				if(length(classe)==3)
-				{
-					best5=classe
-					print(cbind(object@data[best5[1],-ncol(object@data)],best5[2:3]))
-				}
+				classe=classe[order(object[object@K[index]]@entropy[classe,1],decreasing=TRUE)][1:min(5,length(classe))]
+				if(object@algorithm=="SEM")
+					print(cbind(object@data[classe,],object[object@K[index]]@entropy[classe,]))
 				else
-				{
-					best5=classe[order(classe[,2],decreasing=TRUE),][1:min(5,nrow(classe)),]
-					print(cbind(object@data[best5[,1],-ncol(object@data)],best5[,2:3]))
-				}
+					print(cbind(object@data[classe,-ncol(object@data)],object[object@K[index]]@entropy[classe,]))
+				#if(length(classe)==2)
+				#{
+				#	best5=classe
+				#	print(cbind(object@data[classe,-ncol(object@data)],best5[2:3]))
+				#}
+				#else
+				#{
+				#	best5=classe[order(classe[,1],decreasing=TRUE),][1:min(5,nrow(classe)),]
+				#	print(cbind(object@data[best5[,1],-ncol(object@data)],best5[,2:3]))
+				#}
 			}
 	
 		}
-		rm(best5)	
+		#rm(best5)	
 		cat("Ranks with the highest probability for each cluster:\n")
 		for(i in 1:object@K[index])
 		{
-			classe=object[object@K[index]]@probability[object[object@K[index]]@probability[,3]==i,]
+			#classe=object[object@K[index]]@probability[object[object@K[index]]@probability[,2]==i,]
+			classe=which(object[object@K[index]]@probability[,2]==i)
 			if(length(classe)!=0)
 			{
-				if(length(classe)==3)
-				{
-					best5=classe
-					print(cbind(object@data[best5[1],-ncol(object@data)],best5[2:3]))
-				}
+				classe=classe[order(object[object@K[index]]@probability[classe,1],decreasing=TRUE)][1:min(5,length(classe))]
+				if(object@algorithm=="SEM")
+					print(cbind(object@data[classe,],object[object@K[index]]@probability[classe,]))
 				else
-				{
-					best5=classe[order(classe[,2],decreasing=TRUE),][1:min(5,nrow(classe)),]
-					print(cbind(object@data[best5[,1],-ncol(object@data)],best5[,2:3]))
-				}
+					print(cbind(object@data[classe,-ncol(object@data)],object[object@K[index]]@probability[classe,]))
+				#if(length(classe)==2)
+				#{
+				#	best5=classe
+				#	print(cbind(object@data[best5[1],-ncol(object@data)],best5[2:3]))
+				#}
+				#else
+				#{
+				#	best5=classe[order(classe[,2],decreasing=TRUE),][1:min(5,nrow(classe)),]
+				#	print(cbind(object@data[best5[,1],-ncol(object@data)],best5[,2:3]))
+				#}
 				
 			}	
 		}   
 	  	rm(classe)
-		rm(best5)
+		#rm(best5)
 		if(object[object@K[index]]@partial)
 		{
 			cat("\n*************************PARTIAL RANK*****************************\n")
-			print(object[object@K[index]]@partialRank)
+    		if(min(50,nrow(object[object@K[index]]@partialRank))==50)
+      			cat("\nOnly the first 50 are printed, total length:",nrow(object[object@K[index]]@partialRank),"\n")
+			print(object[object@K[index]]@partialRank[1:min(50,nrow(object[object@K[index]]@partialRank)),])
 		}
 		
 		cat("\n******************************************************************\n")
