@@ -7,12 +7,12 @@
 \arguments{
   \item{X}{a matrix containing ranks.}
 
-  \item{m}{a vector with the size of rank of each
+  \item{m}{a vector with the size of ranks of each
   dimension.}
 }
 \value{
-  A matrix containing all the different observed ranks with
-  their observation frequencies in the last column.
+  A matrix containing each different observed ranks with
+  its observation frequencies in the last column.
 }
 \description{
   This function takes in input a matrix containing all the

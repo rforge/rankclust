@@ -1,5 +1,5 @@
 #'convertRank converts a rank from its ranking representation to its ordering representation, and vice-versa.
-#'The transformation to convert a rank fron ordering to ranking representation is the same that from ranking to ordering representation, there is no need to precise the representation of rank x.
+#'The transformation to convert a rank from ordering to ranking representation is the same that from ranking to ordering representation, there is no need to precise the representation of rank x.
 #'
 #'The ranking representation r=(r_1,...,r_m) contains the ranks assigned to the objects,
 #'and means that the ith object is in r_ith position.
@@ -7,7 +7,7 @@
 #'The ordering representation o=(o_1,...,o_m) means that o_i is in the ith position. 
 #'
 #'
-#'Let us consider the following example to illustrate both notations: a judge, which has to rank three holidays destinations according to its preferences, O1 = Countryside, O2 =Mountain and O3 = Sea, ranks first Sea, second Countryside, and last Mountain. The ordering result of the judge is x = (3, 1, 2) whereas the ranking result is (2, 3, 1).
+#'Let us consider the following example to illustrate both notations: a judge, which has to rank three holidays destinations according to its preferences, O1 = Countryside, O2 =Mountain and O3 = Sea, ranks first Sea, second Countryside, and last Mountain. The ordering result of the judge is o = (3, 1, 2) whereas the ranking result is r = (2, 3, 1).
 #' @useDynLib Rankcluster
 #' @title change the representation of a rank
 #' @author Julien Jacques
@@ -63,8 +63,8 @@ completeRank <-function(x)
 #' @title Convert data storage
 #' @author Quentin Grimonprez
 #' @param X a matrix containing ranks.
-#' @param m a vector with the size of rank of each dimension.
-#' @return A matrix containing all the different observed ranks with their observation frequencies in the last column.
+#' @param m a vector with the size of ranks of each dimension.
+#' @return A matrix containing each different observed ranks with its observation frequencies in the last column.
 #' @examples
 #' X=matrix(1:4,ncol=4,nrow=5,byrow=TRUE)
 #' Y=frequence(X)
@@ -146,10 +146,10 @@ simulISR <-function(n,pi,mu)
 	return(res)
 }
 
-#' This function takes in input a matrix which the m first column are the differents ranks observed and the last column contains the frequency of each rank  and returns a matrix containing all the ranks (ranks with frequency>1 are repeated) .
+#' This function takes in input a matrix in which the m first columns are the different observed ranks and the last column contains the observation frequency, and returns a matrix containing all the ranks (ranks with frequency>1 are repeated).
 #' @title Convert data
-#' @param data a matrix containing ranks and frequency.
-#' @return a matrix with rank.
+#' @param data a matrix containing rankings and observation frequency.
+#' @return a matrix containing all the rankings.
 #' @examples
 #' data(quiz)
 #' Y=unfrequence(quiz$frequency)

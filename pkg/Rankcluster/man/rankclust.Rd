@@ -11,8 +11,8 @@
 \arguments{
   \item{data}{a matrix in which each row is a ranking
   (partial or not; for partial ranking, missing elements
-  must be 0). For multivariate rankings, dimensions are
-  placed end to end in each row.}
+  must be 0). For multivariate rankings, the rankings of
+  each dimension are placed end to end in each row.}
 
   \item{m}{a vector composed of the sizes of the rankings
   of each dimension (default value is the number of column
@@ -25,8 +25,8 @@
   minimize for selecting the number of clusters.}
 
   \item{algorithm}{type of algorithm : "EM" (only for
-  complete rank) or "SEM" for SEM-Gibbs algorithm(default
-  value).}
+  univariate full ranks) or "SEM" for SEM-Gibbs algorithm
+  (default value).}
 
   \item{Qsem}{the total number of iterations for the SEM
   algorithm (defaut value=40).}
@@ -35,9 +35,9 @@
   value=10).}
 
   \item{RjSE}{a vector containing, for each dimension, the
-  number of iterations of the Gibbs sampler used in the SE
-  step for partial rankings and presentation orders
-  generation (only for SEM algorithm, default
+  number of iterations of the Gibbs sampler used both in
+  the SE step for partial rankings and for the presentation
+  orders generation (only for SEM algorithm, default
   value=mj(mj-1)/2).}
 
   \item{RjM}{a vector containing, for each dimension, the
@@ -54,7 +54,7 @@
   \item{maxItEM}{the maximum number of iterations of the EM
   algorithm (defaut value=30).}
 
-  \item{epsEM}{the threshold for loglikelihood convergency
+  \item{epsEM}{the threshold for loglikelihood convergence
   (only for EM algorithm, defaut value=1e-6).}
 
   \item{maxTry}{maximum number of restarts of the SEM-Gibbs
@@ -62,7 +62,7 @@
   value=3).}
 
   \item{run}{number of runs of the algorithm for each value
-  of K .}
+  of K.}
 
   \item{detail}{boolean, if TRUE, time and others
   informations will be print during the process (default
@@ -81,7 +81,7 @@
   This functions estimates a clustering of ranking data,
   potentially multivariate and partial, based on a mixture
   of multivariate ISR model [2]. By specifying only one
-  cluster, the function perform a modelling of the ranking
+  cluster, the function performs a modelling of the ranking
   data using the multivariate ISR model. The estimation is
   performed thanks to a SEM-Gibbs algorithm in the general
   case, and an EM algorithm is available for full

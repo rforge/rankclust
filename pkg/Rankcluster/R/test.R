@@ -1,10 +1,10 @@
 #' This function computes the Kullback-Leibler divergence between two mixtures of multidimensional ISR distributions.
 #' @title Kullback-Leibler divergence 
 #' @author Quentin Grimonprez
-#' @param proportion1,proportion2 a vector (which sum is equal 1) containing the proportion of the K clusters of the mixture
-#' @param pi1,pi2 a matrix of size K*D, where K is the number of clusters and D the number of dimensions, containing the probability of a good paired comparaison of the ISR model.
-#' @param mu1,mu2 a matrix of size K*sum(m), containing the reference ranks. A row contains the reference rank for a cluster. In case of multivariate rank, for a cluster, the reference rank for each dimension are set successively on the same row.
-#' @param m a vector containing the size of rank for each dimension.
+#' @param proportion1,proportion2 vectors (which sums to 1) containing the K mixture proportions.
+#' @param pi1,pi2 matrices of size K*p, where K is the number of clusters and p the number of dimension, containing the probabilities of a good comparaison of the model (dispersion parameters).
+#' @param mu1,mu2 matrices of size K*sum(m), containing the modal ranks. Each row contains the modal rank for a cluster. In the case of multivariate ranks, the reference rank for each dimension are set successively on the same row.
+#' @param m a vector containing the size of ranks for each dimension.
 #' @return a real, the Kullback-Leibler divergence. 
 #' @references 
 #' http://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
@@ -48,8 +48,8 @@ kullback <-function(proportion1,pi1,mu1,proportion2,pi2,mu2,m)
 		stop("proportion2 must be a vector of positive real whose sum equal 1")
 	if(abs(1-sum(proportion2))>eps)
 		stop("proportion2 must be a vector of positive real whose sum equal 1")
-  if(length(proportion1)!=length(proportion2))
-    stop("proportion1 and proportion2 must have the same length.")
+	if(length(proportion1)!=length(proportion2))
+    	stop("proportion1 and proportion2 must have the same length.")
   
 	#m
 	if(!is.vector(m,mode="numeric"))
@@ -81,6 +81,35 @@ kullback <-function(proportion1,pi1,mu1,proportion2,pi2,mu2,m)
 	if( (nrow(pi2)!=length(proportion2)) || (nrow(pi2)!=nrow(mu2)) )
       stop("The number of rows of pi2 doesn't match with the others parameters.") 
 
+	#mu1
+	if(!is.numeric(mu1) || !is.matrix(mu1))
+	  stop("mu1 must be a matrix of positive integer")
+	if(min(mu1)<1)
+	  stop("mu1 must be a matrix of positive integer")
+	if(nrow(mu1)!=length(proportion1))
+      stop("The number of rows of mu1 and the length of proportion1 don't match.")
+	if(nrow(mu1)!=nrow(pi1))
+	  stop("The number of rows of mu1 and pi1 doesn't match.")
+
+	#mu2
+	if(!is.numeric(mu2) || !is.matrix(mu2))
+	  stop("mu2 must be a matrix of positive integer")
+	if(min(mu2)<1)
+	  stop("mu2 must be a matrix of positive integer")
+	if(nrow(mu2)!=length(proportion2))
+      stop("The number of rows of mu2 and the length of proportion2 don't match.")
+	if(nrow(mu2)!=nrow(pi2))
+	  stop("The number of rows of mu2 ans pi2 doesn't match.")
+
+	#check if mu contains ranks
+	for(i in 1:length(m))
+	{
+		if(sum(apply(mu1[,(1+cumsum(c(0,m))[i]):(cumsum(c(0,m))[i+1])],1,checkRank,m[i]))!=nrow(mu1))
+			stop("mu1 is not correct")
+		if(sum(apply(mu2[,(1+cumsum(c(0,m))[i]):(cumsum(c(0,m))[i+1])],1,checkRank,m[i]))!=nrow(mu2))
+			stop("mu2 is not correct")
+	}
+	
 	a=t(pi1)
 	b=t(pi2)
 	dKL=.Call("kullback",m,mu1,mu2,a,b,proportion1,proportion2,PACKAGE="Rankcluster")
@@ -93,10 +122,10 @@ kullback <-function(proportion1,pi1,mu1,proportion2,pi2,mu2,m)
 #' This function computes the p-value of the khi2 adequation test (only for univariate data).
 #' @title khi2 test
 #' @author Quentin Grimonprez
-#' @param data a matrix where each row contains a rank of size m.
-#' @param proportion a vector (which sum is equal 1) containing the proportion of the K clusters of the mixture.
-#' @param pi a vector of size K, where K is the number of clusters, containing the probability of a good paired comparaison of the model (dispersion parameter).
-#' @param mu a matrix of size K*m, where m is the size of a rank, containing the modal rankings of the model (position parameter).
+#' @param data a matrix in which each row is a rank of size m.
+#' @param proportion a vector (which sums to 1) containing the K mixture proportion.
+#' @param pi a vector of size K, where K is the number of clusters, containing the probabilities of a good paired comparaison of the model (dispersion parameters).
+#' @param mu a matrix of size K*m, where m is the size of a rank, containing the modal rankings of the model (position parameters).
 #' @param nBoot number of bootstrap iterations used to estimate the khi2 adequation test p-value.
 #' @return a real, the p-value of the khi2 adequation test. 
 #' @examples
@@ -137,8 +166,8 @@ khi2 <-function(data,proportion,mu,pi,nBoot=1000)
 	  stop("mu must be a matrix of positive integer")
 	if(min(mu)<1)
 	  stop("mu must be a matrix of positive integer")
-  if(nrow(mu)!=length(proportion))
-    stop("The number of rows of mu and the length of proportion don't match.")
+	if(nrow(mu)!=length(proportion))
+      stop("The number of rows of mu and the length of proportion don't match.")
 	if(nrow(mu)!=length(pi))
 	  stop("The number of rows of mu and the length of pi don't match.")
 
@@ -150,8 +179,8 @@ khi2 <-function(data,proportion,mu,pi,nBoot=1000)
 	if(length(data[data>=0])!=length(data))
 	  stop("data must be a matrix of positive integer")
   
-  if(ncol(data)!=ncol(mu))
-    stop("mu and data must have the same number of columns.")
+	if(ncol(data)!=ncol(mu))
+	  stop("mu and data must have the same number of columns.")
 	
 
 	#nBoot
@@ -162,6 +191,11 @@ khi2 <-function(data,proportion,mu,pi,nBoot=1000)
 	if( (nBoot<0) || (nBoot!=round(nBoot)) )
 	  stop("nBoot must be a positive integer.")
 
+	#check if mu and data are rank
+	if(sum(apply(data,1,checkPartialRank))!=nrow(data))
+		stop("Data are not correct")
+	if(sum(apply(mu,1,checkPartialRank))!=nrow(mu))
+		stop("mu is not correct")
 
 	pval=.Call("adkhi2partial",data,pi,proportion,mu,nBoot,PACKAGE="Rankcluster")
 

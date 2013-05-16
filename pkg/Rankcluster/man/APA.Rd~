@@ -12,7 +12,7 @@ For example, if the ordering rank is (4,3,1,2,5), it means that judge ranks firs
 The first fifth columns contains the observed ranks (ordering representation) and the sixth column
 contains the frequency of observation.}
 
-\item{m}{ vector with the size of the ranks (5 here).}
+\item{m}{ vector with the size of the rank (5 here).}
 }
 
 }

@@ -5,20 +5,19 @@
   khi2(data, proportion, mu, pi, nBoot = 1000)
 }
 \arguments{
-  \item{data}{a matrix where each row contains a rank of
-  size m.}
+  \item{data}{a matrix in which each row is a rank of size
+  m.}
 
-  \item{proportion}{a vector (which sum is equal 1)
-  containing the proportion of the K clusters of the
-  mixture.}
+  \item{proportion}{a vector (which sums to 1) containing
+  the K mixture proportion.}
 
   \item{pi}{a vector of size K, where K is the number of
-  clusters, containing the probability of a good paired
-  comparaison of the model (dispersion parameter).}
+  clusters, containing the probabilities of a good paired
+  comparaison of the model (dispersion parameters).}
 
   \item{mu}{a matrix of size K*m, where m is the size of a
   rank, containing the modal rankings of the model
-  (position parameter).}
+  (position parameters).}
 
   \item{nBoot}{number of bootstrap iterations used to
   estimate the khi2 adequation test p-value.}

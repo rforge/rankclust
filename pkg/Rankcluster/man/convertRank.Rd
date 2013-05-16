@@ -16,7 +16,7 @@
 \description{
   convertRank converts a rank from its ranking
   representation to its ordering representation, and
-  vice-versa. The transformation to convert a rank fron
+  vice-versa. The transformation to convert a rank from
   ordering to ranking representation is the same that from
   ranking to ordering representation, there is no need to
   precise the representation of rank x.
@@ -34,8 +34,8 @@
   destinations according to its preferences, O1 =
   Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
   second Countryside, and last Mountain. The ordering
-  result of the judge is x = (3, 1, 2) whereas the ranking
-  result is (2, 3, 1).
+  result of the judge is o = (3, 1, 2) whereas the ranking
+  result is r = (2, 3, 1).
 }
 \examples{
 x=c(2,3,1,4,5)

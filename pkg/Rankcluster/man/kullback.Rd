@@ -5,22 +5,21 @@
   kullback(proportion1, pi1, mu1, proportion2, pi2, mu2, m)
 }
 \arguments{
-  \item{proportion1,proportion2}{a vector (which sum is
-  equal 1) containing the proportion of the K clusters of
-  the mixture}
+  \item{proportion1,proportion2}{vectors (which sums to 1)
+  containing the K mixture proportions.}
 
-  \item{pi1,pi2}{a matrix of size K*D, where K is the
-  number of clusters and D the number of dimensions,
-  containing the probability of a good paired comparaison
-  of the ISR model.}
+  \item{pi1,pi2}{matrices of size K*p, where K is the
+  number of clusters and p the number of dimension,
+  containing the probabilities of a good comparaison of the
+  model (dispersion parameters).}
 
-  \item{mu1,mu2}{a matrix of size K*sum(m), containing the
-  reference ranks. A row contains the reference rank for a
-  cluster. In case of multivariate rank, for a cluster, the
-  reference rank for each dimension are set successively on
-  the same row.}
+  \item{mu1,mu2}{matrices of size K*sum(m), containing the
+  modal ranks. Each row contains the modal rank for a
+  cluster. In the case of multivariate ranks, the reference
+  rank for each dimension are set successively on the same
+  row.}
 
-  \item{m}{a vector containing the size of rank for each
+  \item{m}{a vector containing the size of ranks for each
   dimension.}
 }
 \value{
