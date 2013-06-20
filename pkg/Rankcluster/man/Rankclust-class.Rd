@@ -11,7 +11,6 @@
   to select the best result.} \item{convergence}{if 0, no
   convergence, no result available in results.}
   \item{results}{a list of the same length than K,
-  containing Output objects.} \item{algorithm}{"SEM" or
-  "EM".} }
+  containing Output objects.} }
 }
 

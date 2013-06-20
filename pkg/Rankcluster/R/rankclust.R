@@ -1,21 +1,18 @@
 #' This functions estimates a clustering of ranking data, potentially multivariate and partial, based on a mixture of multivariate ISR model [2].
 #' By specifying only one cluster, the function performs a modelling of the ranking data using the multivariate ISR model.
-#' The estimation is performed thanks to a SEM-Gibbs algorithm in the general case, and an EM algorithm is available for full univariate ranking data.
+#' The estimation is performed thanks to a SEM-Gibbs algorithm in the general case.
 #' @title model-based clustering for multivariate partial ranking
 #' @author Quentin Grimonprez
 #' @param data a matrix in which each row is a ranking (partial or not; for partial ranking, missing elements must be 0). For multivariate rankings, the rankings of each dimension are placed end to end in each row.
 #' @param m a vector composed of the sizes of the rankings of each dimension (default value is the number of column of the matrix data).
 #' @param K an integer or a vector of integer with the number of clusters.
 #' @param criterion criterion "bic" or "icl", criterion to minimize for selecting the number of clusters.
-#' @param algorithm type of algorithm : "EM" (only for univariate full ranks) or "SEM" for SEM-Gibbs algorithm (default value).
 #' @param Qsem the total number of iterations for the SEM algorithm (defaut value=40).
 #' @param Bsem burn-in period for SEM algorithm (default value=10).
-#' @param RjSE a vector containing, for each dimension, the number of iterations of the Gibbs sampler used both in the SE step for partial rankings and for the presentation orders generation (only for SEM algorithm, default value=mj(mj-1)/2).
-#' @param RjM a vector containing, for each dimension, the number of iterations of the Gibbs sampler used in the  M step (only for SEM algorithm, default value=mj(mj-1)/2)
-#' @param Ql number of iterations of the Gibbs sampler for estimation of log-likelihood (only for SEM algorithm, default value=100).
-#' @param Bl burn-in period for estimation of log-likelihood (only for SEM algorithm, default value=50).
-#' @param maxItEM the maximum number of iterations of the EM algorithm (defaut value=30).
-#' @param epsEM the threshold for loglikelihood convergence (only for EM algorithm, defaut value=1e-6).
+#' @param RjSE a vector containing, for each dimension, the number of iterations of the Gibbs sampler used both in the SE step for partial rankings and for the presentation orders generation (default value=mj(mj-1)/2).
+#' @param RjM a vector containing, for each dimension, the number of iterations of the Gibbs sampler used in the  M step (default value=mj(mj-1)/2)
+#' @param Ql number of iterations of the Gibbs sampler for estimation of log-likelihood (default value=100).
+#' @param Bl burn-in period for estimation of log-likelihood (default value=50).
 #' @param maxTry maximum number of restarts of the SEM-Gibbs algorithm in the case of non convergence (default value=3).
 #' @param run number of runs of the algorithm for each value of K.
 #' @param detail boolean, if TRUE, time and others informations will be print during the process (default value FALSE).
@@ -39,42 +36,31 @@
 #' @useDynLib Rankcluster
 #' @export
 
-rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=100,Bsem=20,RjSE=m*(m-1)/2,RjM=m*(m-1)/2,Ql=500,Bl=100,maxItEM=30,epsEM=1e-6,maxTry=3,run=1,detail=FALSE)
+rankclust<-function(data,m=ncol(data),K=1,criterion="bic",Qsem=100,Bsem=20,RjSE=m*(m-1)/2,RjM=m*(m-1)/2,Ql=500,Bl=100,maxTry=3,run=1,detail=FALSE)
 {
 
-	.checkArgRankclust(data,m,K,criterion,Qsem,Bsem,RjSE,RjM,Ql,Bl,detail,algorithm,maxTry,run,epsEM,maxItEM)
+	.checkArgRankclust(data,m,K,criterion,Qsem,Bsem,RjSE,RjM,Ql,Bl,detail,maxTry,run)
 
 	
 	result=c()
-	if(algorithm=="SEM")
+	
+	G=c()
+	for(k in K)
 	{
-		G=c()
-		for(k in K)
-		{
-			## first run
-			res=mixtureSEM(data,k,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
-			if(res@convergence)
-			{	
-				G=c(G,k)
-				result=c(result,list(res))
-			}
-			else
-			{
-				cat("\n for K=",k,"clusters, the algorithm has not converge (a proportion was equal to 0 during the process), please retry\n")
-			}	
+		## first run
+		res=mixtureSEM(data,k,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
+		if(res@convergence)
+		{	
+			G=c(G,k)
+			result=c(result,list(res))
 		}
-
-	} 
-	else##algo EM
-	{
-	  for(k in K)
-	  {
-	    res=mixtureEM(data,k,m,maxItEM,epsEM,run,detail)
-	    result=c(result,list(res))
-	  }
-	  G=K
-	  
+		else
+		{
+			cat("\n for K=",k,"clusters, the algorithm has not converge (a proportion was equal to 0 during the process), please retry\n")
+		}	
 	}
+
+
 
 	if(length(G)==0)
 	{
@@ -86,11 +72,10 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=1
 		colnom=c()
 		for(i in 1:length(m))
 			colnom=c(colnom,paste0("dim",i),rep("",m[i]-1))
-		if(algorithm=="EM")
-			colnom=c(colnom,"frequency")
+
 		colnames(data)=colnom
 		
-		resultat=new("Rankclust",K=G,criterion=criterion,results=result,data=data,convergence=TRUE,algorithm=algorithm)
+		resultat=new("Rankclust",K=G,criterion=criterion,results=result,data=data,convergence=TRUE)
 	}
 	
 	
@@ -98,7 +83,7 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=1
 }
 
 
-.checkArgRankclust=function(data,m,K,criterion,Qsem,Bsem,RjSE,RjM,Ql,Bl,detail,algorithm,maxTry,run,epsEM,maxItEM)
+.checkArgRankclust=function(data,m,K,criterion,Qsem,Bsem,RjSE,RjM,Ql,Bl,detail,maxTry,run)
 {
   ##################check the arguments
   #data
@@ -108,10 +93,7 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=1
     stop("data must be a matrix of positive integer")
   if(length(data[data>=0])!=length(data))
     stop("data must be a matrix of positive integer")
-  
-  #algorithm
-  if(algorithm!="EM" && algorithm!="SEM")
-    stop("algorithm must be \"SEM\" or \"EM\" ")  	
+  	
   
   #m
   if(!is.vector(m,mode="numeric"))
@@ -120,10 +102,9 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=1
     stop("m must be a (vector of) integer strictly greater than 1")
   if(!min(m==round(m)))
     stop("m must be a (vector of) integer strictly greater than 1")
-  if( (algorithm=="SEM") && (sum(m)!=ncol(data)) )
+  if(sum(m)!=ncol(data))
     stop("The number of column of data and m don't match.")
-  if( (algorithm=="EM") && (sum(m)!=ncol(data)-1) )
-    stop("The number of column of data and m don't match.")
+
   
   #K
   if(!is.vector(K,mode="numeric"))
@@ -134,29 +115,15 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",algorithm="SEM",Qsem=1
     stop("K must be a (vector of) integer strictly greater than 0")
   
   
-
-  
   #criterion
   if(criterion!="bic" && criterion!="icl")
     stop("criterion must be \"bic\" or \"icl\" ")	
-  
-  #maxItEM
-  if(!is.numeric(maxItEM) || (length(maxItEM)>1))
-    stop("maxItEM must be a strictly positive integer")
-  if( (maxItEM!=round(maxItEM)) || (maxItEM<=0))
-    stop("maxItEM must be a strictly positive integer")	
   
   #Qsem
   if(!is.numeric(Qsem) || (length(Qsem)>1))
     stop("Qsem must be a strictly positive integer")
   if( (Qsem!=round(Qsem)) || (Qsem<=0))
     stop("Qsem must be a strictly positive integer")
-  
-  #epsEM
-  if(!is.double(epsEM) || (length(epsEM)>1))
-    stop("epsEM must be a strictly positive number")
-  if(epsEM<=0)
-    stop("epsEM must be a strictly positive number")
   
   #Bsem
   if(!is.numeric(Bsem) || (length(Bsem)>1))

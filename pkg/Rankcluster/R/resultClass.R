@@ -98,7 +98,6 @@ setClass(
 ##'   \item{criterion}{criterion defined in rankclust function to select the best result.}
 ##'   \item{convergence}{if 0, no convergence, no result available in results.}
 ##'   \item{results}{a list of the same length than K, containing Output objects.}
-##'   \item{algorithm}{"SEM" or "EM".}
 ##' }
 ##'
 ##'
@@ -113,16 +112,14 @@ setClass(
     results="list",
 	data="matrix",
     criterion="character",
-	convergence="logical",
-	algorithm="character"
+	convergence="logical"
   ),
 	prototype=prototype(
     results=list(),
 	data=matrix(ncol=0,nrow=0),
     K=numeric(0),
     criterion="bic",
-	convergence=logical(0),
-	algorithm="SEM"    
+	convergence=logical(0)
   )
 
 )
@@ -239,10 +236,10 @@ setMethod(
 			if(length(classe)!=0)
 			{
 				classe=classe[order(object[object@K[index]]@entropy[classe,1],decreasing=TRUE)][1:min(5,length(classe))]
-				if(object@algorithm=="SEM")
-					print(cbind(object@data[classe,],object[object@K[index]]@entropy[classe,]))
-				else
-					print(cbind(object@data[classe,-ncol(object@data)],object[object@K[index]]@entropy[classe,]))
+				#if(object@algorithm=="SEM")
+				print(cbind(object@data[classe,],object[object@K[index]]@entropy[classe,]))
+				#else
+				#	print(cbind(object@data[classe,-ncol(object@data)],object[object@K[index]]@entropy[classe,]))
 				#if(length(classe)==2)
 				#{
 				#	best5=classe
@@ -265,10 +262,10 @@ setMethod(
 			if(length(classe)!=0)
 			{
 				classe=classe[order(object[object@K[index]]@probability[classe,1],decreasing=TRUE)][1:min(5,length(classe))]
-				if(object@algorithm=="SEM")
-					print(cbind(object@data[classe,],object[object@K[index]]@probability[classe,]))
-				else
-					print(cbind(object@data[classe,-ncol(object@data)],object[object@K[index]]@probability[classe,]))
+				#if(object@algorithm=="SEM")
+				print(cbind(object@data[classe,],object[object@K[index]]@probability[classe,]))
+				#else
+				#	print(cbind(object@data[classe,-ncol(object@data)],object[object@K[index]]@probability[classe,]))
 				#if(length(classe)==2)
 				#{
 				#	best5=classe

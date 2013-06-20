@@ -19,7 +19,14 @@
 #' @export
 
 convertRank <- function(x){
-	return(sort.int(x,index.return=1)$ix)	
+	if(is.matrix(x))
+	{
+		return(t(apply(x,1,FUN=function(x) {sort.int(x,index.return=1)$ix} ) ) )
+	}
+	else
+	{
+		return(sort.int(x,index.return=1)$ix)
+	}	
 }
 
 # checkRank  check if a vector is a rank

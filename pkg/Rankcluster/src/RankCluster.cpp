@@ -648,8 +648,8 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
     int compteur(0);
 
     //calcul logvraisemblance
-	if(parameter_.detail)
-    	cout<<"Number of reference rank which must compute the log-likelihood: "<<nbMu<<endl;
+	//if(parameter_.detail)
+    	//cout<<"Number of reference rank which must compute the log-likelihood: "<<nbMu<<endl;
 
     double Llast(-numeric_limits<double>::max()),L;
 
@@ -664,8 +664,8 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
     //for each mu, we will compute the associate log likelihood
     while(currMu->suivant!=0)
     {
-		if(parameter_.detail)
-			cout<<"*";
+		//if(parameter_.detail)
+			//cout<<"*";
 
 		//mean of the parameter
         for(int compt1(0);compt1<g_;compt1++)
@@ -725,8 +725,8 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
         	currMu->p[compt2][compt1]/=currMu->compteur;
     }
 
-	if(parameter_.detail)
-    	cout<<"*"<<endl;
+	//if(parameter_.detail)
+    	//cout<<"*"<<endl;
 
 	//compute log likelihood
     t1=clock();
@@ -766,7 +766,7 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
 
 
 	if(parameter_.detail)
-    	cout<<"Total computing time of log-likehood: "<<(double) tL/CLOCKS_PER_SEC<<"s .For one step: "<<(double) tL/CLOCKS_PER_SEC/compteur<<"s"<<endl;
+    	cout<<"Computing time for log-likelihood approximation: "<<(double) tL/CLOCKS_PER_SEC<<"s ("<<(double) tL/CLOCKS_PER_SEC/compteur<<"s per mu)."<<endl;
 
 }
 
@@ -1078,7 +1078,7 @@ void RankCluster::run()
 				cout<<"#  SEM-Gibbs Algorithm for multivariate partial ranking  #"<<endl;
 				cout<<"##########################################################"<<endl;
 
-				cout<<"Initialization of order of presentation and partial rank."<<endl;
+				//cout<<"Initialization of order of presentation and partial rank."<<endl;
 			}
 
 			t0=clock();
@@ -1086,7 +1086,7 @@ void RankCluster::run()
 			t1=clock();
 
 			if(parameter_.detail)
-				cout<<"Initialization computing time: "<<(double) (t1-t0)/CLOCKS_PER_SEC<<"s"<<endl;
+				cout<<"Initialization: "<<(double) (t1-t0)/CLOCKS_PER_SEC<<"s."<<endl;
 
 
 			//objects for storing the estimated parameters at each iteration
@@ -1099,12 +1099,12 @@ void RankCluster::run()
 
 
 			//algorithm
-			if(parameter_.detail)
-				cout<<"Algorithm"<<endl<<"Iteration"<<endl;
+			//if(parameter_.detail)
+				//cout<<"Algorithm"<<endl<<"Iteration"<<endl;
 			for(int iter(0);iter<parameter_.maxIt;iter++)
 			{
-				if(parameter_.detail)
-					cout<<"*";
+				//if(parameter_.detail)
+					//cout<<"*";
 				t2=clock();
 				SEstep();
 				t3=clock();
@@ -1154,9 +1154,14 @@ void RankCluster::run()
 				}//end storage
 
 			}//end SEM
-			if(parameter_.detail)
-				cout<<endl<<endl<<"Loglikelihood estimation"<<endl;
+			//if(parameter_.detail)
+				//cout<<endl<<endl<<"Loglikelihood estimation"<<endl;
 			t2=clock();
+			if(parameter_.detail)
+			{
+				cout<<"Computing time for SE step: "<<(double) tSE/CLOCKS_PER_SEC<<"s ( "<<(double) tSE/CLOCKS_PER_SEC/parameter_.maxIt<<"s per step)."<<endl;
+				cout<<"Computing time for M step: "<<(double) tM/CLOCKS_PER_SEC<<"s ( "<<(double) tM/CLOCKS_PER_SEC/parameter_.maxIt<<"s per step )."<<endl;
+			}
 
 			//compute loglikelihood and choice of the best parameters
 			likelihood(resMu,resP,resProp);
@@ -1186,9 +1191,7 @@ void RankCluster::run()
 
 			if(parameter_.detail)
 			{
-				cout<<"Total computing time for SE step: "<<(double) tSE/CLOCKS_PER_SEC<<"s . for one step: "<<(double) tSE/CLOCKS_PER_SEC/parameter_.maxIt<<"s"<<endl;
-				cout<<"Total computing time for M step: "<<(double) tM/CLOCKS_PER_SEC<<"s . for one step: "<<(double) tM/CLOCKS_PER_SEC/parameter_.maxIt<<"s"<<endl;
-				cout<<"Total computing time for log-likelihood computation: "<<(double) (t3-t0)/CLOCKS_PER_SEC<<"s"<<endl;
+				cout<<"Total computing time : "<<(double) (t3-t0)/CLOCKS_PER_SEC<<"s"<<endl;
 			}
 
 

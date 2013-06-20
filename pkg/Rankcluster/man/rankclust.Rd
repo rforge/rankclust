@@ -3,9 +3,8 @@
 \title{model-based clustering for multivariate partial ranking}
 \usage{
   rankclust(data, m = ncol(data), K = 1, criterion = "bic",
-    algorithm = "SEM", Qsem = 100, Bsem = 20,
-    RjSE = m * (m - 1)/2, RjM = m * (m - 1)/2, Ql = 500,
-    Bl = 100, maxItEM = 30, epsEM = 1e-06, maxTry = 3,
+    Qsem = 100, Bsem = 20, RjSE = m * (m - 1)/2,
+    RjM = m * (m - 1)/2, Ql = 500, Bl = 100, maxTry = 3,
     run = 1, detail = FALSE)
 }
 \arguments{
@@ -24,10 +23,6 @@
   \item{criterion}{criterion "bic" or "icl", criterion to
   minimize for selecting the number of clusters.}
 
-  \item{algorithm}{type of algorithm : "EM" (only for
-  univariate full ranks) or "SEM" for SEM-Gibbs algorithm
-  (default value).}
-
   \item{Qsem}{the total number of iterations for the SEM
   algorithm (defaut value=40).}
 
@@ -37,25 +32,17 @@
   \item{RjSE}{a vector containing, for each dimension, the
   number of iterations of the Gibbs sampler used both in
   the SE step for partial rankings and for the presentation
-  orders generation (only for SEM algorithm, default
-  value=mj(mj-1)/2).}
+  orders generation (default value=mj(mj-1)/2).}
 
   \item{RjM}{a vector containing, for each dimension, the
   number of iterations of the Gibbs sampler used in the M
-  step (only for SEM algorithm, default value=mj(mj-1)/2)}
+  step (default value=mj(mj-1)/2)}
 
   \item{Ql}{number of iterations of the Gibbs sampler for
-  estimation of log-likelihood (only for SEM algorithm,
-  default value=100).}
+  estimation of log-likelihood (default value=100).}
 
   \item{Bl}{burn-in period for estimation of log-likelihood
-  (only for SEM algorithm, default value=50).}
-
-  \item{maxItEM}{the maximum number of iterations of the EM
-  algorithm (defaut value=30).}
-
-  \item{epsEM}{the threshold for loglikelihood convergence
-  (only for EM algorithm, defaut value=1e-6).}
+  (default value=50).}
 
   \item{maxTry}{maximum number of restarts of the SEM-Gibbs
   algorithm in the case of non convergence (default
@@ -84,8 +71,7 @@
   cluster, the function performs a modelling of the ranking
   data using the multivariate ISR model. The estimation is
   performed thanks to a SEM-Gibbs algorithm in the general
-  case, and an EM algorithm is available for full
-  univariate ranking data.
+  case.
 }
 \examples{
 data(quiz)
