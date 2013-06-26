@@ -33,7 +33,7 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 	//multiple run
 	if(runC>1)
 	{
-		RankCluster semgibbsb;
+		RankCluster semgibbsb(data,g,mC,param);
 		double L(-numeric_limits<double>::max());
 		if(semgibbs.convergence())
 			L=semgibbs.L();
