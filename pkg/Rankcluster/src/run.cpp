@@ -1,6 +1,4 @@
-#include <iostream>
 #include "run.h"
-
 
 using namespace Rcpp ;
 using namespace std ;
@@ -52,8 +50,6 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 		}
 	}
 
-
-	//cout<<"fin run"<<endl;
 	if(semgibbs.convergence())
 	{
 		vector<double> stock(5);

@@ -1,8 +1,6 @@
 #include "runTest.h"
 #include "runFunctions.h"
 
-#include <iostream>
-
 using namespace Rcpp ;
 using namespace std ;
 
