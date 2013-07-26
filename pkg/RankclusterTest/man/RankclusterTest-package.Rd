@@ -1,6 +1,6 @@
-\name{test-package}
-\alias{test-package}
-\alias{test}
+\name{RankclusterTest-package}
+\alias{RankclusterTest-package}
+\alias{RankclusterTest}
 \docType{package}
 \title{
 Model-based clustering for multivariate partial ranking data
@@ -18,7 +18,7 @@ The heterogeneity of the rank population is modelled by a mixture of ISR, wherea
 
 \details{
 \tabular{ll}{
-Package: \tab test\cr
+Package: \tab RankclusterTest\cr
 Type: \tab Package\cr
 Version: \tab 0.88\cr
 Date: \tab 2013-06-19\cr

@@ -112,7 +112,7 @@ kullback <-function(proportion1,pi1,mu1,proportion2,pi2,mu2,m)
 	
 	a=t(pi1)
 	b=t(pi2)
-	dKL=.Call("kullback",m,mu1,mu2,a,b,proportion1,proportion2,PACKAGE="Rankcluster")
+	dKL=.Call("kullback",m,mu1,mu2,a,b,proportion1,proportion2,PACKAGE="RankclusterTest")
 
 	return(dKL)
 }

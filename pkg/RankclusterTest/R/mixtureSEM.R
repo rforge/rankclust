@@ -38,7 +38,7 @@ mixtureSEM<-function(X,g,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
 			stop("Data are not correct")
 	}
 
-	res=.Call("semR",X,m,g,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail,PACKAGE="Rankcluster")
+	res=.Call("semR",X,m,g,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail,PACKAGE="RankclusterTest")
 	#récupération des résultats
 	if(res$stock[1]==1)#si convergence
 	{

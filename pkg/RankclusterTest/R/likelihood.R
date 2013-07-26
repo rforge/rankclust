@@ -107,7 +107,7 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100)
   
   a=t(pi)
   
-  LL=.Call("loglikelihood",data,mu,a,proportion,m,Ql,Bl,PACKAGE="Rankcluster")
+  LL=.Call("loglikelihood",data,mu,a,proportion,m,Ql,Bl,PACKAGE="RankclusterTest")
   
   return(LL)
 }

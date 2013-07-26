@@ -1,4 +1,4 @@
-Package: test
+Package: RankclusterTest
 Type: Package
 Title: Model-based clustering for multivariate partial ranking data
 Version: 0.88

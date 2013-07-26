@@ -8,7 +8,7 @@
 #'
 #'
 #'Let us consider the following example to illustrate both notations: a judge, which has to rank three holidays destinations according to its preferences, O1 = Countryside, O2 =Mountain and O3 = Sea, ranks first Sea, second Countryside, and last Mountain. The ordering result of the judge is o = (3, 1, 2) whereas the ranking result is r = (2, 3, 1).
-#' @useDynLib Rankcluster
+#' @useDynLib RankclusterTest
 #' @title change the representation of a rank
 #' @author Julien Jacques
 #' @param x a rank (vector) datum either in its ranking or ordering representation.
@@ -99,7 +99,7 @@ frequence <-function(X,m=ncol(X))
 		}
 	}
 
-	res=.Call("freqMultiR",X,m,PACKAGE="Rankcluster")
+	res=.Call("freqMultiR",X,m,PACKAGE="RankclusterTest")
 	
 	data=matrix(0,ncol=length(res$data[[1]])+1,nrow=length(res$data))
 	for(i in 1:nrow(data))
@@ -148,7 +148,7 @@ simulISR <-function(n,pi,mu)
 
 
 
-	res=.Call("simulISRR",n,length(mu),mu,pi,PACKAGE="Rankcluster")
+	res=.Call("simulISRR",n,length(mu),mu,pi,PACKAGE="RankclusterTest")
 
 	return(res)
 }
