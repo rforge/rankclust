@@ -97,10 +97,10 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 			Named("p")=wrap(semgibbs.p()),
 			Named("proportion")=wrap(semgibbs.proportion()),
 			Named("cluster")=wrap(semgibbs.z()),
-			Named("tik")=semgibbs.tik(),
-			Named("entropy")=semgibbs.entropy(),
+			Named("tik")=convertMatrix<NumericMatrix,ArrayXXd>(semgibbs.tik()),
+			Named("entropy")=convertvector<NumericVector,ArrayXd>(semgibbs.entropy()),
 			Named("partialRank")=wrap(data),
-			Named("probability")=semgibbs.probability(),
+			Named("probability")=convertMatrix<NumericMatrix,ArrayXXd>(semgibbs.probability()),
 			//distance
 			Named("distP")=wrap(semgibbs.distP()),
 			Named("distMu")=wrap(semgibbs.distMu()),

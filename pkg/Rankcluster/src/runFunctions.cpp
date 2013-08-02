@@ -89,13 +89,13 @@ RcppExport SEXP simulISRR(SEXP n,SEXP m,SEXP mu,SEXP p)
 	vector<vector<int> > simul;
 	simul=simulISR(nC,mC,muC,pC);
 
-	ArrayXXi data(nC,mC);
+	NumericMatrix data(nC,mC);
 	for(int i(0);i<nC;i++)
 		for(int j(0);j<mC;j++)
 			data(i,j)=simul[i][j];
 
 
-	return wrap(data);
+	return data;
 }
 
 RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEXP iterL, SEXP burnL)

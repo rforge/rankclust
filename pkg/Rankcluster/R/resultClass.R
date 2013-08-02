@@ -124,6 +124,19 @@ setClass(
 
 )
 
+
+#' Getter method for rankclust output
+#' 
+#' This is overloading of square braces to extract values of various slots of the output from \code{\link{rankclust}}.
+#' 
+#' @param x object from which to extract element(s) or in which to replace element(s).
+#' @param i the number of cluster of the element we want to extract.
+#' 
+#' @name [
+#' 
+#' @rdname getter-methods
+#' @aliases [,Rankclust-method
+#' 
 setMethod(
   f="[",
   signature="Rankclust",
@@ -188,6 +201,17 @@ setMethod(
   }
 )
 
+#'
+#' summary function.
+#' 
+#' This function This function gives the summary of output from \code{rankclust}.
+#' 
+#' @param object output object from \code{\link{rankclust}}.
+#' 
+#' @name summary
+#' @rdname summary-methods
+#' @docType methods
+#' @exportMethod summary
 setMethod(
   f="summary",
   signature = "Rankclust",
@@ -223,10 +247,10 @@ setMethod(
 		cat("\nLoglikelihood =",object[object@K[index]]@ll)
 		cat("\n\n*************************PARAMETERS*******************************\n")
 		cat("Proportion:",object[object@K[index]]@proportion)
-		cat("\nProbabilities pi:\n")
-		print(object[object@K[index]]@pi)
 		cat("\nReference ranks mu:\n")
 		print(object[object@K[index]]@mu)
+		cat("\nProbabilities pi:\n")
+		print(object[object@K[index]]@pi)
 		cat("\n*************************CLUSTERING*******************************\n")
 		cat("Ranks with the highest entropy for each cluster:\n")
 		for(i in 1:object@K[index])
@@ -297,6 +321,17 @@ setMethod(
   }  
 )
 
+#'
+#' show function.
+#' 
+#' This function shows the elements of an object of class Output.
+#' 
+#' @param object of class Output.
+#' 
+#' @name show
+#' @rdname show-methods
+#' @docType methods
+#' @exportMethod show
 setMethod(
   f="show",
   signature = "Output",
@@ -305,10 +340,10 @@ setMethod(
     cat("\nbic =",object@bic)
     cat("\nicl =",object@icl)
     cat("\nproportion:",object@proportion)
-    cat("\npi:\n")
-    print(object@pi)
     cat("\nmu:\n")
     print(object@mu)
+    cat("\npi:\n")
+    print(object@pi)
     cat("\npartition:\n")
     print(object@partition[1:min(50,length(object@partition))])
     if(min(50,length(object@partition))==50)
@@ -320,7 +355,17 @@ setMethod(
     }
 )
 
-
+#'
+#' show function.
+#' 
+#' This function shows the output from \code{rankclust}.
+#' 
+#' @param object output object from \code{\link{rankclust}}.
+#' 
+#' @name show
+#' @rdname show-methods
+#' @docType methods
+#' @exportMethod show
 setMethod(
   f="show",
   signature = "Rankclust",

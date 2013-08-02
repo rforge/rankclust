@@ -1,0 +1,17 @@
+\docType{methods}
+\name{show}
+\alias{show}
+\title{show function.}
+\arguments{
+  \item{object}{of class Output.}
+
+  \item{object}{output object from
+  \code{\link{rankclust}}.}
+}
+\description{
+  This function shows the elements of an object of class
+  Output.
+
+  This function shows the output from \code{rankclust}.
+}
+

@@ -1,7 +1,7 @@
 #ifndef RUNTEST_H_
 #define RUNTEST_H_
 
-#include <RcppEigen.h>
+#include <Rcpp.h>
 #include <vector>
 #include <set>
 #include "test.h"

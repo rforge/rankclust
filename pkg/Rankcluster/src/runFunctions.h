@@ -1,7 +1,7 @@
 #ifndef RUNFUNCTIONS_H_
 #define RUNFUNCTIONS_H_
 
-#include <RcppEigen.h>
+#include <Rcpp.h>
 #include <vector>
 #include <set>
 
