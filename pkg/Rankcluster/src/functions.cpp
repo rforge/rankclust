@@ -163,7 +163,11 @@ vector<int> rank2index(vector<vector<int> > const& listeRang,vector<int> const& 
 vector<int> index2rank(int index,int const& m,vector<int> const& tabFactorial)
 {
     if (index>factorial(m))
-        cout<<"ERREUR "<<index<<"<"<<m<<"!"<<endl;
+    {
+        vector<int> temp(m,0);
+        return temp;
+        //cout<<"ERREUR "<<index<<"<"<<m<<"!"<<endl;
+    }
     else
     {
         vector<int> liste(m),r(m,0);
@@ -202,7 +206,11 @@ vector<int> index2rank(int index,int const& m)
     vector<int> r(m,0);
 
     if (index>factorial(m))
-        cout<<"ERREUR "<<index<<"<"<<m<<"!"<<endl;
+    {
+        vector<int> temp(m,0);
+        return temp;
+        //cout<<"ERREUR "<<index<<"<"<<m<<"!"<<endl;
+    }
     else
     {
         vector<int> liste(m);

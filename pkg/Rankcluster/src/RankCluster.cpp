@@ -471,7 +471,7 @@ void RankCluster::simuM(int indexDim,int indCl)
 			}
 
 			for(int ordre(1);ordre<6;ordre++)
-				lnp1Plusp2+=(long double) 1/ordre*exp(diffln*ordre)*pow(-1,ordre-1);
+				lnp1Plusp2+=(long double) 1/ordre*exp(diffln*ordre)* (long double) std::pow((int) -1,(int) ordre-1);
 
             alea=(long double) rand()/RAND_MAX;
 
@@ -765,8 +765,8 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
     delete currMu;//delete the last mu
 
 
-	if(parameter_.detail)
-    	cout<<"Computing time for log-likelihood approximation: "<<(double) tL/CLOCKS_PER_SEC<<"s ("<<(double) tL/CLOCKS_PER_SEC/compteur<<"s per mu)."<<endl;
+	//if(parameter_.detail)
+    	//cout<<"Computing time for log-likelihood approximation: "<<(double) tL/CLOCKS_PER_SEC<<"s ("<<(double) tL/CLOCKS_PER_SEC/compteur<<"s per mu)."<<endl;
 
 }
 
@@ -1072,21 +1072,21 @@ void RankCluster::run()
 		{
 			double t0,t1,t2,t3,tM(0),tSE(0);
 
-			if(parameter_.detail)
-			{
-				cout<<"##########################################################"<<endl;
-				cout<<"#  SEM-Gibbs Algorithm for multivariate partial ranking  #"<<endl;
-				cout<<"##########################################################"<<endl;
+			//if(parameter_.detail)
+			//{
+				//cout<<"##########################################################"<<endl;
+				//cout<<"#  SEM-Gibbs Algorithm for multivariate partial ranking  #"<<endl;
+				//cout<<"##########################################################"<<endl;
 
 				//cout<<"Initialization of order of presentation and partial rank."<<endl;
-			}
+			//}
 
 			t0=clock();
 			initialization();
 			t1=clock();
 
-			if(parameter_.detail)
-				cout<<"Initialization: "<<(double) (t1-t0)/CLOCKS_PER_SEC<<"s."<<endl;
+			//if(parameter_.detail)
+				//cout<<"Initialization: "<<(double) (t1-t0)/CLOCKS_PER_SEC<<"s."<<endl;
 
 
 			//objects for storing the estimated parameters at each iteration
@@ -1157,11 +1157,11 @@ void RankCluster::run()
 			//if(parameter_.detail)
 				//cout<<endl<<endl<<"Loglikelihood estimation"<<endl;
 			t2=clock();
-			if(parameter_.detail)
-			{
-				cout<<"Computing time for SE step: "<<(double) tSE/CLOCKS_PER_SEC<<"s ( "<<(double) tSE/CLOCKS_PER_SEC/parameter_.maxIt<<"s per step)."<<endl;
-				cout<<"Computing time for M step: "<<(double) tM/CLOCKS_PER_SEC<<"s ( "<<(double) tM/CLOCKS_PER_SEC/parameter_.maxIt<<"s per step )."<<endl;
-			}
+			//if(parameter_.detail)
+			//{
+				//cout<<"Computing time for SE step: "<<(double) tSE/CLOCKS_PER_SEC<<"s ( "<<(double) tSE/CLOCKS_PER_SEC/parameter_.maxIt<<"s per step)."<<endl;
+				//cout<<"Computing time for M step: "<<(double) tM/CLOCKS_PER_SEC<<"s ( "<<(double) tM/CLOCKS_PER_SEC/parameter_.maxIt<<"s per step )."<<endl;
+			//}
 
 			//compute loglikelihood and choice of the best parameters
 			likelihood(resMu,resP,resProp);
@@ -1189,10 +1189,10 @@ void RankCluster::run()
 			}
 
 
-			if(parameter_.detail)
-			{
-				cout<<"Total computing time : "<<(double) (t3-t0)/CLOCKS_PER_SEC<<"s"<<endl;
-			}
+			//if(parameter_.detail)
+			//{
+				//cout<<"Total computing time : "<<(double) (t3-t0)/CLOCKS_PER_SEC<<"s"<<endl;
+			//}
 
 
 			//if the p<0.5, we invert the associate mu and put p=1-p

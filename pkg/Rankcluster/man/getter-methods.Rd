@@ -11,6 +11,7 @@
 }
 \description{
   This is overloading of square braces to extract values of
-  various slots of the output from \code{\link{rankclust}}.
+  various slots of the output from the function
+  \code{\link{rankclust}}.
 }
 

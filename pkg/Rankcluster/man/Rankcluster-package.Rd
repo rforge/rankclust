@@ -20,8 +20,8 @@ The heterogeneity of the rank population is modelled by a mixture of ISR, wherea
 \tabular{ll}{
 Package: \tab Rankcluster\cr
 Type: \tab Package\cr
-Version: \tab 0.89\cr
-Date: \tab 2013-09-02\cr
+Version: \tab 0.90\cr
+Date: \tab 2013-08-29\cr
 License: \tab GPL (>=2) \cr
 }
 }
@@ -34,7 +34,7 @@ Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 [1] C.Biernacki and J.Jacques (2013), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, 58, 162-176.
 
 
-[2] J.Jacques and C.Biernacki (2012), Model-based clustering for multivariate partial ranking data, Inria Research Report n°8113.
+[2] J.Jacques and C.Biernacki (2012), Model-based clustering for multivariate partial ranking data, Inria Research Report n 8113.
 }
 
 \keyword{ package }

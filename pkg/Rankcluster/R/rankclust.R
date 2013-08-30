@@ -9,9 +9,11 @@
 #' @param criterion criterion "bic" or "icl", criterion to minimize for selecting the number of clusters.
 #' @param Qsem the total number of iterations for the SEM algorithm (defaut value=40).
 #' @param Bsem burn-in period for SEM algorithm (default value=10).
-#' @param RjSE a vector containing, for each dimension, the number of iterations of the Gibbs sampler used both in the SE step for partial rankings and for the presentation orders generation (default value=mj(mj-1)/2).
+#' @param RjSE a vector containing, for each dimension, the number of iterations of the Gibbs sampler 
+#' used both in the SE step for partial rankings and for the presentation orders generation (default value=mj(mj-1)/2).
 #' @param RjM a vector containing, for each dimension, the number of iterations of the Gibbs sampler used in the  M step (default value=mj(mj-1)/2)
-#' @param Ql number of iterations of the Gibbs sampler for estimation of log-likelihood (default value=100).
+#' @param Ql number of iterations of the Gibbs sampler 
+#' for estimation of log-likelihood (default value=100).
 #' @param Bl burn-in period for estimation of log-likelihood (default value=50).
 #' @param maxTry maximum number of restarts of the SEM-Gibbs algorithm in the case of non convergence (default value=3).
 #' @param run number of runs of the algorithm for each value of K.
@@ -25,11 +27,11 @@
 #' @references 
 #' [1] C.Biernacki and J.Jacques (2013), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, 58, 162-176.
 #'
-#'[2] J.Jacques and C.Biernacki (2012), Model-based clustering for multivariate partial ranking data, Inria Research Report n°8113.
+#'[2] J.Jacques and C.Biernacki (2012), Model-based clustering for multivariate partial ranking data, Inria Research Report n 8113.
 #'
 #' @examples
-#' data(quiz)
-#' result=rankclust(quiz$data,K=2,m=quiz$m)
+#' data(big4)
+#' result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
 #' 
 #' @seealso See \code{\link{Output-class}} and \code{\link{Rankclust-class}} for available output.
 #' 

@@ -26,7 +26,7 @@
   dimension.}
 
   \item{Ql}{number of iterations of the Gibbs sampler used
-  for estimation of the log-likelihood.}
+  for the estimation of the log-likelihood.}
 
   \item{Bl}{burn-in period of the Gibbs sampler.}
 }
@@ -41,9 +41,9 @@
   model selection criteria.
 }
 \examples{
-data(quiz)
-res=rankclust(quiz$data,m=quiz$m,K=2)
-crit=criteria(quiz$data,res[2]@proportion,res[2]@pi,res[2]@mu,quiz$m)
+data(big4)
+res=rankclust(big4$data,m=big4$m,K=2,Ql=100,Bl=50,maxTry=2)
+crit=criteria(big4$data,res[2]@proportion,res[2]@pi,res[2]@mu,big4$m,Ql=200,Bl=100)
 }
 \author{
   Quentin Grimonprez

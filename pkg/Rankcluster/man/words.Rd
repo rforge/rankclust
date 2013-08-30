@@ -10,10 +10,7 @@
 }
 }
 \source{
-M.A. Fligner and J.S. Verducci. "Distance based ranking models". J. Roy. Statist.
-Soc. Ser. B, 48(3):359–369, 1986.
-
-
+M.A. Fligner and J.S. Verducci. "Distance based ranking models". J. Roy. Statist. Soc. Ser. B, 48(3):359-369, 1986.
 }
 \description{
 The data was collected under the auspices of the Graduate Record

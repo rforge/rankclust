@@ -132,7 +132,9 @@ kullback <-function(proportion1,pi1,mu1,proportion2,pi2,mu2,m)
 #' proportion=c(0.4,0.6)
 #' pi=c(0.8,0.75)
 #' mu=matrix(c(1,2,3,4,4,2,1,3),nrow=2,byrow=TRUE)
-#' data=rbind(simulISR(proportion[1]*100,pi[1],mu[1,]),simulISR(proportion[2]*100,pi[2],mu[2,]))#simulate a data set with declared parameters.
+#' #simulate a data set with declared parameters.
+#' data=rbind(simulISR(proportion[1]*100,pi[1],mu[1,]),
+#' simulISR(proportion[2]*100,pi[2],mu[2,]))
 #' pval=khi2(data,proportion,mu,pi)
 #' @export
 khi2 <-function(data,proportion,mu,pi,nBoot=1000)

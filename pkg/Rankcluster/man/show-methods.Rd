@@ -1,6 +1,8 @@
 \docType{methods}
 \name{show}
 \alias{show}
+\alias{show,Output-method}
+\alias{show,Rankclust-method}
 \title{show function.}
 \arguments{
   \item{object}{of class Output.}

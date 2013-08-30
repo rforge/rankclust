@@ -1,6 +1,7 @@
 \docType{methods}
 \name{summary}
 \alias{summary}
+\alias{summary,Rankclust-method}
 \title{summary function.}
 \arguments{
   \item{object}{output object from

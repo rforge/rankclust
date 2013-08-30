@@ -16,7 +16,7 @@ rankings (ordering representation). Each row contains 4 ranks of size 4 and a la
   Julien Jacques
 }
 \description{
-This dataset contains the answers of 70 students (40 of third year and 30 of fourth year) from Polytech’Lille (statistics engineering school, France) to the four following quizzes:
+This dataset contains the answers of 70 students (40 of third year and 30 of fourth year) from Polytech'Lille (statistics engineering school, France) to the four following quizzes:
 
 \describe{
 

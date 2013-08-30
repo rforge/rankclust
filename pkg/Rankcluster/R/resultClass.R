@@ -127,7 +127,8 @@ setClass(
 
 #' Getter method for rankclust output
 #' 
-#' This is overloading of square braces to extract values of various slots of the output from \code{\link{rankclust}}.
+#' This is overloading of square braces to extract values of various 
+#' slots of the output from the function \code{\link{rankclust}}.
 #' 
 #' @param x object from which to extract element(s) or in which to replace element(s).
 #' @param i the number of cluster of the element we want to extract.
@@ -212,6 +213,7 @@ setMethod(
 #' @rdname summary-methods
 #' @docType methods
 #' @exportMethod summary
+#' @aliases summary summary,Rankclust-method
 setMethod(
   f="summary",
   signature = "Rankclust",
@@ -332,6 +334,7 @@ setMethod(
 #' @rdname show-methods
 #' @docType methods
 #' @exportMethod show
+#' @aliases show show,Output-method
 setMethod(
   f="show",
   signature = "Output",
@@ -366,6 +369,8 @@ setMethod(
 #' @rdname show-methods
 #' @docType methods
 #' @exportMethod show
+#' @aliases show show,Rankclust-method
+#' 
 setMethod(
   f="show",
   signature = "Rankclust",
