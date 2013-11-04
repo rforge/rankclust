@@ -165,7 +165,7 @@ void RankCluster::initialization()
 
 
     //partial data and order of presentation initialization
-    set<int>::iterator itset(0);
+    set<int>::iterator itset;
     for(int dim(0);dim<d_;dim++)
     {
         vector<int> rankTemp(m_[dim]);
@@ -1228,7 +1228,7 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 
     /**initialisation partial rank and order of presentation*/
     //partial data and order of presentation initialization
-    set<int>::iterator itset(0);
+    set<int>::iterator itset;
     for(int dim(0);dim<d_;dim++)
     {
         vector<int> rankTemp(m_[dim]);
