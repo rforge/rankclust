@@ -1,8 +1,8 @@
 Package: Rankcluster
 Type: Package
 Title: Model-based clustering for multivariate partial ranking data
-Version: 0.91
-Date: 2013-11-06
+Version: 0.91.5
+Date: 2013-12-03
 Author: Quentin Grimonprez
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 Description: This package proposes a model-based clustering algorithm for
@@ -14,6 +14,7 @@ Description: This package proposes a model-based clustering algorithm for
     of the rank population is modelled by a mixture of ISR, whereas conditional
     independence assumption is considered for multivariate rankings.
 License: GPL (>=2)
+Copyright: Gael Guennebaud, Benoit Jacob are the authors of Eigen (http://eigen.tuxfamily.org) under MPL-2 (See inst/COPYRIGHTS file for more details).
 Depends:
     Rcpp (>= 0.9.14),
     methods
