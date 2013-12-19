@@ -2,7 +2,7 @@ Package: Rankcluster
 Type: Package
 Title: Model-based clustering for multivariate partial ranking data
 Version: 0.91.6
-Date: 2013-12-17
+Date: 2013-12-19
 Author: Quentin Grimonprez, Julien Jacques
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 Description: This package proposes a model-based clustering algorithm for
@@ -13,7 +13,7 @@ Description: This package proposes a model-based clustering algorithm for
     quoted by mu) and a dispersion parameter (quoted by pi). The heterogeneity
     of the rank population is modelled by a mixture of ISR, whereas conditional
     independence assumption is considered for multivariate rankings.
-License: GPL (>=2)
+License: GPL (>= 2) | file LICENSE
 Copyright: For Rankcluster, Quentin Grimonprez and Julien Jacques. For Eigen,
     author list is available at: http://eigen.tuxfamily.org/index.php?title=Main_Page#Credits.
     Eigen licences are available at inst/COPYRIGHTS.
