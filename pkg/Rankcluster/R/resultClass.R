@@ -26,6 +26,8 @@
 ##'   \item{piInitial}{a matrix containing the initialization of the probabilities of good paired comparison in the algorithm.}
 ##'   \item{muInitial}{a matrix containing the initialization of modal rankings in the algorithm.}
 ##'   \item{partialRankInitial}{a matrix containing the initialization of the partial rankings in the algorithm.}
+##'   \item{partialRankScore}{a matrix containing the .}
+
 ##' }
 ##'
 ##'
@@ -44,20 +46,21 @@ setClass(
     icl="numeric",
     tik="matrix",
     partition="numeric",
-	entropy="matrix",
-	probability="matrix",
-	convergence="logical",
-	partial="logical",
-	partialRank="matrix",
-	distanceProp="list",
-	distancePi="list",
-	distanceMu="list",
-	distanceZ="numeric",
-	distancePartialRank="list",
-	proportionInitial="numeric",
+	  entropy="matrix",
+	  probability="matrix",
+	  convergence="logical",
+	  partial="logical",
+	  partialRank="matrix",
+	  distanceProp="list",
+	  distancePi="list",
+	  distanceMu="list",
+	  distanceZ="numeric",
+	  distancePartialRank="list",
+	  proportionInitial="numeric",
     piInitial="matrix",
     muInitial="matrix",
-	partialRankInitial="matrix"
+	  partialRankInitial="matrix",
+    partialRankScore="matrix"
     ),
   prototype=prototype(
     proportion=numeric(0),
@@ -68,20 +71,21 @@ setClass(
     icl=numeric(0),
     tik=matrix(nrow=0,ncol=0),
     partition=numeric(0),
-	entropy=matrix(nrow=0,ncol=0),
-	probability=matrix(nrow=0,ncol=0),
-	convergence=logical(0),
-	partial=logical(0),
-	partialRank=matrix(nrow=0,ncol=0),
-	distanceProp=list(),
-	distancePi=list(),
-	distanceMu=list(),
-	distanceZ=numeric(0),
-	distancePartialRank=list(),
-	proportionInitial=numeric(0),
+	  entropy=matrix(nrow=0,ncol=0),
+	  probability=matrix(nrow=0,ncol=0),
+	  convergence=logical(0),
+	  partial=logical(0),
+	  partialRank=matrix(nrow=0,ncol=0),
+	  distanceProp=list(),
+	  distancePi=list(),
+	  distanceMu=list(),
+	  distanceZ=numeric(0),
+	  distancePartialRank=list(),
+	  proportionInitial=numeric(0),
     piInitial=matrix(nrow=0,ncol=0),
     muInitial=matrix(nrow=0,ncol=0),
-	partialRankInitial=matrix(nrow=0,ncol=0)
+	  partialRankInitial=matrix(nrow=0,ncol=0),
+    partialRankScore=matrix(nrow=0,ncol=0)
   )
 )
 
@@ -110,16 +114,16 @@ setClass(
   representation=representation(
     K="numeric",
     results="list",
-	data="matrix",
+	  data="matrix",
     criterion="character",
-	convergence="logical"
+	  convergence="logical"
   ),
 	prototype=prototype(
     results=list(),
-	data=matrix(ncol=0,nrow=0),
+	  data=matrix(ncol=0,nrow=0),
     K=numeric(0),
     criterion="bic",
-	convergence=logical(0)
+	  convergence=logical(0)
   )
 
 )

@@ -52,6 +52,6 @@
   initialization of modal rankings in the algorithm.}
   \item{partialRankInitial}{a matrix containing the
   initialization of the partial rankings in the algorithm.}
-  }
+  \item{partialRankScore}{a matrix containing the .} }
 }
 

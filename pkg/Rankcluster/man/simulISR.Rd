@@ -18,7 +18,27 @@
 }
 \description{
   This function simulates univariate rankings data
-  according to the ISR(pi,mu).
+  (ordering representation) according to the ISR(pi,mu).
+}
+\details{
+  The ranking representation r=(r_1,...,r_m) contains the
+  ranks assigned to the objects, and means that the ith
+  object is in r_ith position.
+
+  The ordering representation o=(o_1,...,o_m) means that
+  object o_i is in the ith position.
+
+  Let us consider the following example to illustrate both
+  notations: a judge, which has to rank three holidays
+  destinations according to its preferences, O1 =
+  Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
+  second Countryside, and last Mountain. The ordering
+  result of the judge is o = (3, 1, 2) whereas the ranking
+  result is r = (2, 3, 1).
+
+  You can see the \link{convertRank} function to convert
+  the simualted ranking drom ordering to ranking
+  representation.
 }
 \examples{
 x=simulISR(30,0.8,1:4)

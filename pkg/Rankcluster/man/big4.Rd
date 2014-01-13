@@ -4,7 +4,11 @@
 \title{rank data : big4}
 \format{A list containing :
 \describe{
-\item{data}{A matrix of size 21*8 containing the 21 Premier League seasons. Each row corresponding to one ranking (ordering representation).}
+\item{data}{A matrix of size 21*8 containing the 21 Premier League seasons. Each row corresponding to one ranking (ranking representation).
+
+  The ranking representation r=(r_1,...,r_m) contains the  ranks assigned to the objects, and means that the ith object is in r_ith position.
+
+For example, if the ranking representation of a rank is (4,3,1,2,5), it means that judge ranks the first object in 4th position, second object in 3rd position, ...}
 \item{frequency}{matrix of size 21*9. Each row corresponds to one of the 21 different observed rankings, and the last column contains the observation frequency.}
 \item{m}{the size of the rankings (m=c(4,4) ).}
 }
@@ -17,7 +21,7 @@ http://www.uefa.com/memberassociations/uefarankings/club/index.html
 
 }
 \description{
-This dataset is composed of the rankings (in ordering notation) of the "Big Four" English football teams (1: Manchester, 2: Liverpool, 3: Arsenal, 4: Chelsea) to the English Championship (Premier League) and according to the UEFA coefficients (statistics used in Europe for ranking and seeding teams in international competitions), from 1993 to 2003.
+This dataset is composed of the rankings (in ranking notation) of the "Big Four" English football teams (A: Manchester, B: Liverpool, C: Arsenal, D: Chelsea) to the English Championship (Premier League) and according to the UEFA coefficients (statistics used in Europe for ranking and seeding teams in international competitions), from 1993 to 2013.
 	
 }
 \examples{

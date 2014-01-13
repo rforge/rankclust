@@ -12,8 +12,8 @@
   (partial or not; for partial ranking, missing elements
   must be 0). For multivariate rankings, the rankings of
   each dimension are placed end to end in each row. The
-  data must be in ordering notation (see Details or
-  \link{convertRank} functions).}
+  data must be in ranking notation (see Details or
+  \link{convertRank} function).}
 
   \item{m}{a vector composed of the sizes of the rankings
   of each dimension (default value is the number of column
@@ -93,7 +93,7 @@
 }
 \examples{
 data(big4)
-result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
+#result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
 }
 \author{
   Quentin Grimonprez

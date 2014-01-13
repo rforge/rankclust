@@ -4,7 +4,7 @@
 #'
 #' @title model-based clustering for multivariate partial ranking
 #' @author Quentin Grimonprez
-#' @param data a matrix in which each row is a ranking (partial or not; for partial ranking, missing elements must be 0). For multivariate rankings, the rankings of each dimension are placed end to end in each row. The data must be in ordering notation (see Details or \link{convertRank} functions).
+#' @param data a matrix in which each row is a ranking (partial or not; for partial ranking, missing elements must be 0). For multivariate rankings, the rankings of each dimension are placed end to end in each row. The data must be in ranking notation (see Details or \link{convertRank} function).
 #' @param m a vector composed of the sizes of the rankings of each dimension (default value is the number of column of the matrix data).
 #' @param K an integer or a vector of integer with the number of clusters.
 #' @param criterion criterion "bic" or "icl", criterion to minimize for selecting the number of clusters.

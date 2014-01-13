@@ -128,7 +128,10 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
 	param.detail=false;
 
     RankCluster estimLog(data,mC,param,prop,pC,muC);
-
+  if(!estimLog.dataOk())
+  {
+  	return List::create(Named("ll")=wrap("pb"));  
+  }
     double L,bic,icl;
     estimLog.estimateCriterion(L,bic,icl);
 

@@ -30,8 +30,6 @@ convertRank <- function(x){
 }
 
 # checkRank  check if a vector is a rank
-
-
 checkRank <- function(x,m=length(x))
 {
 	if(sum(sort(x)==(1:m))==m)
@@ -40,9 +38,7 @@ checkRank <- function(x,m=length(x))
 		return(FALSE)	
 }
 
-# checkPartialRank check if a vector is a rank
-
-
+# checkPartialRank check if a vector is a partial rank
 checkPartialRank <- function(x,m=length(x))
 {
 	if((length(x[x<=m])==m)&& (length(x[x>=0])==m) && (length(unique(x[x!=0]))==length(x[x!=0])))
@@ -51,9 +47,17 @@ checkPartialRank <- function(x,m=length(x))
 		return(FALSE)
 }
 
+
+# checkPartialRank check if a vector is a partial rank
+checkTiePartialRank <- function(x,m=length(x))
+{
+  if((length(x[x<=m])==m) && (length(x[x>=0])==m) )
+    return(TRUE)
+  else
+    return(FALSE)
+}
+
 # completeRank complete partial that have only one missing element
-
-
 completeRank <-function(x)
 {
 	if(length(x[x==0])==1)
@@ -110,13 +114,32 @@ frequence <-function(X,m=ncol(X))
 
 }
 
-#' This function simulates univariate rankings data according to the ISR(pi,mu).
+#' This function simulates univariate rankings data (ordering representation) according to the ISR(pi,mu).
 #' @title simulate a sample of ISR(pi,mu)
 #' @author Julien Jacques
 #' @param n size of the sample.
 #' @param pi dispersion parameter: probability of correct paired comparaison according to mu.
 #' @param mu position parameter: modal ranking in ordering representation.
 #' @return a matrix with simulated ranks.
+#' 
+#' @details
+#' The ranking representation r=(r_1,...,r_m) contains the
+#' ranks assigned to the objects, and means that the ith
+#' object is in r_ith position.
+#' 
+#' The ordering representation o=(o_1,...,o_m) means that
+#' object o_i is in the ith position.
+#' 
+#' Let us consider the following example to illustrate both
+#' notations: a judge, which has to rank three holidays
+#' destinations according to its preferences, O1 =
+#'   Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
+#' second Countryside, and last Mountain. The ordering
+#' result of the judge is o = (3, 1, 2) whereas the ranking
+#' result is r = (2, 3, 1).
+#' 
+#' You can see the \link{convertRank} function to convert the simualted ranking drom ordering to ranking representation.
+#' 
 #' @references 
 #' [1] C.Biernacki and J.Jacques (2013), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, 58, 162-176.
 #' @examples
