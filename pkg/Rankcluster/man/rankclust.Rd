@@ -10,10 +10,11 @@
 \arguments{
   \item{data}{a matrix in which each row is a ranking
   (partial or not; for partial ranking, missing elements
-  must be 0). For multivariate rankings, the rankings of
-  each dimension are placed end to end in each row. The
-  data must be in ranking notation (see Details or
-  \link{convertRank} function).}
+  must be 0. Tied are replaced by the lowest position they
+  share). For multivariate rankings, the rankings of each
+  dimension are placed end to end in each row. The data
+  must be in ranking notation (see Details or
+  \link{convertRank} functions).}
 
   \item{m}{a vector composed of the sizes of the rankings
   of each dimension (default value is the number of column
@@ -58,7 +59,9 @@
   value FALSE).}
 }
 \value{
-  An object of class rankclust.
+  An object of class rankclust (See
+  \code{\link{Output-class}} and
+  \code{\link{Rankclust-class}}).
 
   For example : res=rankclust(data,K=1:2,m=m)
 
@@ -68,14 +71,22 @@
 }
 \description{
   This functions estimates a clustering of ranking data,
-  potentially multivariate and partial, based on a mixture
-  of multivariate ISR model [2]. By specifying only one
-  cluster, the function performs a modelling of the ranking
-  data using the multivariate ISR model. The estimation is
-  performed thanks to a SEM-Gibbs algorithm in the general
-  case.
+  potentially multivariate, partial and containing tied,
+  based on a mixture of multivariate ISR model [2]. By
+  specifying only one cluster, the function performs a
+  modelling of the ranking data using the multivariate ISR
+  model. The estimation is performed thanks to a SEM-Gibbs
+  algorithm in the general case.
 }
 \details{
+  The ranks have to be given to the package in the ranking
+  notation (see \link{convertRank} function), with the
+  following convention :
+
+  - missing positions are replaced by 0
+
+  - tied are replaced by the lowest position they share"
+
   The ranking representation r=(r_1,...,r_m) contains the
   ranks assigned to the objects, and means that the ith
   object is in r_ith position.
@@ -93,7 +104,7 @@
 }
 \examples{
 data(big4)
-#result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
+result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
 }
 \author{
   Quentin Grimonprez

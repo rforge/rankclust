@@ -22,7 +22,11 @@ http://www.uefa.com/memberassociations/uefarankings/club/index.html
 }
 \description{
 This dataset is composed of the rankings (in ranking notation) of the "Big Four" English football teams (A: Manchester, B: Liverpool, C: Arsenal, D: Chelsea) to the English Championship (Premier League) and according to the UEFA coefficients (statistics used in Europe for ranking and seeding teams in international competitions), from 1993 to 2013.
-	
+
+In 2000-2001, Arsenal and Chelsea had the same UEFA coefficient and then are tied. UEFA ranking is (1, 4, 2, 2) for 2000-2001, what means that Manchester United is the first, Liverpool is the last, and the two intermediate positions are for Arsenal and Chelsea in an unknown order.
+
+In 2009-2010, Liverpool and Arsenal have also the same UEFA coefficient, the ranking is	(1, 2, 2, 4).
+
 }
 \examples{
 data(big4)
