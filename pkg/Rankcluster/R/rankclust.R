@@ -89,7 +89,7 @@ rankclust<-function(data,m=ncol(data),K=1,criterion="bic",Qsem=100,Bsem=20,RjSE=
 		}
 		else
 		{
-			cat("\n for K=",k,"clusters, the algorithm has not converge (a proportion was equal to 0 during the process), please retry\n")
+			cat("\n for K=",k,"clusters, the algorithm has not converged (a proportion was equal to 0 during the process), please retry\n")
 		}	
 	}
 
