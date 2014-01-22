@@ -609,9 +609,9 @@ typedef struct ListeMu ListeMu;
 void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vector<vector<vector<double> > > &resP,vector<vector<double> > &resProp)
 {
 	//we put the same mu together and make the mean of their parameters
-    double t1,t2,tL(0);
+    //double t1,t2,tL(0);
 
-    t1=clock();
+    //t1=clock();
     struct ListeMu;
     struct ListeMu
     {
@@ -691,7 +691,7 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
         }
     }
 
-    t2=clock();
+    //t2=clock();
     //cout<<"Temps regroupement mu: "<<(double) (t2-t1)/CLOCKS_PER_SEC<<"s"<<endl;
     int compteur(0);
 
@@ -733,10 +733,10 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
         }
 
         //compute the log likelihood
-        t1=clock();
+        //t1=clock();
         L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities,scoreTemp);
-        t2=clock();
-        tL+=t2-t1;
+        //t2=clock();
+        //tL+=t2-t1;
 
 
         if(L>Llast)
@@ -755,7 +755,7 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
             	for(int ind(0);ind<n_;ind++)
             		data_[dim][ind].y=Y[dim][ind];
 
-				int compteur(0);
+    				int compteur(0);
 		    	for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
 				{
 					data_[dim][*it].rank=xPartialTemp[dim][compteur];
@@ -785,11 +785,11 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
     	//cout<<"*"<<endl;
 
 	//compute log likelihood
-    t1=clock();
+    //t1=clock();
     L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities,scoreTemp);
 
-    t2=clock();
-    tL+=t2-t1;
+    //t2=clock();
+    //tL+=t2-t1;
     compteur++;
 
     if(L>Llast)
@@ -1167,7 +1167,7 @@ void RankCluster::run()
 	{
 		try
 		{
-			double t0,t1,t2,t3,tM(0),tSE(0);
+			//double t0,t1,t2,t3,tM(0),tSE(0);
 
 			//if(parameter_.detail)
 			//{
@@ -1178,9 +1178,9 @@ void RankCluster::run()
 				//cout<<"Initialization of order of presentation and partial rank."<<endl;
 			//}
 
-			t0=clock();
+			//t0=clock();
 			initialization();
-			t1=clock();
+			//t1=clock();
 
 			//if(parameter_.detail)
 				//cout<<"Initialization: "<<(double) (t1-t0)/CLOCKS_PER_SEC<<"s."<<endl;
@@ -1202,15 +1202,15 @@ void RankCluster::run()
 			{
 				//if(parameter_.detail)
 					//cout<<"*";
-				t2=clock();
+				//t2=clock();
 				SEstep();
-				t3=clock();
-				tSE+=t3-t2;
+				//t3=clock();
+				//tSE+=t3-t2;
 
-				t2=clock();
+				//t2=clock();
 				Mstep();
-				t3=clock();
-				tM+=t3-t2;
+				//t3=clock();
+				//tM+=t3-t2;
 
 				//we store the estimated parameters
 				if(iter>=parameter_.burnAlgo)
@@ -1253,7 +1253,7 @@ void RankCluster::run()
 			}//end SEM
 			//if(parameter_.detail)
 				//cout<<endl<<endl<<"Loglikelihood estimation"<<endl;
-			t2=clock();
+			//t2=clock();
 			//if(parameter_.detail)
 			//{
 				//cout<<"Computing time for SE step: "<<(double) tSE/CLOCKS_PER_SEC<<"s ( "<<(double) tSE/CLOCKS_PER_SEC/parameter_.maxIt<<"s per step)."<<endl;
@@ -1262,7 +1262,7 @@ void RankCluster::run()
 
 			//compute loglikelihood and choice of the best parameters
 			likelihood(resMu,resP,resProp);
-			t3=clock();
+			//t3=clock();
 
 			//compute the partition associated to the best result
 			computePartition();

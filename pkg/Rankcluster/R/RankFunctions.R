@@ -4,6 +4,8 @@ convertInter=function(x)
   ind=x[x>0]
   for(i in ind)
     xb[i]=which(x==i)
+  
+  return(xb)
 }
 
 
