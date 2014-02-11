@@ -19,7 +19,6 @@ using namespace std;
 int positionRank(vector<int> const& x,int const& i)
 {
     int j(0);
-
     while(x[j]!=i)
         j++;
 
@@ -45,7 +44,7 @@ vector<int> comparaison(vector<int> const& x,vector<int> const& y,vector<int> co
         for (int i(0);i<j;i++)
         {
             //calcul Aj-
-            if (positionRank(x,y[i])<positionRank(x,y[j]))
+            if(positionRank(x,y[i]) < positionRank(x,y[j]))
             {
                 ajmoins.push_back(i);
                 ajmoinsb.push_back(i);
@@ -56,13 +55,14 @@ vector<int> comparaison(vector<int> const& x,vector<int> const& y,vector<int> co
                 ajplusbIndex.push_back(i);
             }
         }
+
         if (ajplusb.size()>0)//si le Aj+ en cours est non vide, on rajoute l'index du min � Aj+
         {
             index=min_element(ajplusb.begin(), ajplusb.end())- ajplusb.begin();
             ajplus.push_back(ajplusbIndex[index]);
 
             //calcul de G+
-            if (positionRank(mu,y[j])<positionRank(mu,y[ajplus[ajplus.size()-1]]))
+            if(positionRank(mu,y[j]) < positionRank(mu,y[ajplus[ajplus.size()-1]]))
             {
                 gplus++;
                 gjplusb++;
@@ -104,7 +104,7 @@ double probaCond(vector<int> const& x,vector<int> const& y,vector<int> const& mu
 //factorial function
 int factorial(int const& nombre)
 {
-	int temp;
+  int temp;
 
 	if(nombre<=1)
         return 1;
@@ -609,11 +609,11 @@ double proba(vector<vector<int> > const& x, vector<vector<int> > const& mu, vect
     {
       y = index2rankb(listeY[i],m,tabFact);
 
-      for(int j = 0; j < (it->second).size(); j++)
+      for(int j = 0; j < (int) (it->second).size(); j++)
         probaDim[(it->second)[j]] += probaCond(x[(it->second)[j]],y,mu[(it->second)[j]],pi[(it->second)[j]]);
     }
     
-    for(int j = 0; j < (it->second).size(); j++)
+    for(int j = 0; j < (int) (it->second).size(); j++)
       probaDim[(it->second)[j]] *= div;
   }
 
@@ -624,5 +624,4 @@ double proba(vector<vector<int> > const& x, vector<vector<int> > const& mu, vect
   return finalProba;
   
 }
-
 

@@ -34,13 +34,32 @@ mixtureSEM<-function(X,g,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
 	#Verification des donnees
 	for(i in 1:d)
 	{
-		if(sum(apply(X[,(1+cumsum(c(0,m))[i]):(cumsum(c(0,m))[i+1])],1,checkTiePartialRank,m[i]))!=n)
-			stop("Data are not correct")
+    check=apply(X[,(1+cumsum(c(0,m))[i]):(cumsum(c(0,m))[i+1])],1,checkTiePartialRank,m[i])
+		if(sum(check)!=n)
+		{
+      indfalse=which(check==0)
+		  stop(cat("Data are not correct.\n","For dimension",i,", ranks at row",indfalse,"are not correct."))
+		}
+			
 	}
 
 	res=.Call("semR",X,m,g,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail,PACKAGE="Rankcluster")
 	if(res$stock[1]==2)
-    stop("Problem with your data. Your data format has to follow some rules. Check your data.")
+	{
+	  res$indexPb=lapply(res$indexPb,unique)
+    for(i in 1:d)
+    {
+      if(length(res$indexPb)!=0)
+      {
+        cat(paste0("For dimension ",i,", rankings at the following index have format problem :\n"))
+        cat(res$indexPb[[i]])
+      }
+    }
+    stop("Problem with your data.\n The ranks have to be given in the ranking notation (see convertRank function), with the following convention :
+- missing positions are replaced by 0
+- tied are replaced by the lowest position they share\n")
+	}
+
   
 	#récupération des résultats
 	if(res$stock[1]==1)#si convergence

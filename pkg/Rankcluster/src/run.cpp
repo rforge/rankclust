@@ -29,9 +29,9 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
   if(!semgibbs.dataOk())
   {
     vector<double> stock(1,2);
-		return List::create(Named("stock")=wrap(stock));  
+		return List::create(Named("stock")=wrap(stock),Named("indexPb")=wrap(semgibbs.indexPb()));  
   }
-
+  
 	semgibbs.run();
   
 	//multiple run

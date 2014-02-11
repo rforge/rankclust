@@ -31,7 +31,7 @@ struct PartialRank
 struct SEMparameters
 {
     ///number of iteration in the gibbs of SE step for each dimension of rank
-	std::vector<int> nGibbsSE;
+  std::vector<int> nGibbsSE;
 	///number of iteration in the gibbs of M step for each dimension of rank
 	std::vector<int> nGibbsM;
 	///maximum number of iteration of the SEM algorithm
@@ -114,6 +114,7 @@ class RankCluster
     inline bool dataOk() const {return dataOk_;}
     inline bool convergence() const {return convergence_;}
 		inline bool partial() const {return partial_;}
+    inline std::vector<std::vector<int> > indexPb() const {return indexPb_;}
     
     //output getters
 		inline Eigen::ArrayXXd tik() const {return output_.tik;}
@@ -221,6 +222,8 @@ class RankCluster
 		bool convergence_;
     /// if true, good data
     bool dataOk_;
+    ///index of rank with problem for each dimension
+    std::vector<std::vector<int> > indexPb_;
 };
 
 #endif /* RANKCLUSTER_H_ */

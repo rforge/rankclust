@@ -19,7 +19,7 @@ RankCluster::RankCluster()
 
 //constructor
 RankCluster::RankCluster(std::vector<std::vector<int> > const& X,int g, vector<int> const& m, SEMparameters const& param)
-	: m_(m),n_(X.size()),d_(m.size()),g_(g),
+  : m_(m),n_(X.size()),d_(m.size()),g_(g),
       data_(d_,vector<PartialRank> (n_)),
 	  z_(n_),
 	  mu_(d_,vector<vector<int> > (g_)),
@@ -27,15 +27,16 @@ RankCluster::RankCluster(std::vector<std::vector<int> > const& X,int g, vector<i
 	  proportion_(g),
 	  parameter_(param),
 	  partial_(false),
-    dataOk_(true)
+    dataOk_(true),
+    indexPb_(m.size())
 {
-  try
-  {
+//  try
+//  {
     //convert data
     conversion2data(X);
-  }
-  catch(string const& chaine)
-		{dataOk_=false;}
+//  }
+//  catch(string const& chaine)
+//		{dataOk_=false;}
 
 
 }
@@ -51,15 +52,16 @@ RankCluster::RankCluster(vector<vector<int> > const& X, vector<int> const& m, SE
 	  proportion_(proportion),
 	  parameter_(param),
 	  partial_(false),
-    dataOk_(true)
+    dataOk_(true),
+    indexPb_(m.size())
 {
-  try
-  {
+//  try
+//  {
     //convert data
     conversion2data(X);
-  }
-  catch(string const& chaine)
-  	{dataOk_=false;}
+//  }
+//  catch(string const& chaine)
+//  	{dataOk_=false;}
 
 }
 
@@ -75,6 +77,7 @@ void RankCluster::readRankingRank(vector<vector<int> > const& X, int const& dim,
     int indiceElement = 0;
     data_[dim][j].isNotFull=false;
 
+    //multi dim rank temporary
     vector<vector<int> > temp(m_[dim]+1);
 
     for(int i= indM[dim]; i < indM[dim+1]; i++)
@@ -83,21 +86,27 @@ void RankCluster::readRankingRank(vector<vector<int> > const& X, int const& dim,
         indiceElement++;
     }
 
+    //vector containing index of partial element
     vector<int> partialIndex;
 
     int skip = 0;
+    //index 0 is for missing, we don't manage in this loop
     for(int i = 1; i < (int) temp.size(); i++)
     {
         if(skip)
         {
             if(temp[i].size()!=0)
-              throw string("Problem with data.");
-
+            {
+              dataOk_ = false;
+              indexPb_[dim].push_back(j+1);
+              //throw string("Problem with data.");
+            }
 
             skip--;
         }
         else
         {
+            //tied case
             if(temp[i].size() > 1)
             {
                 data_[dim][j].isNotFull = true;
@@ -105,21 +114,31 @@ void RankCluster::readRankingRank(vector<vector<int> > const& X, int const& dim,
                 skip = temp[i].size() - 1;
                 data_[dim][j].missingData.push_back(temp[i]);
                 vector<int> missingIndex(temp[i].size());
-                for(int ii = 0; ii < temp[i].size(); ii++)
+                for(int ii = 0; ii < (int) temp[i].size(); ii++)
                     missingIndex[ii] = i + ii - 1;
 
                 data_[dim][j].missingIndex.push_back(missingIndex);
             }
             else
             {
+                //normal case
                 if(temp[i].size()==1)
-                    data_[dim][j].rank[i-1] = temp[i][0];
-                else//temp[i].size=0
-                    partialIndex.push_back(i-1);
+                  data_[dim][j].rank[i-1] = temp[i][0];
+                else//temp[i].size=0//partial case
+                   partialIndex.push_back(i-1);
             }
         }
     }
     
+    //problem with the data : index of 0 et element at missing position don't match
+    if(temp[0].size() != partialIndex.size())
+    {
+      dataOk_ = false;
+      indexPb_[dim].push_back(j+1);
+      //throw string("Problem with data.");
+    }
+
+    //add partial
     if(temp[0].size() !=0 )
     {
       data_[dim][j].isNotFull = true;
@@ -141,17 +160,14 @@ void RankCluster::conversion2data(vector<vector<int> > const& X)
 		for(int j = 0; j < n_; j++)
 	    	data_[i][j].rank.resize(m_[i]);
 
-
-	int indiceElement(0);
 	//begin the read of the data row by row
-	for(int j(0);j<n_;j++)
+	for(int j = 0; j < n_; j++)
 	{
 	    //dim by dim
 	    for(int dim(0);dim<d_;dim++)
 	    {
             //read rank j of dim dim
             readRankingRank(X,dim,j,indM);
-
 	    }
 	}
 
@@ -163,27 +179,36 @@ void RankCluster::initialization()
     double alea;
 
     //zik initialization with multinomial of equal proba
-    for(int i(0);i<n_;i++)
+    if(g_ != 1)
     {
-        alea=(double) rand()/RAND_MAX;
-        for(int j(0);j<g_;j++)
-            if((alea>(double) j/g_) & (alea<(double) (j+1)/g_))
-            {
-                z_[i]=j;
-                break;
-            }
+      for(int i = 0; i < n_; i++)
+      {
+          alea=(double) rand()/RAND_MAX;
+          for(int j = 0; j < g_; j++)
+              if((alea>(double) j/g_) & (alea<(double) (j+1)/g_))
+              {
+                  z_[i]=j;
+                  break;
+              }
+      }
+    }
+    else
+    {
+      for(int i(0); i < n_; i++)
+        z_[i]=0;
     }
 
+
     //mu & p  initialization
-    for(int k(0);k<d_;k++)
-        for(int i(0);i<g_;i++)
+    for(int k = 0; k < d_; k++)
+        for(int i = 0; i < g_; i++)
         {
             //initialization of p_ with double between 0.5 and 1
             alea=(double) rand()/RAND_MAX*0.5+0.5;
             p_[k][i]=alea;
             //initialization of mu_ with alea rank of size m_
             mu_[k][i].resize(m_[k]);
-            for(int j(0);j<m_[k];j++)
+            for(int j = 0; j < m_[k]; j++)
                 mu_[k][i][j]=j+1;
             random_shuffle(mu_[k][i].begin(),mu_[k][i].end());
         }
@@ -201,7 +226,7 @@ void RankCluster::initialization()
     for(int dim = 0; dim < d_; dim++)
     {
         vector<int> rankTemp(m_[dim]);
-        for(int i = 0;i< m_[dim]; i++)
+        for(int i = 0; i < m_[dim]; i++)
             rankTemp[i]=i+1;
         for(int ind = 0; ind < n_; ind++)
         {
@@ -219,7 +244,6 @@ void RankCluster::initialization()
 
                     for(int iii = 0; iii < (int) data_[dim][ind].missingData[ii].size(); iii++)
                         data_[dim][ind].rank[rankTemp2[iii]] = data_[dim][ind].missingData[ii][iii];
-
                 }
             }
         }
@@ -227,9 +251,9 @@ void RankCluster::initialization()
 
 
 	indexPartialData_=vector<vector<int> > (d_);
-	for(int dim(0);dim<d_;dim++)
+	for(int dim = 0; dim < d_; dim++)
 	{
-		for(int ind(0);ind<n_;ind++)
+		for(int ind = 0; ind < n_; ind++)
 		{
 			if(data_[dim][ind].isNotFull)
 				indexPartialData_[dim].push_back(ind);
@@ -237,31 +261,31 @@ void RankCluster::initialization()
 	}
 
 	vector<vector<vector<int> > > donneesPartiel(d_);
-	for(int dim(0);dim<d_;dim++)
-		for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
+	for(int dim = 0; dim < d_; dim++)
+		for(vector<int>::iterator it = indexPartialData_[dim].begin(); it != indexPartialData_[dim].end(); it++)
 			donneesPartiel[dim].push_back(data_[dim][*it].rank);
 
 
 	//sauvegarde initialisation
-	output_.initialPartialRank=donneesPartiel;
-	output_.initialP=p_;
-	output_.initialZ=z_;
-	output_.initialMu=mu_;
-	output_.initialProportion=proportion_;
+	output_.initialPartialRank = donneesPartiel;
+	output_.initialP = p_;
+	output_.initialZ = z_;
+	output_.initialMu = mu_;
+	output_.initialProportion = proportion_;
 }
 
 
 void RankCluster::SEstep()
 {
-    //simulationof order of presentation for each dimension
-    for(int dim(0);dim<d_;dim++)
+    //simulation of order of presentation for each dimension
+    for(int dim = 0; dim < d_; dim++)
         gibbsY(dim);
 
     //simulation of z
     zSimulation();
 
-    //simulation of partial rank
-    for(int dim(0);dim<d_;dim++)
+    //simulation of partial rank for each dimension
+    for(int dim = 0; dim < d_; dim++)
         gibbsX(dim);
 }
 
@@ -273,10 +297,10 @@ void RankCluster::gibbsY(int indexDim)
 
     //rank 1 2..m
     vector<int> yTemp(m_[indexDim]);
-    for(int j(0);j<m_[indexDim];j++)
-        yTemp[j]=j+1;
+    for(int j = 0; j < m_[indexDim]; j++)
+        yTemp[j] = j+1;
 
-    for(int ind(0);ind<n_;ind++)
+    for(int ind = 0; ind < n_; ind++)
     {
         //Gibbs sampling
         vector<int> y(m_[indexDim]),y2(m_[indexDim]),y1(m_[indexDim]);
@@ -320,6 +344,9 @@ void RankCluster::gibbsY(int indexDim)
 
 void RankCluster::zSimulation()
 {
+  
+  if(g_ != 1)
+  {
     double alea(0),sumTik(0);
     vector<double> lim(g_+1,0),tik(g_);
 
@@ -353,7 +380,15 @@ void RankCluster::zSimulation()
                 z_[ind]=j;
                 break;
             }
-    }
+    }    
+  }
+  else
+  {
+    for(int i=0; i < (int) z_.size(); i++)
+      z_[i]=0;
+  }
+
+
 
 }
 
@@ -704,10 +739,10 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
 
 	  vector<vector<vector<int> > > Y(d_,vector<vector<int> > (n_)),xPartialTemp(output_.initialPartialRank);
     vector<vector<vector<double> > > scoreTemp(output_.initialPartialRank.size());
-    for(int ii = 0; ii < scoreTemp.size(); ii++)
+    for(int ii = 0; ii < (int) scoreTemp.size(); ii++)
     {
       scoreTemp[ii].resize(output_.initialPartialRank[ii].size());
-      for(int iii = 0; iii < scoreTemp[ii].size(); iii++)
+      for(int iii = 0; iii < (int) scoreTemp[ii].size(); iii++)
       {
         scoreTemp[ii][iii].resize(output_.initialPartialRank[ii][iii].size());
       }
@@ -1174,10 +1209,7 @@ void RankCluster::run()
 				//cout<<"##########################################################"<<endl;
 				//cout<<"#  SEM-Gibbs Algorithm for multivariate partial ranking  #"<<endl;
 				//cout<<"##########################################################"<<endl;
-
-				//cout<<"Initialization of order of presentation and partial rank."<<endl;
 			//}
-
 			//t0=clock();
 			initialization();
 			//t1=clock();
@@ -1197,11 +1229,11 @@ void RankCluster::run()
 
 			//algorithm
 			//if(parameter_.detail)
-				//cout<<"Algorithm"<<endl<<"Iteration"<<endl;
 			for(int iter(0);iter<parameter_.maxIt;iter++)
 			{
 				//if(parameter_.detail)
 					//cout<<"*";
+
 				//t2=clock();
 				SEstep();
 				//t3=clock();
@@ -1249,7 +1281,6 @@ void RankCluster::run()
 					}
 
 				}//end storage
-
 			}//end SEM
 			//if(parameter_.detail)
 				//cout<<endl<<endl<<"Loglikelihood estimation"<<endl;

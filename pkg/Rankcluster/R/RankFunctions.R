@@ -36,6 +36,50 @@ convertRank <- function(x)
     return(convertInter(x))
 }
 
+# '
+# ' This function checks if data are correct.
+# ' 
+# '
+# ' @title Check the data
+# ' @param X a matrix containing ranks
+# ' @param m a vector composed of the sizes of the rankings of each dimension (default value is the number of column of the matrix data).
+# ' 
+# ' @return a list containing for each dimension, numbers of rows with problem.
+# ' 
+# ' @examples
+# ' data(big4)
+# ' #add a bad rank
+# ' big4$data[1,1:4] = c(1,5,2,3)
+# ' 
+# ' res=checkData(big4$data,big4$m)
+# ' print(res)
+# ' 
+# ' @export
+# checkData = function(X,m=length(X))
+# {
+#   if(!is.matrix(X))
+#   {
+#     X=as.matrix(X)
+#   }
+#   if(sum(m)!=ncol(X))
+#     stop("the number of columns of X does not match with m.")
+#   
+#   d=length(m)
+#   n=nrow(X)
+#   cm=cumsum(c(0,m))
+#   pb=list()
+#   for(i in 1:d)
+#   {
+#     check=apply(X[,(1+cm[i]):cm[i+1],drop=FALSE],1,checkTiePartialRank,m[i])
+#     if(sum(check)!=n)
+#     {
+#       indfalse=which(check==0)
+#       pb[[i]]=indfalse
+#     }
+#   }
+#   
+#   return(pb)
+# }
 
 # checkRank  check if a vector is a rank
 checkRank <- function(x,m=length(x))
