@@ -2,10 +2,9 @@
 \alias{rankclust}
 \title{model-based clustering for multivariate partial ranking}
 \usage{
-  rankclust(data, m = ncol(data), K = 1, criterion = "bic",
-    Qsem = 100, Bsem = 20, RjSE = m * (m - 1)/2,
-    RjM = m * (m - 1)/2, Ql = 500, Bl = 100, maxTry = 3,
-    run = 1, detail = FALSE)
+rankclust(data, m = ncol(data), K = 1, criterion = "bic", Qsem = 100,
+  Bsem = 20, RjSE = m * (m - 1)/2, RjM = m * (m - 1)/2, Ql = 500,
+  Bl = 100, maxTry = 3, run = 1, detail = FALSE)
 }
 \arguments{
   \item{data}{a matrix in which each row is a ranking
@@ -59,67 +58,66 @@
   value FALSE).}
 }
 \value{
-  An object of class rankclust (See
-  \code{\link{Output-class}} and
-  \code{\link{Rankclust-class}}).
+An object of class rankclust (See
+\code{\link{Output-class}} and
+\code{\link{Rankclust-class}}).
 
-  For example : res=rankclust(data,K=1:2,m=m)
+For example : res=rankclust(data,K=1:2,m=m)
 
-  You can access the result by res[number of
-  groups]@slotName where slotName is an element of the
-  class Output.
+You can access the result by res[number of groups]@slotName
+where slotName is an element of the class Output.
 }
 \description{
-  This functions estimates a clustering of ranking data,
-  potentially multivariate, partial and containing tied,
-  based on a mixture of multivariate ISR model [2]. By
-  specifying only one cluster, the function performs a
-  modelling of the ranking data using the multivariate ISR
-  model. The estimation is performed thanks to a SEM-Gibbs
-  algorithm in the general case.
+This functions estimates a clustering of ranking data,
+potentially multivariate, partial and containing tied,
+based on a mixture of multivariate ISR model [2]. By
+specifying only one cluster, the function performs a
+modelling of the ranking data using the multivariate ISR
+model. The estimation is performed thanks to a SEM-Gibbs
+algorithm in the general case.
 }
 \details{
-  The ranks have to be given to the package in the ranking
-  notation (see \link{convertRank} function), with the
-  following convention :
+The ranks have to be given to the package in the ranking
+notation (see \link{convertRank} function), with the
+following convention :
 
-  - missing positions are replaced by 0
+- missing positions are replaced by 0
 
-  - tied are replaced by the lowest position they share"
+- tied are replaced by the lowest position they share"
 
-  The ranking representation r=(r_1,...,r_m) contains the
-  ranks assigned to the objects, and means that the ith
-  object is in r_ith position.
+The ranking representation r=(r_1,...,r_m) contains the
+ranks assigned to the objects, and means that the ith
+object is in r_ith position.
 
-  The ordering representation o=(o_1,...,o_m) means that
-  object o_i is in the ith position.
+The ordering representation o=(o_1,...,o_m) means that
+object o_i is in the ith position.
 
-  Let us consider the following example to illustrate both
-  notations: a judge, which has to rank three holidays
-  destinations according to its preferences, O1 =
-  Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
-  second Countryside, and last Mountain. The ordering
-  result of the judge is o = (3, 1, 2) whereas the ranking
-  result is r = (2, 3, 1).
+Let us consider the following example to illustrate both
+notations: a judge, which has to rank three holidays
+destinations according to its preferences, O1 =
+Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
+second Countryside, and last Mountain. The ordering result
+of the judge is o = (3, 1, 2) whereas the ranking result is
+r = (2, 3, 1).
 }
 \examples{
 data(big4)
 result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
 }
 \author{
-  Quentin Grimonprez
+Quentin Grimonprez
 }
 \references{
-  [1] C.Biernacki and J.Jacques (2013), A generative model
-  for rank data based on sorting algorithm, Computational
-  Statistics and Data Analysis, 58, 162-176.
+[1] C.Biernacki and J.Jacques (2013), A generative model
+for rank data based on sorting algorithm, Computational
+Statistics and Data Analysis, 58, 162-176.
 
-  [2] J.Jacques and C.Biernacki (2012), Model-based
-  clustering for multivariate partial ranking data, Inria
-  Research Report n 8113.
+[2] J.Jacques and C.Biernacki (2012), Model-based
+clustering for multivariate partial ranking data, Inria
+Research Report n 8113.
 }
 \seealso{
-  See \code{\link{Output-class}} and
-  \code{\link{Rankclust-class}} for available output.
+See \code{\link{Output-class}} and
+\code{\link{Rankclust-class}} for available output.
 }
 

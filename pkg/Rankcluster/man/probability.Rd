@@ -2,7 +2,7 @@
 \alias{probability}
 \title{Probability computation}
 \usage{
-  probability(x, mu, pi, m = length(x))
+probability(x, mu, pi, m = length(x))
 }
 \arguments{
   \item{x}{a vector or a matrix of 1 row containing the
@@ -25,36 +25,36 @@
   dimension.}
 }
 \value{
-  the probability of x according to a multivariate ISR o
-  parameter mu and pi.
+the probability of x according to a multivariate ISR o
+parameter mu and pi.
 }
 \description{
-  This function computes the probability of x according to
-  a multivariate ISR o parameter mu and pi.
+This function computes the probability of x according to a
+multivariate ISR o parameter mu and pi.
 }
 \details{
-  The ranks have to be given to the package in the ranking
-  notation (see \link{convertRank} function), with the
-  following convention :
+The ranks have to be given to the package in the ranking
+notation (see \link{convertRank} function), with the
+following convention :
 
-  - missing positions are replaced by 0
+- missing positions are replaced by 0
 
-  - tied are replaced by the lowest position they share"
+- tied are replaced by the lowest position they share"
 
-  The ranking representation r=(r_1,...,r_m) contains the
-  ranks assigned to the objects, and means that the ith
-  object is in r_ith position.
+The ranking representation r=(r_1,...,r_m) contains the
+ranks assigned to the objects, and means that the ith
+object is in r_ith position.
 
-  The ordering representation o=(o_1,...,o_m) means that
-  object o_i is in the ith position.
+The ordering representation o=(o_1,...,o_m) means that
+object o_i is in the ith position.
 
-  Let us consider the following example to illustrate both
-  notations: a judge, which has to rank three holidays
-  destinations according to its preferences, O1 =
-  Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
-  second Countryside, and last Mountain. The ordering
-  result of the judge is o = (3, 1, 2) whereas the ranking
-  result is r = (2, 3, 1).
+Let us consider the following example to illustrate both
+notations: a judge, which has to rank three holidays
+destinations according to its preferences, O1 =
+Countryside, O2 =Mountain and O3 = Sea, ranks first Sea,
+second Countryside, and last Mountain. The ordering result
+of the judge is o = (3, 1, 2) whereas the ranking result is
+r = (2, 3, 1).
 }
 \examples{
 m=c(4,5)
@@ -69,6 +69,6 @@ prob=probability(x,mu,pi,m)
 prob
 }
 \author{
-  Quentin Grimonprez
+Quentin Grimonprez
 }
 

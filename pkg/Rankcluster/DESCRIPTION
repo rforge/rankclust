@@ -20,13 +20,3 @@ Depends:
 Imports:
     Rcpp
 LinkingTo: Rcpp, RcppEigen
-Collate:
-    'conversion.R'
-    'likelihood.R'
-    'mixtureSEM.R'
-    'rankclust.R'
-    'RankDistance.R'
-    'RankFunctions.R'
-    'resultClass.R'
-    'test.R'
-    'zzz.R'
