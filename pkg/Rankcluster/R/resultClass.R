@@ -226,9 +226,7 @@ setMethod(
 					{
 						stop("Invalid Name.")
 					}
-		
 				}
-
 			}
 		}
     }
@@ -356,6 +354,7 @@ setMethod(
   }  
 )
 
+
 #'
 #' show function.
 #' 
@@ -390,6 +389,7 @@ setMethod(
       cat("\nOnly the first 50 rows are printed, total rows:",nrow(object@tik))
     }
 )
+
 
 #'
 #' show function.
