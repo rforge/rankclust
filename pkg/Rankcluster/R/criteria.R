@@ -94,7 +94,7 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100)
   #check if mu contains ranks
   for(i in 1:length(m))
   {
-    if(sum(apply(mu[,(1+cumsum(c(0,m))[i]):(cumsum(c(0,m))[i+1])],1,checkRank,m[i]))!=nrow(mu))
+    if(sum(apply(mu[,(1+cumsum(c(0,m))[i]):(cumsum(c(0,m))[i+1]),drop=FALSE],1,checkRank,m[i]))!=nrow(mu))
       stop("mu is not correct")
   }
 
