@@ -58,13 +58,18 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 
 	if(semgibbs.convergence())
 	{
-		vector<double> stock(5);
+		vector<double> stock(11);
 		stock[0]=1;
 		stock[1]=semgibbs.partial();
 		stock[2]=semgibbs.L();
 		stock[3]=semgibbs.bic();
 		stock[4]=semgibbs.icl();
-
+    stock[5]=semgibbs.confidenceLoglikelihood().first;
+    stock[6]=semgibbs.confidenceLoglikelihood().second;
+    stock[7]=semgibbs.confidenceBIC().first;
+    stock[8]=semgibbs.confidenceBIC().second;
+    stock[9]=semgibbs.confidenceICL().first;
+    stock[10]=semgibbs.confidenceICL().second;
 		int d=mC.size();
 		int n=XR.nrow();
 		vector<vector<vector<int> > > data(d,vector<vector<int> > (n));

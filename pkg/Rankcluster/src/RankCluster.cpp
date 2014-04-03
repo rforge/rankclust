@@ -1,3 +1,7 @@
+/**@file RankCluster.cpp
+ * @brief Implementation of methods of the class @c RankCluster
+ */
+
 #include "RankCluster.h"
 
 #include <cstdlib>
@@ -661,13 +665,13 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
 
 
     ListeMu*headMu=new ListeMu;
-	ListeMu*currMu=headMu;
-	ListeMu*next=0;
-	currMu->compteur=1;
-	currMu->suivant=0;
-	currMu->rangComplet=listeMu[0];
-	currMu->p=resP[0];
-	currMu->prop=resProp[0];
+	  ListeMu*currMu=headMu;
+	  ListeMu*next=0;
+	  currMu->compteur=1;
+	  currMu->suivant=0;
+	  currMu->rangComplet=listeMu[0];
+	  currMu->p=resP[0];
+	  currMu->prop=resProp[0];
 
     int nbMu(1);
 
@@ -734,7 +738,7 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
 	//if(parameter_.detail)
     	//cout<<"Number of reference rank which must compute the log-likelihood: "<<nbMu<<endl;
 
-    double Llast(-numeric_limits<double>::max()),L;
+    double Llast(-numeric_limits<double>::max()), L;
 
 
 	  vector<vector<vector<int> > > Y(d_,vector<vector<int> > (n_)),xPartialTemp(output_.initialPartialRank);
@@ -748,6 +752,9 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
       }
     }
     
+    vector<double> iterloglikTemp(parameter_.nGibbsL-parameter_.burnL,0), iterloglik(parameter_.nGibbsL-parameter_.burnL,0);
+    ArrayXd iterEntropyTemp(parameter_.nGibbsL-parameter_.burnL), iterEntropy(parameter_.nGibbsL-parameter_.burnL);
+    
     //Now, we have the list of all the different Mu
     currMu=headMu;
     ArrayXXd tik(n_,g_);
@@ -756,78 +763,77 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
     //for each mu, we will compute the associate log likelihood
     while(currMu->suivant!=0)
     {
-		//if(parameter_.detail)
-			//cout<<"*";
+		  //if(parameter_.detail)
+			  //cout<<"*";
 
-		//mean of the parameter
-        for(int compt1(0);compt1<g_;compt1++)
+		  //mean of the parameter
+      for(int compt1(0);compt1<g_;compt1++)
+      {
+          currMu->prop[compt1]/=currMu->compteur;
+          for(int compt2(0);compt2<d_;compt2++)
+          	currMu->p[compt2][compt1]/=currMu->compteur;
+      }
+
+      //compute the log likelihood
+      //t1=clock();
+      L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities,scoreTemp,iterloglikTemp,iterEntropyTemp);
+      //t2=clock();
+      //tL+=t2-t1;
+
+      if(L>Llast)
+      {
+        //the current mu has a better loglikelihood, we save the parameter
+        Llast = L;
+        mu_ = currMu->rangComplet;
+        p_ = currMu->p;
+        proportion_ = currMu->prop;
+        output_.tik = tik;
+        output_.L = L;
+        output_.probabilities = probabilities;
+        output_.partialRankScore = scoreTemp;
+        iterloglik = iterloglikTemp;
+        iterEntropy = iterEntropyTemp;
+        for(int dim = 0; dim < d_; dim++)
         {
-            currMu->prop[compt1]/=currMu->compteur;
-            for(int compt2(0);compt2<d_;compt2++)
-            	currMu->p[compt2][compt1]/=currMu->compteur;
+        	for(int ind = 0; ind < n_; ind++)
+        		data_[dim][ind].y=Y[dim][ind];
+
+  			  int compteur(0);
+          for(vector<int>::iterator it = indexPartialData_[dim].begin(); it != indexPartialData_[dim].end(); it++)
+			    {
+					  data_[dim][*it].rank=xPartialTemp[dim][compteur];
+					  compteur++;
+				  }
         }
+      }
 
-        //compute the log likelihood
-        //t1=clock();
-        L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities,scoreTemp);
-        //t2=clock();
-        //tL+=t2-t1;
-
-
-        if(L>Llast)
-        {
-        	//the current mu has a better loglikelihood, we save the parameter
-            Llast=L;
-            mu_=currMu->rangComplet;
-            p_=currMu->p;
-            proportion_=currMu->prop;
-            output_.tik=tik;
-            output_.L=L;
-            output_.probabilities=probabilities;
-            output_.partialRankScore = scoreTemp;
-            for(int dim(0);dim<d_;dim++)
-            {
-            	for(int ind(0);ind<n_;ind++)
-            		data_[dim][ind].y=Y[dim][ind];
-
-    				int compteur(0);
-		    	for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
-				{
-					data_[dim][*it].rank=xPartialTemp[dim][compteur];
-					compteur++;
-				}
-
-            }
-
-        }
-
-        next=currMu->suivant;
-        delete currMu;//delete the mu
-        currMu=next;
-        compteur++;
+      next=currMu->suivant;
+      delete currMu;//delete the mu
+      currMu=next;
+      compteur++;
     }
 
     //the last mu of the struct
-	//mean of the parameter
-    for(int compt1(0);compt1<g_;compt1++)
+	  //mean of the parameter
+    for(int compt1 = 0; compt1 < g_; compt1++)
     {
-        currMu->prop[compt1]/=currMu->compteur;
-        for(int compt2(0);compt2<d_;compt2++)
-        	currMu->p[compt2][compt1]/=currMu->compteur;
+        currMu->prop[compt1] /= currMu->compteur;
+        for(int compt2 = 0; compt2 < d_; compt2++)
+        	currMu->p[compt2][compt1] /= currMu->compteur;
     }
 
-	//if(parameter_.detail)
+	  //if(parameter_.detail)
     	//cout<<"*"<<endl;
 
-	//compute log likelihood
+	  //compute log likelihood
     //t1=clock();
-    L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities,scoreTemp);
+    L=computeLikelihood(currMu->rangComplet,currMu->p,currMu->prop,tik,Y,xPartialTemp,probabilities,scoreTemp,iterloglikTemp,iterEntropyTemp);
 
     //t2=clock();
     //tL+=t2-t1;
     compteur++;
 
-    if(L>Llast)
+    if(L > Llast)
     {
     	//the current mu has a better loglikelihood, we save the parameter
         Llast=L;
@@ -838,24 +844,43 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
         output_.L=L;
         output_.probabilities=probabilities;
         output_.partialRankScore = scoreTemp;
+        iterloglik = iterloglikTemp;
+        iterEntropy = iterEntropyTemp;
         vector<int> compteurPartiel(d_,0);
 
-        for(int dim(0);dim<d_;dim++)
+        for(int dim = 0; dim < d_; dim++)
         {
-        	for(int ind(0);ind<n_;ind++)
+        	for(int ind = 0; ind < n_; ind++)
         		data_[dim][ind].y=Y[dim][ind];
 
 			    int compteur(0);
-		      for(vector<int>::iterator it=indexPartialData_[dim].begin();it!=indexPartialData_[dim].end();it++)
+		      for(vector<int>::iterator it = indexPartialData_[dim].begin(); it != indexPartialData_[dim].end(); it++)
 			    {
 				    data_[dim][*it].rank=xPartialTemp[dim][compteur];
 				    compteur++;
 			    }
-
         }
     }
     delete currMu;//delete the last mu
 
+    //compute quantile for loglikelihood
+    int ind5 = 0.05 * (parameter_.nGibbsL-parameter_.burnL);
+    int ind95 = 0.95 * (parameter_.nGibbsL-parameter_.burnL);
+    vector<double> itericltemp = iterloglik;
+    for(int i = 0; i < (int) itericltemp.size(); i++)
+    {
+      itericltemp[i] *=-2;
+      itericltemp[i] += -2*iterEntropy(i) + (2*g_*d_+g_-1)*log(n_);
+    }
+        
+    sort(itericltemp.begin(),itericltemp.end());
+    output_.confidenceICL.first = itericltemp[ind5];
+    output_.confidenceICL.second = itericltemp[ind95];
+    
+    sort(iterloglik.begin(),iterloglik.end());
+
+    output_.confidenceLoglikelihood.first = iterloglik[ind5];
+    output_.confidenceLoglikelihood.second = iterloglik[ind95];
 
 	//if(parameter_.detail)
     	//cout<<"Computing time for log-likelihood approximation: "<<(double) tL/CLOCKS_PER_SEC<<"s ("<<(double) tL/CLOCKS_PER_SEC/compteur<<"s per mu)."<<endl;
@@ -866,48 +891,55 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
 //LL gibbs
 double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,vector<vector<double> > const& p,
 		vector<double> const& proportion,ArrayXXd &tik,vector<vector<vector<int> > > &Y,vector<vector<vector<int> > > &xTemp, ArrayXXd &probabilities,
-    vector<vector<vector<double> > > &score)
+    vector<vector<vector<double> > > &score, vector<double> &iterloglik, ArrayXd &iterEntropy)
 {
     long double p1(0),p2(0),p1x(0),p2x(0),alea(0),l(0),li(0),div((long double) 1/(parameter_.nGibbsL-parameter_.burnL));
 	  vector<int> compteur(d_,0);
-    vector<int> x1,x2;
-    
+    vector<int> x1,x2;    
 
     //objet pour stockage de calcul pour éviter répétition
     ArrayXXd proba1(d_,g_),proba2(d_,g_);
     ArrayXd proba1X(g_),proba2X(g_);
 
+    //store proportion
     ArrayXd prop(g_);
-    for(int i(0);i<g_;i++)
+    for(int i = 0; i < g_; i++)
     	prop(i)=proportion[i];
     ArrayXXd propb(1,g_);
     propb=prop.transpose();
-
-    //génération rang 1 2 3 ..m par dimension
+  
     vector<vector<int> > yTemp(d_),x(d_);
-    for(int j(0);j<d_;j++)
+    vector<vector<vector<int> > > scoreCount(d_);
+    for(int j = 0; j < d_; j++)
     {
+        //génération rang 1 2 3 ..m par dimension
         yTemp[j].resize(m_[j]);
-        for(int i(0);i<m_[j];i++)
+        for(int i = 0; i < m_[j]; i++)
             yTemp[j][i]=i+1;
+            
+        //initialize score
+        scoreCount[j].resize(m_[j],vector<int> (m_[j],0));
     }
 
-    vector<vector<vector<int> > > scoreCount(d_);
-    for(int i = 0; i < d_; i++)
-      scoreCount[i].resize(m_[i],vector<int> (m_[i],0));
+    
+    //initialize iterloglik
+    for(int i = 0; i < (parameter_.nGibbsL-parameter_.burnL); i++)
+      iterloglik[i] = 0;
 
+    //
+    ArrayXXd iterEntropyTemp(n_,parameter_.nGibbsL-parameter_.burnL);
 
-    //simulation de y multi dimensionnel
-    for(int ind(0);ind<n_;ind++)
+    //start estimation
+    for(int ind = 0; ind < n_; ind++)
     {
-//cout<<"ind "<<ind<<endl;
+        //cout<<"ind "<<ind<<endl;
         vector<vector<int> > y(d_),y2(d_),y1(d_);
         li=0;
         //algorithme de Gibbs pour simuler yi
 
         //initialisation de y et p pour Gibbs
         y=yTemp;
-        for(int j(0);j<d_;j++)
+        for(int j = 0; j < d_; j++)
         {
             for(int jj = 0; jj < m_[j]; jj++)
               for(int jjj = 0; jjj < m_[j]; jjj++)
@@ -917,7 +949,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
             x[j]=data_[j][ind].rank;
         }
 
-        y1=y;
+        y1 = y;
 
         for(int k = 0; k < g_; k++)
         {
@@ -929,7 +961,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
         p1 = (long double) (propb*proba1.colwise().prod()).sum();
         proba2 = proba1;
          
-
+        //start gibbs for sample ind
         for(int iter = 0; iter< parameter_.nGibbsL; iter++)
         {
 
@@ -1026,7 +1058,14 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
                 double den(calculInter.sum());
                 tik.row(ind) += (calculInter/den);
 
+                iterEntropyTemp(ind,iter-parameter_.burnL)=0;
+                for(int indent = 0; indent < g_; indent++)
+                  if(tik(ind,indent)!=0)
+                    iterEntropyTemp(ind,iter-parameter_.burnL) += tik(ind,indent)/(iter-parameter_.burnL+1) * log(tik(ind,indent)/(iter-parameter_.burnL+1));
+
                 li+=(long double) 1/den;
+                
+                iterloglik[iter-parameter_.burnL] -= log( (double) (li / (double) (iter - parameter_.burnL + 1)));
                 
                 //compute score partial rank
                 for(int dim = 0; dim < d_; dim++)
@@ -1035,16 +1074,15 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
                   {
                     for(int indElem = 0; indElem < m_[dim]; indElem++)
                       scoreCount[dim][indElem][x[dim][indElem]-1]++;
-
         	        }
-                }
+                }  
+            }//end if not burn
 
-                
-            }
 
         }//fin du gibbs pour l'individu ind
 
-        l+=log(1/(li*div));
+
+        l -= log(li*div);//ok:log(1/div)=-log(div)
 
         tik.row(ind)*=div;
         probabilities.row(ind)*=div;
@@ -1072,6 +1110,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 
     }//fin boucle sur n
 
+    iterEntropy = iterEntropyTemp.colwise().sum();
 
     return l;
 }
@@ -1098,7 +1137,6 @@ void RankCluster::computePartition()
       //cout<<z_[ind]<<" "<< output_.tik(ind,z_[ind])<<endl;
 		}
 	}
-
 }
 
 //return probability to belong to the final cluster
@@ -1301,21 +1339,26 @@ void RankCluster::run()
 			//compute distance between estimated parameters at each iteration
 			computeDistance(resProp,resP,resMu,resZ,resDonneesPartiel);
 
-			output_.bic=BIC(output_.L,n_,2*g_*d_+g_-1);
-			output_.icl=output_.bic;
-
-			output_.entropy=ArrayXd(n_);
-			for(int i(0);i<n_;i++)
+      //compute criterion
+			output_.bic = BIC(output_.L,n_,2*g_*d_+g_-1);
+      output_.confidenceBIC.first = BIC(output_.confidenceLoglikelihood.second,n_,2*g_*d_+g_-1);
+      output_.confidenceBIC.second = BIC(output_.confidenceLoglikelihood.first,n_,2*g_*d_+g_-1);
+      
+			output_.icl = output_.bic;
+      //output_.confidenceICL.first += output_.confidenceBIC.first;
+      //output_.confidenceICL.second += output_.confidenceBIC.second;
+      
+			output_.entropy = ArrayXd(n_);
+			for(int i = 0; i < n_; i++)
 			{
 				output_.entropy(i)=0;
-				for(int j(0);j<g_;j++)
+				for(int j = 0; j < g_; j++)
 				{
 					if(output_.tik(i,j)!=0)
 						output_.entropy(i)-=output_.tik(i,j)*std::log(output_.tik(i,j));
 				}
-				output_.icl+=2*output_.entropy(i);
+				output_.icl += 2*output_.entropy(i);
 			}
-
 
 			//if(parameter_.detail)
 			//{
@@ -1324,12 +1367,12 @@ void RankCluster::run()
 
 
 			//if the p<0.5, we invert the associate mu and put p=1-p
-			for(int j(0);j<d_;j++)
-				for(int k(0);k<g_;k++)
+			for(int j = 0; j < d_; j++)
+				for(int k = 0; k < g_; k++)
 				{
 					if(p_[j][k]<0.5)
 					{
-						p_[j][k]=1-p_[j][k];
+						p_[j][k] = 1-p_[j][k];
 						inverseRang(mu_[j][k]);
 					}
 				}
@@ -1402,6 +1445,12 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
             yTemp[j][i]=i+1;
     }
 
+    vector<double> iterloglik(parameter_.nGibbsL-parameter_.burnL,0);
+
+    //
+    ArrayXd iterEntropy(parameter_.nGibbsL-parameter_.burnL);
+    ArrayXXd iterEntropyTemp(n_,parameter_.nGibbsL-parameter_.burnL);
+    
     //simulation de y multi dimensionnel
     for(int ind(0);ind<n_;ind++)
     {
@@ -1523,32 +1572,67 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 
                 double den(calculInter.sum());
 				        tik.row(ind)+=(calculInter/den);
+                
+                iterEntropyTemp(ind,iter-parameter_.burnL)=0;
+                for(int indent = 0; indent < g_; indent++)
+                  if(tik(ind,indent)!=0)
+                    iterEntropyTemp(ind,iter-parameter_.burnL) += tik(ind,indent)/(iter-parameter_.burnL+1) * log(tik(ind,indent)/(iter-parameter_.burnL+1));
 
                 li+=(long double) 1/den;
+                
+                iterloglik[iter-parameter_.burnL] -= log( (double) (li / (double) (iter - parameter_.burnL + 1)));
 
             }
 
         }//fin du gibbs pour l'individu ind
 
-        L+=log(1/(li*div));
+        L -= log(li*div);//ok:log(1/div)=-log(div)
         tik.row(ind)*=div;
 
     }//fin boucle sur n
 
+    iterEntropy = iterEntropyTemp.colwise().sum();
+    output_.L = L;
+    
+    //compute quantile
+    int ind5 = 0.05 * (parameter_.nGibbsL-parameter_.burnL);
+    int ind95 = 0.95 * (parameter_.nGibbsL-parameter_.burnL);
+    
+    vector<double> itericltemp = iterloglik;
+    for(int i = 0; i < (int) itericltemp.size(); i++)
+    {
+      itericltemp[i] *=-2;
+      itericltemp[i] += -2*iterEntropy(i) + (2*g_*d_+g_-1)*log(n_);
+    }
+        
+    sort(itericltemp.begin(),itericltemp.end());
+    output_.confidenceICL.first = itericltemp[ind5];
+    output_.confidenceICL.second = itericltemp[ind95];
+    
+    sort(iterloglik.begin(),iterloglik.end());
+    output_.confidenceLoglikelihood.first = iterloglik[ind5];
+    output_.confidenceLoglikelihood.second = iterloglik[ind95];
+    
+    output_.bic = BIC(output_.L,n_,2*g_*d_+g_-1);
+    output_.confidenceBIC.first = BIC(output_.confidenceLoglikelihood.second,n_,2*g_*d_+g_-1);
+    output_.confidenceBIC.second = BIC(output_.confidenceLoglikelihood.first,n_,2*g_*d_+g_-1);
+      
+	  output_.icl = output_.bic;
+      
+	  //bic=BIC(L,n_,2*g_*d_+g_-1);
+	  //icl=bic;
 
-	bic=BIC(L,n_,2*g_*d_+g_-1);
-	icl=bic;
-
-	ArrayXd entropy(n_);
-	for(int i(0);i<n_;i++)
-	{
-		entropy(i)=0;
-		for(int j(0);j<g_;j++)
-		{
-			if(tik(i,j)!=0)
-				entropy(i)-=tik(i,j)*std::log(tik(i,j));
-		}
-		icl+=2*entropy(i);
-	}
+	  ArrayXd entropy(n_);
+	  for(int i(0);i<n_;i++)
+	  {
+		  entropy(i)=0;
+		  for(int j(0);j<g_;j++)
+		  {
+			  if(tik(i,j)!=0)
+				  entropy(i)-=tik(i,j)*std::log(tik(i,j));
+		  }
+		  output_.icl+=2*entropy(i);
+	  }
+  
 
 }

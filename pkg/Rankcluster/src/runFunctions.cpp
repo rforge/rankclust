@@ -136,7 +136,20 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
   double L,bic,icl;
   estimLog.estimateCriterion(L,bic,icl);
 
-  return List::create(Named("ll")=wrap(L),Named("bic")=wrap(bic),Named("icl")=wrap(icl));
+  vector<double> confidenceicl(2,0), confidencebic(2,0), confidencell(2,0);
+  confidencell[0]=estimLog.confidenceLoglikelihood().first;
+  confidencell[1]=estimLog.confidenceLoglikelihood().second;
+  confidenceicl[0]=estimLog.confidenceICL().first;
+  confidenceicl[1]=estimLog.confidenceICL().second;
+  confidencebic[0]=estimLog.confidenceBIC().first;
+  confidencebic[1]=estimLog.confidenceBIC().second;
+  
+  return List::create(Named("ll")=wrap(estimLog.L()),
+    Named("bic")=wrap(estimLog.bic()),
+    Named("icl")=wrap(estimLog.icl()),
+    Named("confidencell")=wrap(confidencell),
+    Named("confidencebic")=wrap(confidencebic),
+    Named("confidenceicl")=wrap(confidenceicl));
 }
 
 

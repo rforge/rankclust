@@ -2,11 +2,12 @@
 #define RANKCLUSTER_H_
 
 /**@file RankCluster.h
- * @brief
+ * @brief Definition of the class @c RankCluster and struct PartialRank, SEMparameters and OutParameters
  */
 //#include <RcppEigen.h>
 #include <vector>
 #include <set>
+#include <utility>
 #include "Eigen/Dense"
 
 #include "functions.h"
@@ -30,7 +31,7 @@ struct PartialRank
 
 struct SEMparameters
 {
-    ///number of iteration in the gibbs of SE step for each dimension of rank
+  ///number of iteration in the gibbs of SE step for each dimension of rank
   std::vector<int> nGibbsSE;
 	///number of iteration in the gibbs of M step for each dimension of rank
 	std::vector<int> nGibbsM;
@@ -50,7 +51,7 @@ struct SEMparameters
 
 struct OutParameters
 {
-    ///loglikelihood
+  ///loglikelihood
 	double L;
 	///bic criterion
 	double bic;
@@ -64,7 +65,13 @@ struct OutParameters
 	Eigen::ArrayXXd probabilities;
   ///percentage of confidence in final estimation of missing data
   std::vector<std::vector<std::vector<double> > > partialRankScore;
-
+  ///5% and 95% quantile of loglikelihood
+  std::pair<double,double> confidenceLoglikelihood;
+  ///5% and 95% quantile of BIC
+  std::pair<double,double> confidenceBIC;  
+  ///5% and 95% quantile of ICL
+  std::pair<double,double> confidenceICL;
+  
 	//algorithm initialization
 	std::vector<std::vector<std::vector<int> > > initialPartialRank;
 	std::vector<std::vector<double> > initialP;
@@ -98,7 +105,7 @@ class RankCluster
                     std::vector<double> const& proportion, std::vector<std::vector<double> > const& p,
                     std::vector<std::vector<std::vector<int> > > const& mu);
 
-        ///destructor
+    ///destructor
 		virtual ~RankCluster();
 
 		/// run the SEM algorithm
@@ -135,7 +142,9 @@ class RankCluster
 		inline std::vector<double> distZ() const {return output_.distZ;}
 		inline std::vector<std::vector<std::vector<int> > > distPartialRank() const {return output_.distPartialRank;}
 		inline std::vector<std::vector<std::vector<double> > > partialRankScore() const {return output_.partialRankScore;}
-
+    inline std::pair<double,double> confidenceLoglikelihood() const {return output_.confidenceLoglikelihood;};
+    inline std::pair<double,double> confidenceBIC() const {return output_.confidenceBIC;};  
+    inline std::pair<double,double> confidenceICL() const {return output_.confidenceICL;};
 
   
     ///reestimation of criterion
@@ -154,9 +163,9 @@ class RankCluster
         */
 		void readRankingRank(std::vector<std::vector<int> > const& X, int const& dim, int const& j, std::vector<int> const& indM);
 
-		///initailization of parameters
+		///initialization of parameters
 		void initialization();
-		///SE step
+		/** SE step */
 		void SEstep();
 		/**unidimensionnal gibbs sampler for y estimation
 		* @param indexDim index of the dimension (<d_)
@@ -175,17 +184,31 @@ class RankCluster
 		* @param indCl index of teh cluster
 		*/
 		void simuM(int indexDim,int indCl);
-
+    /** likelihood step
+     * @param listeMu mu for every iterations of the SEM
+     * @param resP pi for every iterations of the SEM
+     * @param resProp proportion for every iterations of the SEM
+     */
 		void likelihood(std::vector<std::vector<std::vector<std::vector<int> > > > &listeMu,std::vector<std::vector<std::vector<double> > > &resP,
 						std::vector<std::vector<double> > &resProp);
 
-		double computeLikelihood(std::vector<std::vector<std::vector<int> > > const& mu,std::vector<std::vector<double> > const& p,
-				std::vector<double> const& proportion,Eigen::ArrayXXd &tik,std::vector<std::vector<std::vector<int> > > &Y,
+    /** compute the log likelihood for a set of parameter
+     * @param mu estimated central rank 
+     * @param p estimated p (dispersion parameter)
+     * @param proportion estimated proportion
+     * @param tik used for store tik
+     * @param Y used for store estimated y
+     * @param xTemp used for store estimated partial rank
+     * @param score used for confidence in estimated partial rank
+     * @param iterloglik estimated loglikelihood at each iteration
+     */
+		double computeLikelihood(std::vector<std::vector<std::vector<int> > > const& mu, std::vector<std::vector<double> > const& p,
+				std::vector<double> const& proportion, Eigen::ArrayXXd &tik, std::vector<std::vector<std::vector<int> > > &Y,
 				std::vector<std::vector<std::vector<int> > > &xTemp, Eigen::ArrayXXd &probabilities,
-        std::vector<std::vector<std::vector<double> > > &score);
-        ///compute the final z_
+        std::vector<std::vector<std::vector<double> > > &score, std::vector<double> &iterloglik, Eigen::ArrayXd &iterEntropy);
+    ///compute the final z_
 		void computePartition();
-        ///compute distance between final parameterss and each iteration parameters
+    ///compute distance between final parameters and each iteration parameters
 		void computeDistance(std::vector<std::vector<double> > const& resProp,std::vector<std::vector<std::vector<double> > > const& resP,
 				std::vector<std::vector<std::vector<std::vector<int> > > > const& resMu,std::vector<std::vector<int> > const& resZ,
 				std::vector<std::vector<std::vector<std::vector<int> > > > const& resDonneesPartiel);

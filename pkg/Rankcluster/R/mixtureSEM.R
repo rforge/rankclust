@@ -138,8 +138,11 @@ mixtureSEM<-function(X,g,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
       
 			result=new(Class="Output",
 				bic=res$stock[4],
+        confidencebic=c(res$stock[8],res$stock[9]),
 				icl=res$stock[5],
+				confidenceicl=c(res$stock[10],res$stock[11]),
 				ll=res$stock[3],
+				confidencell=c(res$stock[6],res$stock[7]),
 				proportion=res$proportion,
 				pi=res$p,
 				mu=res$referenceRank,
@@ -165,9 +168,11 @@ mixtureSEM<-function(X,g,m,Qsem,Bsem,Ql,Bl,RjSE,RjM,maxTry,run,detail)
 		{
 			
 			result=new(Class="Output",
-				bic=res$stock[4],
-				icl=res$stock[5],
-				ll=res$stock[3],
+			  bic=res$stock[4],
+			  confidencebic=c(res$stock[8],res$stock[9]),
+			  icl=res$stock[5],
+			  confidenceicl=c(res$stock[10],res$stock[11]),
+			  ll=res$stock[3],
 				proportion=res$proportion,
 				pi=res$p,
 				mu=res$referenceRank,
