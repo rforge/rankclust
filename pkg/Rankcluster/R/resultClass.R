@@ -8,10 +8,13 @@
 ##'   \item{proportion}{a K-vector of proportions.}
 ##'   \item{pi}{a K*p-matrix composed of the scale parameters.}
 ##'   \item{mu}{a matrix with K lines and sum(m) columns in which line k is composed of the location
-##'   parameters of cluster k..}
+##'   parameters of cluster k.}
 ##'   \item{ll}{the estimated log-likelihood.}
+##'   \item{confidencell}{5% and 95% quantiles of the estimated loglikelihood.}
 ##'   \item{bic}{the estimated BIC criterion.}
+##'   \item{confidencebic}{5% and 95% quantiles of the estimated bic.}
 ##'   \item{icl}{the estimated ICL criterion.}
+##'   \item{confidencicl}{5% and 95% quantiles of the estimated icl.}
 ##'   \item{tik}{a n*K-matrix containing the estimation of the conditional probabilities for the observed
 ##' ranks to belong to each cluster..}
 ##'   \item{partition}{a n-vector containing the partition estimation resulting from the clustering.}
