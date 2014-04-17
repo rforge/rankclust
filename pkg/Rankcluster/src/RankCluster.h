@@ -200,12 +200,12 @@ class RankCluster
      * @param Y used for store estimated y
      * @param xTemp used for store estimated partial rank
      * @param score used for confidence in estimated partial rank
-     * @param iterloglik estimated loglikelihood at each iteration
+     * @param iterproba probability of each individuals at each iteration
      */
 		double computeLikelihood(std::vector<std::vector<std::vector<int> > > const& mu, std::vector<std::vector<double> > const& p,
 				std::vector<double> const& proportion, Eigen::ArrayXXd &tik, std::vector<std::vector<std::vector<int> > > &Y,
 				std::vector<std::vector<std::vector<int> > > &xTemp, Eigen::ArrayXXd &probabilities,
-        std::vector<std::vector<std::vector<double> > > &score, std::vector<double> &iterloglik, Eigen::ArrayXd &iterEntropy);
+        std::vector<std::vector<std::vector<double> > > &score, std::vector<std::vector<double> > &iterproba);
     ///compute the final z_
 		void computePartition();
     ///compute distance between final parameters and each iteration parameters
