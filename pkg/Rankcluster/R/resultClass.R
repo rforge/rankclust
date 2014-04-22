@@ -183,7 +183,7 @@ setClass(
 setMethod(
   f="[",
   signature="Rankclust",
-  definition=function(x,i,j,drop){
+  definition=function(x,i){
 	if(x@convergence)
 	{
 		if(is.numeric(i))
@@ -367,9 +367,9 @@ setMethod(
 #'
 #' show function.
 #' 
-#' This function shows the elements of an object of class Output.
+#' This function shows the elements of a given object.
 #' 
-#' @param object of class Output.
+#' @param object an object of class Output or Rankclust.
 #' 
 #' @name show
 #' @rdname show-methods
@@ -400,13 +400,7 @@ setMethod(
 )
 
 
-#'
-#' show function.
-#' 
-#' This function shows the output from \code{rankclust}.
-#' 
-#' @param object output object from \code{\link{rankclust}}.
-#' 
+ 
 #' @name show
 #' @rdname show-methods
 #' @docType methods

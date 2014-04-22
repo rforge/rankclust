@@ -13,28 +13,26 @@ containing the size of each dimension.
 \item{mu}{a matrix with K lines and sum(m) columns in which
 line k is composed of the location parameters of cluster
 k.} \item{ll}{the estimated log-likelihood.}
-\item{confidencell}{5\% and 95\% quantiles of the estimated loglikelihood.}
-\item{bic}{the estimated BIC criterion.}
-\item{confidencebic}{5\% and 95\% quantiles of the estimated bic.}
-\item{icl}{the
-estimated ICL criterion.}
-\item{confidencicl}{5\% and 95\% quantiles of the estimated icl.}
-\item{tik}{a n*K-matrix
-containing the estimation of the conditional probabilities
-for the observed ranks to belong to each cluster..}
-\item{partition}{a n-vector containing the partition
-estimation resulting from the clustering.} \item{entropy}{a
-n*2-matrix containing for each observation its estimated
-cluster and its entropy. The entropy output illustrates the
-confidence in the clustering of each observation (a high
-entropy means a low confidence in the clustering)..}
-\item{probability}{a n*2-matrix similar to the entropy
-output, containing for each observation its estimated
-cluster and its probability p(xi; mk, pk) given its
-cluster. This probability is estimated using the last
-simulation of the presentation orders used for the
-likelihood approximation. The probability output exhibits
-the best representative of each cluster.}
+\item{confidencell}{5% and 95% quantiles of the estimated
+loglikelihood.} \item{bic}{the estimated BIC criterion.}
+\item{confidencebic}{5% and 95% quantiles of the estimated
+bic.} \item{icl}{the estimated ICL criterion.}
+\item{confidencicl}{5% and 95% quantiles of the estimated
+icl.} \item{tik}{a n*K-matrix containing the estimation of
+the conditional probabilities for the observed ranks to
+belong to each cluster..} \item{partition}{a n-vector
+containing the partition estimation resulting from the
+clustering.} \item{entropy}{a n*2-matrix containing for
+each observation its estimated cluster and its entropy. The
+entropy output illustrates the confidence in the clustering
+of each observation (a high entropy means a low confidence
+in the clustering)..} \item{probability}{a n*2-matrix
+similar to the entropy output, containing for each
+observation its estimated cluster and its probability p(xi;
+mk, pk) given its cluster. This probability is estimated
+using the last simulation of the presentation orders used
+for the likelihood approximation. The probability output
+exhibits the best representative of each cluster.}
 \item{convergence}{a boolean indicating if none problem of
 empty class has been encountered.} \item{partial}{a boolean
 indicating the presence of partial rankings or ties.}

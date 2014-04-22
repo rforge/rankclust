@@ -4,15 +4,15 @@
 \alias{show,Output-method}
 \alias{show,Rankclust-method}
 \title{show function.}
-\arguments{
-  \item{object}{of class Output.}
+\usage{
+\S4method{show}{Output}(object)
 
-  \item{object}{output object from
-  \code{\link{rankclust}}.}
+\S4method{show}{Rankclust}(object)
+}
+\arguments{
+  \item{object}{an object of class Output or Rankclust.}
 }
 \description{
-  This function shows the elements of an object of class
-  Output.
-
-  This function shows the output from \code{rankclust}.
+This function shows the elements of a given object.
 }
+
