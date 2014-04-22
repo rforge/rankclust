@@ -20,9 +20,9 @@ The heterogeneity of the rank population is modelled by a mixture of ISR, wherea
 \tabular{ll}{
 Package: \tab Rankcluster\cr
 Type: \tab Package\cr
-Version: \tab 0.92\cr
-Date: \tab 2014-02-11\cr
-License: \tab GPL (>=2) | file LICENSE\cr
+Version: \tab 0.92.7\cr
+Date: \tab 2014-04-22\cr
+License: \tab GPL (>=2) \cr
 }
 
 The main function is \link{rankclust}. 

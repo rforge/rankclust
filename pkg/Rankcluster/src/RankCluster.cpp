@@ -861,11 +861,10 @@ void RankCluster::likelihood(vector<vector<vector<vector<int> > > > &listeMu,vec
     delete currMu;//delete the last mu
 
     //compute quantile for loglikelihood
-    int ind5 = 0.05 * (parameter_.nGibbsL-parameter_.burnL);
-    int ind95 = 0.95 * (parameter_.nGibbsL-parameter_.burnL);
+    int ind5 = std::max(0, (int) (0.05 * (parameter_.nGibbsL-parameter_.burnL-1)));
+    int ind95 = std::min((int) (0.95 * (parameter_.nGibbsL-parameter_.burnL-1)), (parameter_.nGibbsL-parameter_.burnL)-1);
     
     long double l5 = 0, l95 = 0;
-    long double div((long double) 1/(parameter_.nGibbsL-parameter_.burnL));
     for(int i = 0; i < n_; i++)
     {
       sort(iterproba[i].begin(),iterproba[i].end());
@@ -888,7 +887,8 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 		vector<double> const& proportion,ArrayXXd &tik,vector<vector<vector<int> > > &Y,vector<vector<vector<int> > > &xTemp, ArrayXXd &probabilities,
     vector<vector<vector<double> > > &score, vector<vector<double> > &iterproba)
 {
-    long double p1(0),p2(0),p1x(0),p2x(0),alea(0),l(0),li(0),div((long double) 1/(parameter_.nGibbsL-parameter_.burnL));
+    long double p1(0),p2(0),p1x(0),p2x(0),alea(0),l(0),li(0);
+    double div((double) (parameter_.nGibbsL-parameter_.burnL));
 	  vector<int> compteur(d_,0);
     vector<int> x1,x2;    
 
@@ -1064,10 +1064,11 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
         }//fin du gibbs pour l'individu ind
 
 
-        l -= log(li*div);//ok:log(1/div)=-log(div)
+        //l -= log(li*div);
+        l -= log(li);
 
-        tik.row(ind)*=div;
-        probabilities.row(ind)*=div;
+        tik.row(ind) /= div;
+        probabilities.row(ind) /= div;
         
         //sauvegarde des nouveau y et x
         for(int j(0);j<d_;j++)
@@ -1085,6 +1086,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 
     }//fin boucle sur n
 
+    l += n_ * log(div);
     return l;
 }
 
@@ -1398,7 +1400,8 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 
     /*log likelihood computation*/
 	  ArrayXXd tik(n_,g_);
-    long double p1(0),p2(0),p1x(0),p2x(0),alea(0),li(0),div((long double) 1/(parameter_.nGibbsL-parameter_.burnL));
+    long double p1(0),p2(0),p1x(0),p2x(0),alea(0),li(0);
+    double div((double) (parameter_.nGibbsL-parameter_.burnL));
 	  vector<int> compteur(d_,0);
     vector<int> x1,x2;
 
@@ -1422,11 +1425,12 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
     }
 
     //compute quantile
-    int ind5 = 0.05 * (parameter_.nGibbsL-parameter_.burnL);
-    int ind95 = 0.95 * (parameter_.nGibbsL-parameter_.burnL);
-
+    int ind5 = std::max(0, (int) (0.05 * (parameter_.nGibbsL-parameter_.burnL-1)));
+    int ind95 = std::min((int) (0.95 * (parameter_.nGibbsL-parameter_.burnL-1)), (parameter_.nGibbsL-parameter_.burnL)-1);
     vector<double> iterprobatemp(parameter_.nGibbsL-parameter_.burnL,0);
     double L95(0), L5(0);
+
+    vector<double> logL(parameter_.nGibbsL-parameter_.burnL,0);
 
     //simulation de y multi dimensionnel
     for(int ind(0);ind<n_;ind++)
@@ -1477,27 +1481,27 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 
                     alea=(long double) rand()/RAND_MAX*(p1+p2);//unif(0,p1+p2)
 
-                    if(alea<p2)//acceptation du changement de y
+                    if(alea<p2)//accept changement
                     {
                         y[J]=y2[J];
                         p1=p2;
                         proba1.row(J)=proba2.row(J);
                         y1[J]=y[J];
                     }
-                    else//on ne modifie pas y
+                    else//do not change y
                     {
                         y[J]=y1[J];//rajout J
                         proba2.row(J)=proba1.row(J);
                     }
                 }
             }
-            //y_i est mis à jour
+            //y_i is updated
 
 
-            /*simulation des x_i^j qui sont partiels*/
+            /*simulation of partial rank with a gibbs sampler*/
             for(int J = 0; J < d_; J++)
             {
-                if(data_[J][ind].isNotFull)//simulation de xi si partiel
+                if(data_[J][ind].isNotFull)//simulation of xi if it is a partial rank
                 {
                     x1 = x[J];
                     proba1X = proba1.row(J);
@@ -1507,7 +1511,7 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
                     {
                         for(int k = 0; k < (int) (data_[J][ind].missingIndex[kk]).size()-1; k++)
                         {
-                            //nouveau x à tester
+                            //new x to test
                             x2 = x[J];
                             x2[data_[J][ind].missingIndex[kk][k]] = x[J][data_[J][ind].missingIndex[kk][k+1]];
                             x2[data_[J][ind].missingIndex[kk][k+1]] = x[J][data_[J][ind].missingIndex[kk][k]];
@@ -1519,7 +1523,7 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 
                             alea = (double) rand()/RAND_MAX*(p1x+p2x);
 
-                            if(alea < p2)//acceptation du changement
+                            if(alea < p2)//we accept the changement
                             {
                                 x[J] = x2;
                                 p1x = p2x;
@@ -1530,45 +1534,47 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
                                 x[J] = x1;
                         }
                     }
-
                     proba1.row(J)=proba1X;
                 }
-
             }
 
-            if(iter>=parameter_.burnL)
+            if(iter >= parameter_.burnL)
             {
                 ArrayXd calculInter(g_);
-                for(int cl(0);cl<g_;cl++)
+                for(int cl = 0; cl < g_; cl++)
                 {
-                    calculInter(cl)=1;
-                    for(int dim(0);dim<d_;dim++)
-                        calculInter(cl)*=proba1(dim,cl);
-                    calculInter(cl)*=propb(cl);
+                    calculInter(cl) = 1;
+                    for(int dim = 0; dim < d_; dim++)
+                        calculInter(cl) *= proba1(dim,cl);
+                    calculInter(cl) *= propb(cl);
                 }
 
-                double den(calculInter.sum());
-				        tik.row(ind)+=(calculInter/den);
+                double den = calculInter.sum();
+				        tik.row(ind) += (calculInter/den);
                 
 
-                li+=(long double) 1/den;
+                li += (long double) 1/den;
                 
                 iterprobatemp[iter-parameter_.burnL] = 1/den;
 
             }
 
-        }//fin du gibbs pour l'individu ind
+        }//end gibbs sampling for sample ind
 
         sort(iterprobatemp.begin(),iterprobatemp.end());
         L5 -= log(iterprobatemp[ind95]);
         L95 -= log(iterprobatemp[ind5]);
-        L -= log(li*div);//ok:log(1/div)=-log(div)
-        tik.row(ind)*=div;
 
-    }//fin boucle sur n
+        //L -= log(li*div);
+        L -= log(li);
+     
+        tik.row(ind) /= div;
 
-    output_.L = L;
+    }//end loop on sample
     
+    L += (double) n_ * log(div);
+    
+    output_.L = L;
     output_.confidenceLoglikelihood.first = L5;
     output_.confidenceLoglikelihood.second = L95;
     
@@ -1581,13 +1587,13 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
     output_.confidenceICL.second = output_.confidenceBIC.second;
     
 	  ArrayXd entropy(n_);
-	  for(int i(0);i<n_;i++)
+	  for(int i = 0; i < n_; i++)
 	  {
 		  entropy(i)=0;
-		  for(int j(0);j<g_;j++)
+		  for(int j = 0; j < g_; j++)
 		  {
 			  if(tik(i,j)!=0)
-				  entropy(i)-=tik(i,j)*std::log(tik(i,j));
+				  entropy(i) -= tik(i,j)*std::log(tik(i,j));
 		  }
 		  output_.icl += 2*entropy(i);
       output_.confidenceICL.first += 2*entropy(i);
