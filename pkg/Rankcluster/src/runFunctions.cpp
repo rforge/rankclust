@@ -96,21 +96,24 @@ RcppExport SEXP simulISRR(SEXP n,SEXP m,SEXP mu,SEXP p)
 	return data;
 }
 
-RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEXP iterL, SEXP burnL)
+RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEXP iterL, SEXP burnL, SEXP IC)
 {
   //conversion
 	NumericMatrix XR(X);
 	int n(XR.nrow()),col(XR.ncol());
 	vector<vector<int> > data(n,vector<int> (col));
-	for(int i(0);i<n;i++)
-		for(int j(0);j<col;j++)
-			data[i][j]=XR[i+j*n];
-
+  for(int i = 0; i < n; i++)
+		for(int j = 0; j < col; j++)
+			data[i][j] = XR[i+j*n];
+      
+  int nbRun = as<int>(IC);
   NumericVector proportionR(proportion);
 	NumericVector mR(m);
+  
   vector<int> mC=as<vector<int> > (mR);
-	vector<double> prop=as<vector<double> > (proportionR);
+	vector<double> prop=as<vector<double> >(proportionR);
 	vector<vector<double> > pC;
+  
 	pC=convertToVVd(p);
 
 	NumericMatrix muR(mu);
@@ -118,14 +121,14 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
 	muC=numMat2vvvInt(mu,mC);
 
   SEMparameters param;
-	param.nGibbsSE=mC;
-	param.nGibbsM=mC;
-	param.maxIt=1;
-	param.burnAlgo=1;
-	param.nGibbsL=as<int>(iterL);
-	param.burnL=as<int>(burnL);
-	param.maxTry=1;
-	param.detail=false;
+	param.nGibbsSE = mC;
+	param.nGibbsM = mC;
+	param.maxIt = 1;
+	param.burnAlgo = 1;
+	param.nGibbsL = as<int>(iterL);
+	param.burnL = as<int>(burnL);
+	param.maxTry = 1;
+	param.detail = false;
 
   RankCluster estimLog(data,mC,param,prop,pC,muC);
   if(!estimLog.dataOk())
@@ -136,20 +139,9 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
   double L,bic,icl;
   estimLog.estimateCriterion(L,bic,icl);
 
-  vector<double> confidenceicl(2,0), confidencebic(2,0), confidencell(2,0);
-  confidencell[0]=estimLog.confidenceLoglikelihood().first;
-  confidencell[1]=estimLog.confidenceLoglikelihood().second;
-  confidenceicl[0]=estimLog.confidenceICL().first;
-  confidenceicl[1]=estimLog.confidenceICL().second;
-  confidencebic[0]=estimLog.confidenceBIC().first;
-  confidencebic[1]=estimLog.confidenceBIC().second;
-  
   return List::create(Named("ll")=wrap(estimLog.L()),
     Named("bic")=wrap(estimLog.bic()),
-    Named("icl")=wrap(estimLog.icl()),
-    Named("confidencell")=wrap(confidencell),
-    Named("confidencebic")=wrap(confidencebic),
-    Named("confidenceicl")=wrap(confidenceicl));
+    Named("icl")=wrap(estimLog.icl()));
 }
 
 

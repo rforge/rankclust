@@ -8,6 +8,7 @@
 #' @param m a vector containing the size of ranks for each dimension.
 #' @param Ql number of iterations of the Gibbs sampler used for the estimation of the log-likelihood.
 #' @param Bl burn-in period of the Gibbs sampler.
+#' @param IC number of run of the computation of the loglikelihood.
 #' @return a list containing:
 #'   \item{ll}{the estimated log-likelihood.}
 #'   \item{bic}{the estimated BIC criterion.}
@@ -18,7 +19,7 @@
 #' if(res@@convergence)
 #' 	crit=criteria(big4$data,res[2]@@proportion,res[2]@@pi,res[2]@@mu,big4$m,Ql=200,Bl=100)
 #' @export
-criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100)
+criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100,IC=1)
 {
   if(missing(proportion))
     stop("proportion is missing")
@@ -28,8 +29,7 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100)
     stop("pi is missing")
   if(missing(m))
     stop("m is missing")
-
-  
+    
   #data
   if(missing(data))
     stop("data is missing")
@@ -45,7 +45,6 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100)
     stop("proportion must be a vector of positive real whose sum equal 1")
   if(abs(1-sum(proportion))>1e-10)
     stop("proportion must be a vector of positive real whose sum equal 1")
-  
   
   #m
   if(!is.vector(m,mode="numeric"))
@@ -72,13 +71,18 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100)
     stop("Ql must be a strictly positive integer")
   if( (Ql!=round(Ql)) || (Ql<=0))
     stop("Ql must be a strictly positive integer")
-  
+
+  #IC
+  if(!is.numeric(IC) || (length(IC)>1))
+    stop("IC must be a strictly positive integer")
+  if( (IC!=round(IC)) || (IC<=0))
+    stop("IC must be a strictly positive integer")
+    
   #Bl
   if(!is.numeric(Bl) || (length(Bl)>1))
     stop("Bl must be a strictly positive integer lower than Ql")
   if( (Bl!=round(Bl)) || (Bl<=0) || (Bl>=Ql))
     stop("Bl must be a strictly positive integer lower than Ql")
-
 
   #mu
   if(!is.numeric(mu) || !is.matrix(mu))
@@ -108,7 +112,7 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100)
   
   a=t(pi)
   
-  LL=.Call("loglikelihood",data,mu,a,proportion,m,Ql,Bl,PACKAGE="Rankcluster")
+  LL=.Call("loglikelihood",data,mu,a,proportion,m,Ql,Bl,IC,PACKAGE="Rankcluster")
   
   if(LL$ll=="pb")
     stop("Data are not correct.")

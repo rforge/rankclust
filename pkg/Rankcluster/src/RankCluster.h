@@ -65,12 +65,6 @@ struct OutParameters
 	Eigen::ArrayXXd probabilities;
   ///percentage of confidence in final estimation of missing data
   std::vector<std::vector<std::vector<double> > > partialRankScore;
-  ///5% and 95% quantile of loglikelihood
-  std::pair<double,double> confidenceLoglikelihood;
-  ///5% and 95% quantile of BIC
-  std::pair<double,double> confidenceBIC;  
-  ///5% and 95% quantile of ICL
-  std::pair<double,double> confidenceICL;
   
 	//algorithm initialization
 	std::vector<std::vector<std::vector<int> > > initialPartialRank;
@@ -142,10 +136,6 @@ class RankCluster
 		inline std::vector<double> distZ() const {return output_.distZ;}
 		inline std::vector<std::vector<std::vector<int> > > distPartialRank() const {return output_.distPartialRank;}
 		inline std::vector<std::vector<std::vector<double> > > partialRankScore() const {return output_.partialRankScore;}
-    inline std::pair<double,double> confidenceLoglikelihood() const {return output_.confidenceLoglikelihood;};
-    inline std::pair<double,double> confidenceBIC() const {return output_.confidenceBIC;};  
-    inline std::pair<double,double> confidenceICL() const {return output_.confidenceICL;};
-
   
     ///reestimation of criterion
     void estimateCriterion(double &L,double &bic,double &icl);
@@ -205,7 +195,7 @@ class RankCluster
 		double computeLikelihood(std::vector<std::vector<std::vector<int> > > const& mu, std::vector<std::vector<double> > const& p,
 				std::vector<double> const& proportion, Eigen::ArrayXXd &tik, std::vector<std::vector<std::vector<int> > > &Y,
 				std::vector<std::vector<std::vector<int> > > &xTemp, Eigen::ArrayXXd &probabilities,
-        std::vector<std::vector<std::vector<double> > > &score, std::vector<std::vector<double> > &iterproba);
+        std::vector<std::vector<std::vector<double> > > &score);
     ///compute the final z_
 		void computePartition();
     ///compute distance between final parameters and each iteration parameters

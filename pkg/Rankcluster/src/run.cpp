@@ -9,14 +9,14 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 	int g=as<int>(K),runC(as<int>(run));
 	vector<int> mC=as<vector<int> >(m);
 	SEMparameters param;
-	param.nGibbsSE=as<vector<int> >(RjSE);
-	param.nGibbsM=as<vector<int> >(RjM);
-	param.maxIt=as<int>(Qsem);
-	param.burnAlgo=as<int>(Bsem);
-	param.nGibbsL=as<int>(Ql);
-	param.burnL=as<int>(Bl);
-	param.maxTry=as<int>(maxTry);
-	param.detail=as<bool>(detail);
+	param.nGibbsSE = as<vector<int> >(RjSE);
+	param.nGibbsM = as<vector<int> >(RjM);
+	param.maxIt = as<int>(Qsem);
+	param.burnAlgo = as<int>(Bsem);
+	param.nGibbsL = as<int>(Ql);
+	param.burnL = as<int>(Bl);
+	param.maxTry = as<int>(maxTry);
+	param.detail = as<bool>(detail);
 
 	NumericMatrix XR(X);
 	int n(XR.nrow()),col(XR.ncol());
@@ -64,12 +64,6 @@ RcppExport SEXP semR(SEXP X,SEXP m,SEXP K,SEXP Qsem,SEXP Bsem,SEXP Ql,SEXP Bl,SE
 		stock[2]=semgibbs.L();
 		stock[3]=semgibbs.bic();
 		stock[4]=semgibbs.icl();
-    stock[5]=semgibbs.confidenceLoglikelihood().first;
-    stock[6]=semgibbs.confidenceLoglikelihood().second;
-    stock[7]=semgibbs.confidenceBIC().first;
-    stock[8]=semgibbs.confidenceBIC().second;
-    stock[9]=semgibbs.confidenceICL().first;
-    stock[10]=semgibbs.confidenceICL().second;
 		int d=mC.size();
 		int n=XR.nrow();
 		vector<vector<vector<int> > > data(d,vector<vector<int> > (n));
