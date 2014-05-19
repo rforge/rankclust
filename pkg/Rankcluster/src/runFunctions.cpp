@@ -2,6 +2,7 @@
 #include "runFunctions.h"
 #include "runTest.h"
 #include "RankCluster.h"
+#include <omp.h>
 
 using namespace Rcpp ;
 using namespace std ;
@@ -96,7 +97,7 @@ RcppExport SEXP simulISRR(SEXP n,SEXP m,SEXP mu,SEXP p)
 	return data;
 }
 
-RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEXP iterL, SEXP burnL, SEXP IC)
+RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEXP iterL, SEXP burnL, SEXP IC, SEXP nb_cpus)
 {
   //conversion
 	NumericMatrix XR(X);
@@ -107,6 +108,7 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
 			data[i][j] = XR[i+j*n];
       
   int nbRun = as<int>(IC);
+  int nb = as<int>(nb_cpus);
   NumericVector proportionR(proportion);
 	NumericVector mR(m);
   
@@ -136,12 +138,22 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
   	return List::create(Named("ll")=wrap("pb"));  
   }
   
-  double L,bic,icl;
-  estimLog.estimateCriterion(L,bic,icl);
+  vector<double> L(nbRun,0), bic(nbRun,0), icl(nbRun,0);
+  nb = std::min(nb, omp_get_num_procs());
+  #pragma omp parallel num_threads(nb)
+  {
+    #pragma omp for schedule(dynamic,1)
+    for(int i = 0; i < nbRun; i++)
+    {
+      RankCluster estimLogpar(estimLog);
+      estimLogpar.estimateCriterion(L[i],bic[i],icl[i]);
+    }
+  }
+  
+  return List::create(Named("ll")=wrap(L),
+    Named("bic")=wrap(bic),
+    Named("icl")=wrap(icl));//*/
 
-  return List::create(Named("ll")=wrap(estimLog.L()),
-    Named("bic")=wrap(estimLog.bic()),
-    Named("icl")=wrap(estimLog.icl()));
 }
 
 

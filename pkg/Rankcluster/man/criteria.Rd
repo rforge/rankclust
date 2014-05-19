@@ -3,7 +3,8 @@
 \alias{criteria}
 \title{criteria estimation}
 \usage{
-criteria(data, proportion, pi, mu, m, Ql = 500, Bl = 100, IC = 1)
+criteria(data, proportion, pi, mu, m, Ql = 500, Bl = 100, IC = 1,
+  nb_cpus = 1)
 }
 \arguments{
 \item{data}{a matrix in which each row is a rank (partial or not; for partial rank, missing elements of a rank are put to 0 ).}
@@ -21,6 +22,8 @@ criteria(data, proportion, pi, mu, m, Ql = 500, Bl = 100, IC = 1)
 \item{Bl}{burn-in period of the Gibbs sampler.}
 
 \item{IC}{number of run of the computation of the loglikelihood.}
+
+\item{nb_cpus}{number of cpus for parallel computation}
 }
 \value{
 a list containing:

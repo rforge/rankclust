@@ -9,6 +9,7 @@
 #' @param Ql number of iterations of the Gibbs sampler used for the estimation of the log-likelihood.
 #' @param Bl burn-in period of the Gibbs sampler.
 #' @param IC number of run of the computation of the loglikelihood.
+#' @param nb_cpus number of cpus for parallel computation
 #' @return a list containing:
 #'   \item{ll}{the estimated log-likelihood.}
 #'   \item{bic}{the estimated BIC criterion.}
@@ -19,7 +20,7 @@
 #' if(res@@convergence)
 #' 	crit=criteria(big4$data,res[2]@@proportion,res[2]@@pi,res[2]@@mu,big4$m,Ql=200,Bl=100)
 #' @export
-criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100,IC=1)
+criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100,IC=1, nb_cpus=1)
 {
   if(missing(proportion))
     stop("proportion is missing")
@@ -77,7 +78,13 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100,IC=1)
     stop("IC must be a strictly positive integer")
   if( (IC!=round(IC)) || (IC<=0))
     stop("IC must be a strictly positive integer")
-    
+  
+  #nb_cpus
+  if(!is.numeric(nb_cpus) || (length(nb_cpus)>1))
+    stop("nb_cpus must be a strictly positive integer")
+  if( (nb_cpus!=round(nb_cpus)) || (nb_cpus<=0))
+    stop("nb_cpus must be a strictly positive integer")
+  
   #Bl
   if(!is.numeric(Bl) || (length(Bl)>1))
     stop("Bl must be a strictly positive integer lower than Ql")
@@ -112,9 +119,9 @@ criteria <-function(data,proportion,pi,mu,m,Ql=500,Bl=100,IC=1)
   
   a=t(pi)
   
-  LL=.Call("loglikelihood",data,mu,a,proportion,m,Ql,Bl,IC,PACKAGE="Rankcluster")
+  LL=.Call("loglikelihood",data,mu,a,proportion,m,Ql,Bl,IC,nb_cpus,PACKAGE="Rankcluster")
   
-  if(LL$ll=="pb")
+  if(LL$ll[1]=="pb")
     stop("Data are not correct.")
   return(LL)
 }
