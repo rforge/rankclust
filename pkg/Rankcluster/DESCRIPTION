@@ -2,7 +2,7 @@ Package: Rankcluster
 Type: Package
 Title: Model-based clustering for multivariate partial ranking data
 Version: 0.92.9
-Date: 2014-05-19
+Date: 2014-07-25
 Author: Quentin Grimonprez, Julien Jacques
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 Description: This package proposes a model-based clustering algorithm for

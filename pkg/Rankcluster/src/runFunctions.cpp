@@ -2,7 +2,9 @@
 #include "runFunctions.h"
 #include "runTest.h"
 #include "RankCluster.h"
+#ifdef SUPPORT_OPENMP
 #include <omp.h>
+#endif
 
 using namespace Rcpp ;
 using namespace std ;
@@ -139,6 +141,9 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
   }
   
   vector<double> L(nbRun,0), bic(nbRun,0), icl(nbRun,0);
+
+  
+  #ifdef SUPPORT_OPENMP
   nb = std::min(nb, omp_get_num_procs());
   #pragma omp parallel num_threads(nb)
   {
@@ -149,6 +154,17 @@ RcppExport SEXP loglikelihood(SEXP X,SEXP mu,SEXP p, SEXP proportion,SEXP m, SEX
       estimLogpar.estimateCriterion(L[i],bic[i],icl[i]);
     }
   }
+  #else
+  {
+    for(int i = 0; i < nbRun; i++)
+    {
+      RankCluster estimLogpar(estimLog);
+      estimLogpar.estimateCriterion(L[i],bic[i],icl[i]);    
+    }
+  }
+  #endif
+  
+  
   
   return List::create(Named("ll")=wrap(L),
     Named("bic")=wrap(bic),
