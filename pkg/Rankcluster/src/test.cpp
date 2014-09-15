@@ -3,6 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <set>
+#include <Rmath.h>
 
 #include "test.h"
 
@@ -27,7 +28,7 @@ void simulMixtureISR(vector<vector<int> > &simul,int const& n,int const& m,vecto
     for(int i(0);i<n;i++)
     {
     	//tirage aléatoire de la classe
-    	alea=(double) rand()/RAND_MAX;
+    	alea=(double) runif(0.,1.);
         for(int j(0); j < (int) prop.size(); j++)
         {
             if((alea>limite[j]) & (alea<limite[j+1]))
@@ -48,7 +49,7 @@ void simulMixtureISR(vector<vector<int> > &simul,int const& n,int const& m,vecto
             avance=true;
             while (avance && l<j)
             {
-                correct=(double)rand()/RAND_MAX;
+                correct = (double) runif(0.,1.);
                 compar=(positionRank(mu[classe],s[j])<positionRank(mu[classe],simul[i][l]));
                 if ((compar && correct<p[classe])||(!compar && correct>p[classe]))
                 {

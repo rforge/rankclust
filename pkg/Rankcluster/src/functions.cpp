@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <map>
+#include <Rmath.h>
 
 #include "functions.h"
 
@@ -468,7 +469,7 @@ vector<vector<int> > simulISR(int const& n,int const& m,vector<int> const& mu, d
             avance=true;
             while (avance && l<j)
             {
-                correct=(double)rand()/RAND_MAX;
+                correct=(double) runif(0.,1.);
                 compar=(positionRank(mu,s[j])<positionRank(mu,simul[i][l]));
                 if ((compar && correct<p)||(!compar && correct>p))
                 {

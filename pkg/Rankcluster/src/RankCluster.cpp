@@ -12,6 +12,7 @@
 #include <map>
 #include <iostream>
 #include <ctime>
+#include <Rmath.h>
 
 using namespace std;
 using namespace Eigen;
@@ -205,7 +206,7 @@ void RankCluster::initialization()
     {
       for(int i = 0; i < n_; i++)
       {
-          alea=(double) rand()/RAND_MAX;
+          alea=runif(0.,1.);
           for(int j = 0; j < g_; j++)
               if((alea>(double) j/g_) & (alea<(double) (j+1)/g_))
               {
@@ -226,7 +227,7 @@ void RankCluster::initialization()
         for(int i = 0; i < g_; i++)
         {
             //initialization of p_ with double between 0.5 and 1
-            alea=(double) rand()/RAND_MAX*0.5+0.5;
+            alea=(double) runif(0.5,1.);
             p_[k][i]=alea;
             //initialization of mu_ with alea rank of size m_
             mu_[k][i].resize(m_[k]);
@@ -346,7 +347,7 @@ void RankCluster::gibbsY(int indexDim)
                 //compute the probability of accept the changement of y
                 p2=probaCond(data_[indexDim][ind].rank,y2,mu_[indexDim][z_[ind]],p_[indexDim][z_[ind]]);
 
-                alea=(double) rand()/RAND_MAX*(p1+p2);
+                alea=(double) runif(0,(p1+p2));
 
                 if(alea<p2)//changement acceptation
                 {
@@ -394,7 +395,7 @@ void RankCluster::zSimulation()
         for(int k(1);k<g_+1;k++)
             lim[k]=lim[k-1]+tik[k-1];
 
-        alea=(double) rand()/RAND_MAX;
+        alea=(double) runif(0.,1.);
 
         for(int j(0);j<g_;j++)
             if((lim[j]<=alea)&&(alea<=lim[j+1]))
@@ -443,7 +444,7 @@ void RankCluster::gibbsX(int indexDim)
 
                         p2 = probaCond(x2,data_[indexDim][ind].y,mu_[indexDim][z_[ind]],p_[indexDim][z_[ind]]);
 
-                        alea = (double) rand()/RAND_MAX*(p1+p2);
+                        alea = (double) runif(0.,p1+p2);
 
                         if(alea < p2)//acceptation du changement
                         {
@@ -577,7 +578,7 @@ void RankCluster::simuM(int indexDim,int indCl)
         lnp1Plusp2+=(long double) sign/ordre*exp(diffln*ordre);
       }
 
-            alea=(long double) rand()/RAND_MAX;
+            alea=(long double) runif(0.,1.);
 
             // acceptaion of change or not
             if(alea<exp(lnp2-lnp1Plusp2))//accept the changement
@@ -967,7 +968,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 
                     p2 = (long double) (propb*proba2.colwise().prod()).sum();
 
-                    alea = (long double) rand()/RAND_MAX*(p1+p2);//unif(0,p1+p2)
+                    alea = (long double) runif(0.,p1+p2);//unif(0,p1+p2)(double) 
 
                     if(alea < p2)//acceptation du changement de y
                     {
@@ -1009,7 +1010,7 @@ double RankCluster::computeLikelihood(vector<vector<vector<int> > > const& mu,ve
 
                             p2x = (proba2X * prop).sum();
 
-                            alea = (double) rand()/RAND_MAX*(p1x+p2x);
+                            alea = (double) runif(0.,p1x+p2x);
 
                             if(alea < p2)//acceptation du changement
                             {
@@ -1463,7 +1464,7 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 
                     p2=(long double) (propb*proba2.colwise().prod()).sum();
 
-                    alea=(long double) rand()/RAND_MAX*(p1+p2);//unif(0,p1+p2)
+                    alea=(long double) runif(0.,p1+p2);//unif(0,p1+p2)
 
                     if(alea<p2)//accept changement
                     {
@@ -1505,7 +1506,7 @@ void RankCluster::estimateCriterion(double &L,double &bic,double &icl)
 
                             p2x = (proba2X * prop).sum();
 
-                            alea = (double) rand()/RAND_MAX*(p1x+p2x);
+                            alea = (double) runif(0.,p1x+p2x);
 
                             if(alea < p2)//we accept the changement
                             {
