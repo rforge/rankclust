@@ -40,7 +40,7 @@ void simulMixtureISR(vector<vector<int> > &simul,int const& n,int const& m,vecto
 
         //simulation d'un rang aléatoire: permutation du vecteur 1 2..m
         s=rgTemp;
-        random_shuffle(s.begin(),s.end());
+        random_shuffle(s.begin(),s.end(),randWrapper);
 
         simul[i][0]=s[0];
         for (int j(1);j<m;j++)

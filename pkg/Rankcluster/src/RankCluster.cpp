@@ -1,6 +1,6 @@
 /**@file RankCluster.cpp
- ** @brief Implementation of methods of the class @c RankCluster
- **/
+ * * * * * * * * ** @brief Implementation of methods of the class @c RankCluster
+ * * * * * * * * **/
  
  #include "RankCluster.h"
  
@@ -233,8 +233,8 @@
        //initialization of mu_ with alea rank of size m_
        mu_[k][i].resize(m_[k]);
        for(int j = 0; j < m_[k]; j++)
-        mu_[k][i][j]=j+1;
-       random_shuffle(mu_[k][i].begin(),mu_[k][i].end());
+       mu_[k][i][j]=j+1;
+       random_shuffle(mu_[k][i].begin(),mu_[k][i].end(),randWrapper);
      }
    }
    
@@ -255,7 +255,7 @@
      for(int ind = 0; ind < n_; ind++)
      {
        //initialization of y
-       random_shuffle(rankTemp.begin(),rankTemp.end());
+       random_shuffle(rankTemp.begin(),rankTemp.end(),randWrapper);
        data_[dim][ind].y=rankTemp;
        
        if(data_[dim][ind].isNotFull)
@@ -264,7 +264,7 @@
          {
            //initialization of Partial Rank
            vector<int> rankTemp2(data_[dim][ind].missingIndex[ii]);
-           random_shuffle(rankTemp2.begin(),rankTemp2.end());
+           random_shuffle(rankTemp2.begin(),rankTemp2.end(),randWrapper);
            
            for(int iii = 0; iii < (int) data_[dim][ind].missingData[ii].size(); iii++)
            data_[dim][ind].rank[rankTemp2[iii]] = data_[dim][ind].missingData[ii][iii];
@@ -331,7 +331,7 @@
      
      //initialization of p1 and y1
      y=yTemp;
-     random_shuffle(y.begin(),y.end());//simulation of alea rank
+     random_shuffle(y.begin(),y.end(),randWrapper);//simulation of alea rank
      y1=y;
      p1=probaCond(data_[indexDim][ind].rank,y1,mu_[indexDim][z_[ind]],p_[indexDim][z_[ind]]);
      
@@ -788,7 +788,7 @@
      {
        currMu->prop[compt1]/=currMu->compteur;
        for(int compt2(0);compt2<d_;compt2++)
-        currMu->p[compt2][compt1]/=currMu->compteur;
+       currMu->p[compt2][compt1]/=currMu->compteur;
      }
      
      //compute the log likelihood
@@ -930,10 +930,10 @@
      for(int j = 0; j < d_; j++)
      {
        for(int jj = 0; jj < m_[j]; jj++)
-        for(int jjj = 0; jjj < m_[j]; jjj++)
-        scoreCount[j][jj][jjj]=0;
+       for(int jjj = 0; jjj < m_[j]; jjj++)
+       scoreCount[j][jj][jjj]=0;
        
-       random_shuffle(y[j].begin(),y[j].end());//permutation de 1 2 3 ..m
+       random_shuffle(y[j].begin(),y[j].end(),randWrapper);//permutation de 1 2 3 ..m
        x[j]=data_[j][ind].rank;
      }
      
@@ -943,7 +943,7 @@
      {
        tik(ind,k) = 0;
        for(int j = 0; j < d_; j++)
-        proba1(j,k) = probaCond(x[j],y1[j],mu[j][k],p[j][k]);
+       proba1(j,k) = probaCond(x[j],y1[j],mu[j][k],p[j][k]);
      }
      
      p1 = (long double) (propb*proba1.colwise().prod()).sum();
@@ -964,7 +964,7 @@
            y2[J][K+1] = y[J][K];
            
            for(int k = 0; k < g_; k++)//tester un stockage des proba calcul� pour �viter r�p�tition de calculs dans la boucle
-            proba2(J,k) = probaCond(x[J],y2[J],mu[J][k],p[J][k]);
+           proba2(J,k) = probaCond(x[J],y2[J],mu[J][k],p[J][k]);
            
            
            p2 = (long double) (propb*proba2.colwise().prod()).sum();
@@ -1037,7 +1037,7 @@
          {
            calculInter(cl)=1;
            for(int dim = 0; dim < d_; dim++)
-             calculInter(cl) *= proba1(dim,cl);
+           calculInter(cl) *= proba1(dim,cl);
            
            probabilities(ind,cl) = calculInter(cl);
            calculInter(cl) *= propb(cl);
@@ -1054,7 +1054,7 @@
            if(data_[dim][ind].isNotFull)
            {
              for(int indElem = 0; indElem < m_[dim]; indElem++)
-               scoreCount[dim][indElem][x[dim][indElem]-1]++;
+             scoreCount[dim][indElem][x[dim][indElem]-1]++;
            }
          }
        }//end if not burn
@@ -1077,7 +1077,7 @@
        {
          xTemp[j][compteur[j]]=x[j];
          for(int elem = 0; elem < m_[j]; elem++)
-           score[j][compteur[j]][elem] = ( (double) (scoreCount[j][elem][x[j][elem]-1]) / (double) (parameter_.nGibbsL - parameter_.burnL) );
+         score[j][compteur[j]][elem] = ( (double) (scoreCount[j][elem][x[j][elem]-1]) / (double) (parameter_.nGibbsL - parameter_.burnL) );
          compteur[j]++;
        }
        
@@ -1328,7 +1328,7 @@
          for(int j = 0; j < g_; j++)
          {
            if(output_.tik(i,j)!=0)
-            output_.entropy(i)-=output_.tik(i,j)*std::log(output_.tik(i,j));
+           output_.entropy(i)-=output_.tik(i,j)*std::log(output_.tik(i,j));
          }
          output_.icl += 2*output_.entropy(i);
        }
@@ -1374,7 +1374,7 @@
      for(int ind(0);ind<n_;ind++)
      {
        //initialization of y
-       random_shuffle(rankTemp.begin(),rankTemp.end());
+       random_shuffle(rankTemp.begin(),rankTemp.end(),randWrapper);
        data_[dim][ind].y=rankTemp;
        
        if(data_[dim][ind].isNotFull)
@@ -1383,7 +1383,7 @@
          {
            //initialization of Partial Rank
            vector<int> rankTemp2(data_[dim][ind].missingIndex[i]);
-           random_shuffle(rankTemp2.begin(),rankTemp2.end());
+           random_shuffle(rankTemp2.begin(),rankTemp2.end(),randWrapper);
            
            for(int ii = 0; ii < (int) data_[dim][ind].missingData[i].size(); ii++)
            data_[dim][ind].rank[rankTemp2[ii]] = data_[dim][ind].missingData[i][ii];
@@ -1433,7 +1433,7 @@
      y=yTemp;
      for(int j(0);j<d_;j++)
      {
-       random_shuffle(y[j].begin(),y[j].end());//permutation de 1 2 3 ..m
+       random_shuffle(y[j].begin(),y[j].end(),randWrapper);//permutation de 1 2 3 ..m
        x[j]=data_[j][ind].rank;
      }
      

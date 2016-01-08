@@ -459,7 +459,7 @@ vector<vector<int> > simulISR(int const& n,int const& m,vector<int> const& mu, d
   {
     //simulation d'un rang aléatoire: permutation du vecteur 1 2..m
     s=rgTemp;
-    random_shuffle(s.begin(),s.end());
+    random_shuffle(s.begin(),s.end(),randWrapper);
     
     simul[i][0]=s[0];
     for(int j(1);j<m;j++)
