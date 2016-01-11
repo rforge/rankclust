@@ -1,7 +1,7 @@
 #' @import Rcpp methods
 #' @useDynLib Rankcluster
 #' 
-#' @title Model-based clustering for multivariate partial ranking data
+#' @title Model-Based Clustering for Multivariate Partial Ranking Data
 #' @docType package
 #' @aliases Rankcluster-package, Rankcluster
 #' @name Rankcluster-package
