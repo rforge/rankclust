@@ -16,8 +16,8 @@
 #'   \tabular{ll}{
 #' Package: \tab Rankcluster\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.93.2\cr
-#' Date: \tab 2016-05-01\cr
+#' Version: \tab 0.94\cr
+#' Date: \tab 2016-07-21\cr
 #' License: \tab GPL (>=2) \cr
 #' }
 #' 
