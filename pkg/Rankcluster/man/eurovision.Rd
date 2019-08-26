@@ -32,7 +32,7 @@ The number of rankings is 33, corresponding to the 33 European countries having 
 All the rankings are partial since none country has ranked this 8 countries in its 10 preferences. Missing ranking elements are zeros.
 }
 \examples{
- data(eurovision)
+data(eurovision)
  
 }
 \keyword{datasets}
