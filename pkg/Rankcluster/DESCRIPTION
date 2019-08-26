@@ -15,7 +15,7 @@ Description: Implementation of a model-based clustering algorithm for
     of the rank population is modelled by a mixture of ISR, whereas conditional
     independence assumption is considered for multivariate rankings.
 License: GPL (>= 2)
-Copyright: Inria
+Copyright: Inria - Université de Lille
 Depends:
     methods
 Imports:
