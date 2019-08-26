@@ -3,8 +3,9 @@ Type: Package
 Title: Model-Based Clustering for Multivariate Partial Ranking Data
 Version: 0.94.1
 Date: 2019-08-26
-Author: Quentin Grimonprez, Julien Jacques
-Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
+Authors@R: c(person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"),
+              person("Julien", "Jacques", role = "aut"),
+              person("Christophe", "Biernacki", role = "aut"))
 Description: Implementation of a model-based clustering algorithm for
     ranking data (C. Biernacki, J. Jacques (2013) <doi:10.1016/j.csda.2012.08.008>). 
     Multivariate rankings as well as partial rankings are taken
