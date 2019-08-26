@@ -42,11 +42,7 @@ for estimation of log-likelihood (default value=100).}
 }
 \value{
 An object of class rankclust (See \code{\link{Output-class}} and \code{\link{Rankclust-class}}).
-
-For example :
-res=rankclust(data,K=1:2,m=m)
-
-You can access the result by res[number of groups]@slotName where slotName is an element of the class Output.
+If the output object is named \code{res}. You can access the result by res[number of groups]@slotName where \code{slotName} is an element of the class Output.
 }
 \description{
 This functions estimates a clustering of ranking data, potentially multivariate, partial and containing tied, based on a mixture of multivariate ISR model [2].

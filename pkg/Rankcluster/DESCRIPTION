@@ -6,7 +6,8 @@ Date: 2019-08-26
 Author: Quentin Grimonprez, Julien Jacques
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 Description: Implementation of a model-based clustering algorithm for
-    ranking data. Multivariate rankings as well as partial rankings are taken
+    ranking data (C. Biernacki, J. Jacques (2013) <doi:10.1016/j.csda.2012.08.008>). 
+    Multivariate rankings as well as partial rankings are taken
     into account. This algorithm is based on an extension of the Insertion
     Sorting Rank (ISR) model for ranking data, which is a meaningful and
     effective model parametrized by a position parameter (the modal ranking,
