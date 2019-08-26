@@ -24,4 +24,3 @@ distHamming(x,y)
 \author{
 Julien Jacques
 }
-

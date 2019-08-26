@@ -31,4 +31,3 @@ For information, a total of 15449 votes have been registred for this election, b
  
 }
 \keyword{datasets}
-

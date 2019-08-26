@@ -23,4 +23,3 @@ distSpearman(x,y)
 \author{
 Julien Jacques
 }
-

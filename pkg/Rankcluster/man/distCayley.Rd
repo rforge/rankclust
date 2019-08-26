@@ -23,4 +23,3 @@ distCayley(x,y)
 \author{
 Julien Jacques
 }
-

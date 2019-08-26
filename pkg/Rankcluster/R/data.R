@@ -28,7 +28,7 @@
 #' @source "Group representations in probability and statistics", P. Diaconis, 1988.
 #' 
 #' @examples 
-#'  data(APA)
+#' data(APA)
 #'  
 #' @keywords datasets
 NULL
@@ -59,7 +59,7 @@ NULL
 #' \url{http://www.uefa.com/memberassociations/uefarankings/club/index.html}
 #' 
 #' @examples 
-#'  data(big4)
+#' data(big4)
 #'  
 #' @keywords datasets
 NULL
@@ -95,7 +95,7 @@ NULL
 #' @source  \url{http://www.eurovision.tv} 
 #' 
 #' @examples 
-#'  data(eurovision)
+#' data(eurovision)
 #'  
 #' @keywords datasets
 NULL
@@ -140,7 +140,7 @@ NULL
 #' @source   Julien Jacques
 #' 
 #' @examples 
-#'  data(quiz)
+#' data(quiz)
 #'  
 #' @keywords datasets
 NULL

@@ -40,10 +40,9 @@ You can see the \link{convertRank} function to convert the simualted ranking dro
 \examples{
 x=simulISR(30,0.8,1:4)
 }
-\author{
-Julien Jacques
-}
 \references{
 [1] C.Biernacki and J.Jacques (2013), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, 58, 162-176.
 }
-
+\author{
+Julien Jacques
+}

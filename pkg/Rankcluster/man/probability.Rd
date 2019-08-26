@@ -61,4 +61,3 @@ prob
 \author{
 Quentin Grimonprez
 }
-

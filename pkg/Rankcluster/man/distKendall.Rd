@@ -22,10 +22,9 @@ x=1:5
 y=c(2,3,1,4,5)
 distKendall(x,y,type="ordering")
 }
-\author{
-Julien Jacques
-}
 \references{
 A New Measure of Rank Correlation, M. G. Kendall
 }
-
+\author{
+Julien Jacques
+}

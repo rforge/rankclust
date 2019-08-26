@@ -25,4 +25,3 @@ Y
 \author{
 Quentin Grimonprez
 }
-

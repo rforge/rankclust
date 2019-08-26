@@ -1,8 +1,8 @@
 Package: Rankcluster
 Type: Package
 Title: Model-Based Clustering for Multivariate Partial Ranking Data
-Version: 0.94
-Date: 2016-07-21
+Version: 0.94.1
+Date: 2019-08-26
 Author: Quentin Grimonprez, Julien Jacques
 Maintainer: Quentin Grimonprez <quentin.grimonprez@inria.fr>
 Description: Implementation of a model-based clustering algorithm for
@@ -14,11 +14,11 @@ Description: Implementation of a model-based clustering algorithm for
     of the rank population is modelled by a mixture of ISR, whereas conditional
     independence assumption is considered for multivariate rankings.
 License: GPL (>= 2)
-Copyright: Inria 2012-2016
+Copyright: Inria
 Depends:
     methods
 Imports:
     Rcpp
 LinkingTo: Rcpp, RcppEigen
-Roxygen: list(wrap = FALSE)
-RoxygenNote: 5.0.1
+Encoding: UTF-8
+RoxygenNote: 6.1.1

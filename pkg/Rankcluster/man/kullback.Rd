@@ -30,10 +30,9 @@ pi2=matrix(c(0.82,0.7),nrow=2)
 mu2=matrix(c(1,2,3,4,4,2,1,3),nrow=2,byrow=TRUE)
 dK=kullback(proportion1,pi1,mu1,proportion2,pi2,mu2,4)
 }
-\author{
-Quentin Grimonprez
-}
 \references{
 http://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
 }
-
+\author{
+Quentin Grimonprez
+}

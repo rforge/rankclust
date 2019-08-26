@@ -35,4 +35,3 @@ pval=khi2(data,proportion,mu,pi)
 \author{
 Quentin Grimonprez
 }
-

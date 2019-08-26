@@ -35,7 +35,7 @@
 #'
 #' @examples
 #' data(big4)
-#' result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
+#' result = rankclust(big4$data, K = 2, m = big4$m, Ql = 200, Bl = 100, maxTry = 2)
 #' 
 #' @details
 #' 
@@ -172,13 +172,13 @@ rankclust <- function(data, m = ncol(data), K = 1, criterion = "bic", Qsem = 100
   #RjM
   if(!is.numeric(RjM) || (length(RjM)!=length(m)))
     stop("RjM must be a vector of strictly positive integer")
-  if( (RjM!=round(RjM)) || (RjM<=0))
+  if(any((RjM!=round(RjM)) | (RjM<=0)))
     stop("RjM must be a vector of strictly positive integer")
   
   #RjSE
   if(!is.numeric(RjSE) || (length(RjSE)!=length(m)))
     stop("RjSE must be a vector of strictly positive integer")
-  if( (RjSE!=round(RjSE)) || (RjSE<=0))
+  if(any((RjSE!=round(RjSE)) | (RjSE<=0)))
     stop("RjSE must be a vector of strictly positive integer")
   
   #Ql

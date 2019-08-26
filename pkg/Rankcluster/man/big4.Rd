@@ -31,4 +31,3 @@ In 2009-2010, Liverpool and Arsenal have also the same UEFA coefficient, the ran
  
 }
 \keyword{datasets}
-

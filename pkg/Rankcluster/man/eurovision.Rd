@@ -36,4 +36,3 @@ All the rankings are partial since none country has ranked this 8 countries in i
  
 }
 \keyword{datasets}
-

@@ -20,4 +20,3 @@ data(quiz)
 Y=unfrequence(quiz$frequency)
 Y
 }
-

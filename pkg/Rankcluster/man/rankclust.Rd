@@ -4,9 +4,9 @@
 \alias{rankclust}
 \title{model-based clustering for multivariate partial ranking}
 \usage{
-rankclust(data, m = ncol(data), K = 1, criterion = "bic", Qsem = 100,
-  Bsem = 20, RjSE = m * (m - 1)/2, RjM = m * (m - 1)/2, Ql = 500,
-  Bl = 100, maxTry = 3, run = 1, detail = FALSE)
+rankclust(data, m = ncol(data), K = 1, criterion = "bic",
+  Qsem = 100, Bsem = 20, RjSE = m * (m - 1)/2, RjM = m * (m - 1)/2,
+  Ql = 500, Bl = 100, maxTry = 3, run = 1, detail = FALSE)
 }
 \arguments{
 \item{data}{a matrix in which each row is a ranking (partial or not; for partial ranking, 
@@ -78,11 +78,8 @@ result is r = (2, 3, 1).
 }
 \examples{
 data(big4)
-result=rankclust(big4$data,K=2,m=big4$m,Ql=200,Bl=100,maxTry=2)
+result = rankclust(big4$data, K = 2, m = big4$m, Ql = 200, Bl = 100, maxTry = 2)
 
-}
-\author{
-Quentin Grimonprez
 }
 \references{
 [1] C.Biernacki and J.Jacques (2013), A generative model for rank data based on sorting algorithm, Computational Statistics and Data Analysis, 58, 162-176.
@@ -92,4 +89,6 @@ Quentin Grimonprez
 \seealso{
 See \code{\link{Output-class}} and \code{\link{Rankclust-class}} for available output.
 }
-
+\author{
+Quentin Grimonprez
+}

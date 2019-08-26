@@ -31,4 +31,3 @@ convertRank(x)
 \author{
 Julien Jacques
 }
-

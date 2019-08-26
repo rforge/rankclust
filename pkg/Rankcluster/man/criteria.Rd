@@ -44,4 +44,3 @@ if(res@convergence)
 \author{
 Quentin Grimonprez
 }
-
