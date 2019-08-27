@@ -86,13 +86,13 @@ NULL
 #' }
 #' @description    This dataset contains the ranking of the 8 common finalists of the Eurovision song contest from 2007 to 2012:
 #' 
-#' A: France, B:Germany, C:Greece, D:Romania, E:Russia, F:Spain, G:Ukrain, H:United Kingdom.
+#' A: France, B:Germany, C:Greece, D:Romania, E:Russia, F:Spain, G:Ukraine, H:United Kingdom.
 #' 
 #' The number of rankings is 33, corresponding to the 33 European countries having participated to this six editions of the contest.
 #' 
 #' All the rankings are partial since none country has ranked this 8 countries in its 10 preferences. Missing ranking elements are zeros.
 #' 
-#' @source  \url{https://eurovision.tv} 
+#' @source  https://eurovision.tv
 #' 
 #' @examples 
 #' data(eurovision)
