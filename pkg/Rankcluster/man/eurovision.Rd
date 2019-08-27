@@ -20,7 +20,7 @@
   \item{m}{ a vector with the sizes of ranks for each dimension.}
 }}
 \source{
-\url{https://www.eurovision.tv}
+\url{https://eurovision.tv/}
 }
 \description{
 This dataset contains the ranking of the 8 common finalists of the Eurovision song contest from 2007 to 2012:
