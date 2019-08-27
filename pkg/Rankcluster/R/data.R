@@ -92,7 +92,7 @@ NULL
 #' 
 #' All the rankings are partial since none country has ranked this 8 countries in its 10 preferences. Missing ranking elements are zeros.
 #' 
-#' @source  \url{https://www.eurovision.tv} 
+#' @source  \url{https://eurovision.tv/} 
 #' 
 #' @examples 
 #' data(eurovision)
